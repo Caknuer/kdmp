@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
         $table->id();
-        $table->string('title');               // contoh: visi, misi, tentang_koperasi
-        $table->string('slug')->unique();      // untuk akses via URL
-        $table->longText('content')->nullable();
+        $table->string('name');
+        $table->string('slug')->unique();
+        $table->text('description')->nullable();
         $table->timestamps();
     });
-
     }
 
     /**
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('accounts');
     }
 };
