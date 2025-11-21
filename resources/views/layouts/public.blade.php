@@ -15,6 +15,6 @@
     </main>
 
     @include('public.partials.footer')
-
+    @yield('P')
 </body>
 </html>
