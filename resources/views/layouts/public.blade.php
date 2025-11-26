@@ -11,10 +11,10 @@
     @include('public.partials.navbar')
 
     <main class="min-h-screen">
-        {{ $slot }}
+        {{-- {{ $slot }} --}}
+        @yield('P')
     </main>
 
     @include('public.partials.footer')
-    @yield('P')
 </body>
 </html>
