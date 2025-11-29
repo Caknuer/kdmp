@@ -10,7 +10,6 @@ use App\Http\Controllers\PublicController;
 Route::get('/', [PublicController::class, 'home'])->name('home');
 
 Route::get('/profil/{slug}', [PublicController::class, 'profile'])->name('profile');
-Route::get('/profil/tentang', [PublicController::class, 'tentang']);
 
 Route::get('/unit-bisnis', [PublicController::class, 'businessUnits'])->name('business.units');
 Route::get('/unit-bisnis/{slug}', [PublicController::class, 'businessDetail'])->name('business.unit.detail');

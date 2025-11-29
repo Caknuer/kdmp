@@ -25,11 +25,6 @@ class PublicController extends Controller
         ]);
     }
 
-    public function tentang()
-    {
-        return view('profile.tentang');
-    }
-
     public function businessUnits()
     {
         return view('public.business.index', [
