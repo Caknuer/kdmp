@@ -1,3 +1,7 @@
+@extends('layouts.public')
+
+@section('P')
+    
 <h1 class="text-2xl font-bold mb-4">Transparansi Keuangan</h1>
 
 <p>Pemasukan: Rp {{ number_format($summary['income']) }}</p>
@@ -25,3 +29,5 @@
         @endforeach
     </tbody>
 </table>
+
+    @endsection
