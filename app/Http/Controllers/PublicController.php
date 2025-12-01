@@ -20,9 +20,9 @@ class PublicController extends Controller
 
     public function profile($slug)
     {
-        return view('public.profile', [
-            'data' => Profile::where('slug', $slug)->firstOrFail(),
-        ]);
+        $data = Profile::where('slug', $slug)->firstOrFail();
+
+        return view('public.profile', compact('data'));
     }
 
     public function businessUnits()
