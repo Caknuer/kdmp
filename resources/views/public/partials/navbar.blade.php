@@ -1,4 +1,4 @@
-<nav class="bg-white shadow">
+<nav class="bg-white shadow fixed top-0 left-0 right-0 z-50">
     <div class="container mx-auto px-4 py-4 flex justify-between">
         <a href="/" class="text-xl font-bold">KDMP</a>
 

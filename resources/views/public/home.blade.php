@@ -1,6 +1,7 @@
 @extends('layouts.public')
 @section('P')
-        
+
+@include('public.partials.hero')
 
 <div class="container mx-auto px-4 py-10">
     
@@ -26,6 +27,4 @@
     </div>
 
 </div>
-
-{{-- </x-public-layout> --}}
 @endsection
