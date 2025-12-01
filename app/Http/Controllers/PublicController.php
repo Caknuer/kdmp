@@ -70,4 +70,14 @@ class PublicController extends Controller
             'transactions' => Transaction::latest()->paginate(20)
         ]);
     }
+    
+    public function index()
+    {
+        $summary = [
+            'income' => \App\Models\Transaction::where('type', 'income')->sum('amount'),
+            'expense' => \App\Models\Transaction::where('type', 'expense')->sum('amount'),
+        ];
+
+        return view('public.finance', compact('summary'));
+    }
 }

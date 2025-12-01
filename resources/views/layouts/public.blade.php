@@ -6,6 +6,7 @@
     <title>{{ $title ?? 'KDMP Wonokerto' }}</title>
     <link rel="stylesheet" href="/css/app.css">
 </head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <body class="pt-20 bg-gray-50 text-gray-800">
 
     @include('public.partials.navbar')

@@ -20,3 +20,5 @@ Route::get('/berita', [PublicController::class, 'articles'])->name('articles');
 Route::get('/berita/{slug}', [PublicController::class, 'articleDetail'])->name('articles.detail');
 
 Route::get('/transparansi', [PublicController::class, 'finance'])->name('finance');
+Route::get('/transparansi-keuangan', [PublicController::class, 'index']);
+
