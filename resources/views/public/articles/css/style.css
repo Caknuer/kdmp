@@ -121,3 +121,18 @@ body {
 .card-body {
     padding: 15px;
 }
+
+/* Profil */
+.page-title {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.content-body {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    line-height: 1.7;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
