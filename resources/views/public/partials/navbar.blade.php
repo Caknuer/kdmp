@@ -1,14 +1,12 @@
-<nav class="navbar">
-    <div class="container nav-content">
-        <a href="/" class="logo">KDMP</a>
+<div class="navbar">
+    <div class="logo">KDMP</div>
 
-        <ul class="nav-menu">
-            <li><a href="/">Beranda</a></li>
-            <li><a href="/profil/tentang-kdmp">Profil</a></li>
-            <li><a href="/unit-bisnis">Unit Bisnis</a></li>
-            <li><a href="/mitra">Mitra</a></li>
-            <li><a href="/berita">Berita</a></li>
-            <li><a href="/transparansi">Transparansi</a></li>
-        </ul>
+    <div class="menu">
+        <a href="/">Beranda</a>
+        <a href="/profil">Profil</a>
+        <a href="/unit-bisnis">Unit Bisnis</a>
+        <a href="/mitra">Mitra</a>
+        <a href="/berita">Berita</a>
+        <a href="/transparansi">Transparansi</a>
     </div>
-</nav>
+</div>
