@@ -11,16 +11,17 @@
     <div class="row">
 
         <!-- Kolom Berita -->
-        <div class="card">
-            <h2 class="card-title">Berita Terbaru</h2>
+        <section class="container">
+            <div class="section-header">
+                <h2>Berita Terbaru</h2>
+                <a href="/berita">Lihat semua</a>
+            </div>
 
-            @foreach ($articles as $article)
-                <a href="{{ route('articles.detail', $article->slug) }}" class="article-item">
-                    <h3 class="article-title">{{ $article->title }}</h3>
-                    <p class="article-excerpt">{{ $article->excerpt }}</p>
-                </a>
-            @endforeach
-        </div>
+            <div class="empty-state">
+                <p>Belum ada berita yang dipublikasikan.</p>
+            </div>
+        </section>
+
 
         <!-- Kolom Transparansi -->
         <div class="card">
