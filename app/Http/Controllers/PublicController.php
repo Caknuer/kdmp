@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Profile;
 use App\Models\Article;
 use App\Models\Busines;
@@ -11,20 +10,36 @@ use App\Models\Transaction;
 
 class PublicController extends Controller
 {
+    /* =======================
+       BERANDA
+    ======================== */
     public function home()
     {
         return view('public.home', [
-            'articles' => Article::where('status', 'published')->latest()->take(4)->get(),
+            'articles' => Article::where('status', 'published')
+                                ->latest()
+                                ->take(4)
+                                ->get(),
+
+            'summary' => [
+                'income'  => Transaction::where('type', 'income')->sum('amount'),
+                'expense' => Transaction::where('type', 'expense')->sum('amount'),
+            ],
         ]);
     }
 
+    /* =======================
+       PROFIL
+    ======================== */
     public function profile($slug)
     {
         $data = Profile::where('slug', $slug)->firstOrFail();
-
         return view('public.profile', compact('data'));
     }
 
+    /* =======================
+       UNIT BISNIS
+    ======================== */
     public function businessUnits()
     {
         return view('public.business.index', [
@@ -39,6 +54,9 @@ class PublicController extends Controller
         ]);
     }
 
+    /* =======================
+       MITRA
+    ======================== */
     public function partners()
     {
         return view('public.partners', [
@@ -46,10 +64,15 @@ class PublicController extends Controller
         ]);
     }
 
+    /* =======================
+       ARTIKEL / BERITA
+    ======================== */
     public function articles()
     {
         return view('public.articles.index', [
-            'articles' => Article::where('status','published')->latest()->paginate(6),
+            'articles' => Article::where('status', 'published')
+                                ->latest()
+                                ->paginate(6),
         ]);
     }
 
@@ -60,24 +83,17 @@ class PublicController extends Controller
         ]);
     }
 
+    /* =======================
+       TRANSPARANSI KEUANGAN
+    ======================== */
     public function finance()
     {
         return view('public.finance', [
             'summary' => [
-                'income' => Transaction::where('type','income')->sum('amount'),
-                'expense' => Transaction::where('type','expense')->sum('amount'),
+                'income'  => Transaction::where('type', 'income')->sum('amount'),
+                'expense' => Transaction::where('type', 'expense')->sum('amount'),
             ],
-            'transactions' => Transaction::latest()->paginate(20)
+            'transactions' => Transaction::latest()->paginate(20),
         ]);
-    }
-    
-    public function index()
-    {
-        $summary = [
-            'income' => \App\Models\Transaction::where('type', 'income')->sum('amount'),
-            'expense' => \App\Models\Transaction::where('type', 'expense')->sum('amount'),
-        ];
-
-        return view('public.finance', compact('summary'));
     }
 }
