@@ -1,26 +1,27 @@
-<div class="navbar">
-    <div class="logo">KDMP</div>
+<header class="navbar">
+    <a href="/" class="logo">KDMP</a>
 
-    <ul class="menu">
-        <li><a href="/">Beranda</a></li>
+    <nav>
+        <ul class="menu" id="menu">
+            <li><a href="/">Beranda</a></li>
 
-        <!-- DROPDOWN PROFIL -->
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-                Profil <span class="arrow">▾</span>
-            </a>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle">
+                    Profil <span class="arrow">▾</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/profil/tentang">Tentang</a></li>
+                    <li><a href="/profil/struktur">Struktur</a></li>
+                </ul>
+            </li>
 
-            <ul class="dropdown-menu">
-                <li><a href="/profil/tentang">Tentang</a></li>
-                <li><a href="/profil/pengurus">Pengurus</a></li>
-                <li><a href="/profil/pengawas">Pengawas</a></li>
-                <li><a href="/profil/visi-misi">Visi & Misi</a></li>
-            </ul>
-        </li>
+            <li><a href="/unit-bisnis">Unit Bisnis</a></li>
+            <li><a href="/mitra">Mitra</a></li>
+            <li><a href="/berita">Berita</a></li>
+            <li><a href="/transparansi">Transparansi</a></li>
+        </ul>
 
-        <li><a href="/unit-bisnis">Unit Bisnis</a></li>
-        <li><a href="/mitra">Mitra</a></li>
-        <li><a href="/berita">Berita</a></li>
-        <li><a href="/transparansi">Transparansi</a></li>
-    </ul>
-</div>
+        <!-- tombol mobile -->
+        <button class="menu-toggle" id="menuToggle">☰</button>
+    </nav>
+</header>
