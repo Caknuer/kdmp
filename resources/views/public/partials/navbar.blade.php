@@ -11,7 +11,9 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="/profil/tentang">Tentang</a></li>
-                    <li><a href="/profil/struktur">Struktur</a></li>
+                    <li><a href="/profil/pengurus">Pengurus</a></li>
+                    <li><a href="/profil/pengawas">Pengawas</a></li>
+                    <li><a href="/profil/visi-misi">Visi & Misi</a></li>
                 </ul>
             </li>
 
