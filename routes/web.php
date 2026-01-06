@@ -9,7 +9,15 @@ use App\Http\Controllers\PublicController;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 
-Route::get('/profil/{slug}', [PublicController::class, 'profile'])->name('profile');
+Route::prefix('profil')->group(function () {
+    Route::get('/tentang', fn () => view('public.profil.tentang'));
+    Route::get('/pengurus', fn () => view('public.profil.pengurus'));
+    Route::get('/pengawas', fn () => view('public.profil.pengawas'));
+    Route::get('/visi-misi', fn () => view('public.profil.visi-misi'));
+});
+
+
+// Route::get('/profil/{slug}', [PublicController::class, 'profile'])->name('profile');
 
 Route::get('/unit-bisnis', [PublicController::class, 'businessUnits'])->name('business.units');
 Route::get('/unit-bisnis/{slug}', [PublicController::class, 'businessDetail'])->name('business.unit.detail');
