@@ -320,3 +320,41 @@ body {
         display: flex;
     }
 }
+/* Hall tentang */
+/* PAGE HERO */
+.page-hero {
+    background: linear-gradient(135deg, #991b1b, #7f1d1d);
+    color: #fff;
+    padding: 70px 20px;
+}
+
+.page-hero-inner {
+    max-width: 900px;
+    margin: auto;
+}
+
+.page-hero h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.page-hero p {
+    font-size: 16px;
+    opacity: .9;
+}
+
+/* ABOUT */
+.about-box {
+    background: #fff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.08);
+}
+
+.list {
+    padding-left: 18px;
+}
+
+.list li {
+    margin-bottom: 8px;
+}
