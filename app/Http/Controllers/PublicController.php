@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Busines;
 use App\Models\Partner;
 use App\Models\Transaction;
+use App\Models\Setting;
 
 class PublicController extends Controller
 {
@@ -25,6 +26,8 @@ class PublicController extends Controller
                 'income'  => Transaction::where('type', 'income')->sum('amount'),
                 'expense' => Transaction::where('type', 'expense')->sum('amount'),
             ],
+
+             'setting' => Setting::first(),
         ]);
     }
 
