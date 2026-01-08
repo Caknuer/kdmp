@@ -51,3 +51,15 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
         }
     };
 });
+
+// untk unit bisnis
+/* UNIT BISNIS */
+document.querySelectorAll('.bisnis-card').forEach(card => {
+    card.addEventListener('click', () => {
+        document.getElementById('modal-name').innerText = card.dataset.name;
+        document.getElementById('modal-category').innerText = card.dataset.category;
+        document.getElementById('modal-desc').innerText = card.dataset.desc;
+        document.getElementById('modal-icon').innerText = card.dataset.icon;
+        document.getElementById('bisnisModal').style.display = 'flex';
+    });
+});

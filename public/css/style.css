@@ -490,3 +490,40 @@ body {
     font-size: 22px;
     margin: 0 auto 15px;
 }
+
+/* untuk hall unit bisnis */
+/* UNIT BISNIS */
+.bisnis-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.bisnis-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: .3s;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.bisnis-card:hover {
+    transform: translateY(-6px);
+}
+
+.bisnis-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.bisnis-card span {
+    font-size: 14px;
+    color: #666;
+}
+
+/* MODAL ICON */
+.modal-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    text-align: center;
+}
