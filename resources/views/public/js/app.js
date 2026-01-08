@@ -28,3 +28,26 @@ document.getElementById('modal').onclick = e => {
         e.target.style.display = 'none';
     }
 };
+
+// untuk hall mitra
+document.querySelectorAll('.mitra-card').forEach(card => {
+    card.addEventListener('click', () => {
+        document.getElementById('modal-name').innerText = card.dataset.name;
+        document.getElementById('modal-type').innerText = card.dataset.type;
+        document.getElementById('modal-desc').innerText = card.dataset.desc;
+        document.getElementById('modal-logo').innerText = card.dataset.logo;
+        document.getElementById('mitraModal').style.display = 'flex';
+    });
+});
+
+document.querySelectorAll('.modal .close').forEach(btn => {
+    btn.onclick = () => btn.closest('.modal-overlay').style.display = 'none';
+});
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.onclick = e => {
+        if (e.target.classList.contains('modal-overlay')) {
+            e.target.style.display = 'none';
+        }
+    };
+});
