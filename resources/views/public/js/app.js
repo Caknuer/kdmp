@@ -63,3 +63,15 @@ document.querySelectorAll('.bisnis-card').forEach(card => {
         document.getElementById('bisnisModal').style.display = 'flex';
     });
 });
+
+// untuk Hall pengawas
+/* PENGAWAS */
+document.querySelectorAll('.pengawas-card').forEach(card => {
+    card.addEventListener('click', () => {
+        document.getElementById('modal-name').innerText = card.dataset.name;
+        document.getElementById('modal-role').innerText = card.dataset.role;
+        document.getElementById('modal-desc').innerText = card.dataset.desc;
+        document.getElementById('pengawasModal').style.display = 'flex';
+    });
+});
+
