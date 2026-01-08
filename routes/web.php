@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\Admin\AuthController;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 
@@ -30,3 +31,21 @@ Route::get('/berita/{slug}', [PublicController::class, 'articleDetail'])->name('
 Route::get('/transparansi', [PublicController::class, 'finance'])->name('finance');
 Route::get('/transparansi-keuangan', [PublicController::class, 'index']);
 
+// untuk admin
+Route::prefix('admin')->group(function () {
+
+    Route::get('/login', [AuthController::class, 'showLogin'])
+        ->name('admin.login');
+
+    Route::post('/login', [AuthController::class, 'login'])
+        ->name('admin.login.submit');
+
+});
+
+Route::middleware('auth:admin')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return "Dashboard Admin KDMP";
+    })->name('admin.dashboard');
+
+});
