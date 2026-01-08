@@ -633,3 +633,30 @@ body {
     font-weight: 600;
     text-decoration: none;
 }
+
+/* hall transparasi */
+.amount {
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 10px;
+    color: #991b1b;
+}
+
+/* TABLE */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table th,
+.table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.table th {
+    background: #f9fafb;
+    text-align: left;
+}
