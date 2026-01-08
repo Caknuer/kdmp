@@ -547,3 +547,89 @@ body {
 .pengawas-card:hover {
     transform: translateY(-6px);
 }
+
+/* daftar berita */
+/* BERITA */
+.berita-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.berita-card {
+    background: #fff;
+    border-radius: 14px;
+    text-decoration: none;
+    color: #333;
+    overflow: hidden;
+    transition: .3s;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.berita-card:hover {
+    transform: translateY(-6px);
+}
+
+.berita-thumb {
+    height: 160px;
+    background: linear-gradient(135deg, #991b1b, #7f1d1d);
+    color: #fff;
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.berita-body {
+    padding: 18px;
+}
+
+.berita-body h3 {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.berita-body small {
+    color: #777;
+    font-size: 13px;
+}
+
+.berita-body p {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* detail berita */
+/* DETAIL BERITA */
+.berita-detail {
+    background: #fff;
+    padding: 40px;
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.08);
+}
+
+.berita-detail h1 {
+    margin-bottom: 10px;
+}
+
+.berita-detail .meta {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.berita-detail .content {
+    line-height: 1.8;
+    color: #333;
+}
+
+.berita-detail .content p {
+    margin-bottom: 16px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 30px;
+    color: #991b1b;
+    font-weight: 600;
+    text-decoration: none;
+}

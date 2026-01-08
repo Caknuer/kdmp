@@ -1,9 +1,46 @@
 @extends('layouts.public')
 
 @section('P')
-        {{-- <h1 class="text-2xl font-bold">{{ article->title }}</h1>
-        <img src=" asset('storage/' .article->thumbnail) }}" class="my-4"/>
-        <p>{{ \Illuminate\Support\Str::limit(strip_tags(article->body), 200)}} </p> --}}
+       <!-- HERO -->
+<section class="page-hero">
+    <div class="page-hero-inner">
+        <h1>Berita & Informasi</h1>
+        <p>Informasi terbaru seputar kegiatan dan perkembangan KDMP</p>
+    </div>
+</section>
 
-        <h1> Berita Hari ini</h1>
+<!-- LIST BERITA -->
+<section class="container">
+    <div class="row berita-grid">
+
+        @forelse ($articles as $article)
+            <a href="{{ url('/artikel/'.$article->slug) }}" class="berita-card">
+                <div class="berita-thumb">
+                    {{ strtoupper(substr($article->title,0,1)) }}
+                </div>
+
+                <div class="berita-body">
+                    <h3>{{ $article->title }}</h3>
+                    <small>
+                        {{ $article->created_at->format('d M Y') }}
+                    </small>
+                    <p>
+                        {{ Str::limit(strip_tags($article->content), 100) }}
+                    </p>
+                </div>
+            </a>
+        @empty
+            <div class="empty-state">
+                Belum ada berita yang dipublikasikan.
+            </div>
+        @endforelse
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div style="margin-top:30px">
+        {{ $articles->links() }}
+    </div>
+</section>
+
 @endsection

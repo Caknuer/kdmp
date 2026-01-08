@@ -2,7 +2,26 @@
 
 @section('P')
     
-<h1 class="text-2xl font-bold">{{ $article->title }}</h1>
-<img src="{{ asset('storage/'.$article->thumbnail) }}" class="my-4"/>
-<p>{!! $article->body !!}</p>
+<<section class="container" style="margin-top:120px">
+
+    <article class="berita-detail">
+
+        <h1>{{ $article->title }}</h1>
+
+        <div class="meta">
+            Dipublikasikan pada
+            {{ $article->created_at->format('d M Y') }}
+        </div>
+
+        <div class="content">
+            {!! $article->content !!}
+        </div>
+
+        <a href="{{ url('/artikel') }}" class="back-link">
+            ← Kembali ke daftar berita
+        </a>
+
+    </article>
+
+</section>
 @endsection
