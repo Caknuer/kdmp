@@ -42,10 +42,13 @@ Route::prefix('admin')->group(function () {
 
 });
 
-Route::middleware('auth:admin')->group(function () {
+Route::middleware('auth:admin')->prefix('admin')->group(function () {
 
     Route::get('/dashboard', function () {
-        return "Dashboard Admin KDMP";
+        return view('admin.dashboard');
     })->name('admin.dashboard');
 
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('admin.logout');
 });
+
