@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
-    protected $fillable = [
+     protected $fillable = [
+        'type',
         'title',
-        'slug',
         'content',
     ];
 }

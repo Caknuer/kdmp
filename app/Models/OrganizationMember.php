@@ -4,20 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Account extends Model
+class OrganizationMember extends Model
 {
     protected $fillable = [
         'name',
-        'type',
+        'position',
+        'role',
+        'photo',
+        'bio',
+        'order',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
     ];
-
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
 }

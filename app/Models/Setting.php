@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     protected $fillable = [
-        'phone',
-        'email',
-        'address',
-        'google_maps_embed',
+        'key',
+        'value',
+        'group',
     ];
+
+    public $timestamps = true;
 }
