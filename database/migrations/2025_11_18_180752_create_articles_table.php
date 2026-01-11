@@ -12,18 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('articles', function (Blueprint $table) {
-        $table->id();
-        $table->string('title');
-        $table->string('slug')->unique();
-        $table->text('excerpt')->nullable();
-        $table->longText('body');
-        $table->enum('type', ['berita', 'pengumuman'])->default('berita');
-        $table->enum('status', ['draft', 'published'])->default('draft');
-        $table->timestamp('published_at')->nullable();
-        $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
-        $table->string('thumbnail')->nullable();
-        $table->timestamps();
-    });
+            $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->longText('content');
+            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->timestamp('published_at')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

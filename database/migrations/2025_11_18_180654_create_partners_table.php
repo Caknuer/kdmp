@@ -12,16 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('partners', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->string('slug')->unique();
-        $table->string('type')->nullable();  // pemerintah, swasta, koperasi
-        $table->text('description')->nullable();
-        $table->string('logo')->nullable();
-        $table->string('website')->nullable();
-        $table->timestamps();
-    });
-
+            $table->id();
+            $table->string('name');
+            $table->string('logo')->nullable();
+            $table->string('website')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
+        });
     }
 
     /**
