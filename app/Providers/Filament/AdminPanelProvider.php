@@ -32,8 +32,8 @@ class AdminPanelProvider extends PanelProvider
 
         // Branding
         ->brandName('KDMP Wonokerto')
-        ->brandLogo(asset('images/kdmp.png'))
-        ->brandLogoHeight('3rem')
+        ->brandLogo( fn () =>asset('images/kdmp.png'))
+        ->brandLogoHeight('3rem')   
 
         // Warna
         ->colors([
