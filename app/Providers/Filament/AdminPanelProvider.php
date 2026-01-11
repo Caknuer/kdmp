@@ -22,38 +22,51 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
-    {
-        return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
-            ->login()
-            ->colors([
-                'primary' => Color::Amber,
-            ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
-            ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-            ])
-            ->authMiddleware([
-                Authenticate::class,
-            ]);
+{
+    return $panel
+        ->default()
+        ->id('admin')
+        ->path('admin')
+        ->login()
+        ->authGuard('admin')
+
+        // Branding
+        ->brandName('KDMP Wonokerto')
+        ->brandLogo(asset('images/kdmp.png'))
+        ->brandLogoHeight('3rem')
+
+        // Warna
+        ->colors([
+            'primary' => Color::Amber,
+        ])
+
+        // Resource & Page
+        ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
+        ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
+        ->pages([
+            Dashboard::class,
+        ])
+        ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+        ->widgets([
+            AccountWidget::class,
+            FilamentInfoWidget::class,
+        ])
+
+        // Middleware
+        ->middleware([
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            AuthenticateSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            DisableBladeIconComponents::class,
+            DispatchServingFilamentEvent::class,
+        ])
+        ->authMiddleware([
+            Authenticate::class,
+        ]);
     }
+
 }
