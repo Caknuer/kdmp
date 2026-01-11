@@ -12,13 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('profiles', function (Blueprint $table) {
-        $table->id();
-        $table->string('title');               // contoh: visi, misi, tentang_koperasi
-        $table->string('slug')->unique();      // untuk akses via URL
-        $table->longText('content')->nullable();
-        $table->timestamps();
-    });
-
+            $table->id();
+            $table->enum('type', ['about', 'vision', 'mission']);
+            $table->string('title');
+            $table->longText('content');
+            $table->timestamps();
+        });
     }
 
     /**
