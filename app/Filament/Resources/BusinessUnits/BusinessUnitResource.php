@@ -11,7 +11,6 @@ use App\Filament\Resources\BusinessUnits\Schemas\BusinessUnitInfolist;
 use App\Filament\Resources\BusinessUnits\Tables\BusinessUnitsTable;
 use App\Models\BusinessUnit;
 use BackedEnum;
-use App\Models\Busines;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -21,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BusinessUnitResource extends Resource
 {
-    protected static ?string $model = Busines::class;
+    protected static ?string $model = BusinessUnit::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

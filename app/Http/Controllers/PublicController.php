@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use App\Models\Article;
-use App\Models\Busines;
+use App\Models\BusinessUnit;
 use App\Models\Partner;
 use App\Models\Transaction;
 use App\Models\Setting;
@@ -46,14 +46,14 @@ class PublicController extends Controller
     public function businessUnits()
     {
         return view('public.business.index', [
-            'units' => Busines::all(),
+            'units' => BusinessUnit::all(),
         ]);
     }
 
     public function businessDetail($slug)
     {
         return view('public.business.detail', [
-            'unit' => Busines::where('slug', $slug)->firstOrFail(),
+            'unit' => BusinessUnit::where('slug', $slug)->firstOrFail(),
         ]);
     }
 
