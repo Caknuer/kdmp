@@ -1,5 +1,7 @@
 <header class="navbar">
-    <a href="/" class="logo">KDMP</a>
+    <a href="/" class="logo">
+        <img src="{{ asset('storage/' . setting('logo')) }}" alt="{{ setting('site_name') }}" class="h-10">
+    </a>
 
     <nav>
         <ul class="menu" id="menu">

@@ -2,11 +2,11 @@
     <style>
         /* Card style */
         .fs-card {
-            border: 1px solid #e2e8f0;
+            border: 1px solid #47acd4;
             border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            background-color: #f9fafb;
+            background-color: #d48f8f;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
@@ -17,7 +17,7 @@
             margin-bottom: 1rem;
             border-bottom: 2px solid #cbd5e1;
             padding-bottom: 0.25rem;
-            color: #1e293b;
+            color: #ffffff;
         }
 
         /* Input & textarea */
@@ -44,7 +44,7 @@
 
         /* Submit button */
         .fs-submit {
-            background-color: #3b82f6;
+            background-color: #8e9fb9;
             color: #fff;
             font-weight: 600;
             padding: 0.75rem 1.5rem;
