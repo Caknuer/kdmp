@@ -57,74 +57,81 @@
         }
     </style>
 
-    <form wire:submit.prevent="save">
+    <form wire:submit.prevent="save" class="space-y-6">
 
-        {{-- ===== GENERAL SETTINGS ===== --}}
+        {{-- ===== GENERAL ===== --}}
         <div class="fs-card">
             <h2 class="fs-heading">General</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" class="fs-input" placeholder="Nama Situs" wire:model.defer="site_name">
-                <input type="text" class="fs-input" placeholder="Tagline" wire:model.defer="tagline">
-            </div>
-            <label class="block font-medium text-sm mt-4">Google Maps (iframe / URL)</label>
-            <textarea class="fs-textarea" rows="4" wire:model.defer="gmaps"></textarea>
-            <p class="text-sm text-gray-500 mt-1">Paste iframe atau URL Google Maps di sini.</p>
+
+            <input type="text" class="fs-input" placeholder="Nama Situs"
+                   wire:model.defer="site_name">
+
+            <input type="text" class="fs-input" placeholder="Tagline"
+                   wire:model.defer="tagline">
+
+            <label class="block text-sm mt-3">Google Maps</label>
+            <textarea class="fs-textarea" rows="4"
+                      wire:model.defer="gmaps"></textarea>
         </div>
 
-        {{-- ===== CONTACT SETTINGS ===== --}}
+        {{-- ===== CONTACT ===== --}}
         <div class="fs-card">
             <h2 class="fs-heading">Kontak</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="email" class="fs-input" placeholder="Email" wire:model.defer="email">
-                <input type="text" class="fs-input" placeholder="Telepon" wire:model.defer="phone">
-            </div>
+
+            <input type="email" class="fs-input" placeholder="Email"
+                   wire:model.defer="email">
+
+            <input type="text" class="fs-input" placeholder="Telepon"
+                   wire:model.defer="phone">
         </div>
 
-        {{-- ===== SOCIAL MEDIA ===== --}}
+        {{-- ===== SOCIAL ===== --}}
         <div class="fs-card">
             <h2 class="fs-heading">Media Sosial</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" class="fs-input" placeholder="Facebook" wire:model.defer="facebook">
-                <input type="text" class="fs-input" placeholder="Instagram" wire:model.defer="instagram">
-                <input type="text" class="fs-input" placeholder="Twitter" wire:model.defer="twitter">
-            </div>
+
+            <input type="text" class="fs-input" placeholder="Facebook"
+                   wire:model.defer="facebook">
+
+            <input type="text" class="fs-input" placeholder="Instagram"
+                   wire:model.defer="instagram">
+
+            <input type="text" class="fs-input" placeholder="Tiktok"
+                   wire:model.defer="tiktok">
         </div>
 
         {{-- ===== LOGO & FAVICON ===== --}}
         <div class="fs-card">
             <h2 class="fs-heading">Logo & Favicon</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {{-- Logo --}}
-                <div>
-                    <label class="block font-medium text-sm mb-1">Logo Situs</label>
-                    <input type="file" wire:model="logo" class="fs-input">
-                    @if($logo)
-                        <img src="{{ $logo instanceof \Livewire\TemporaryUploadedFile ? $logo->temporaryUrl() : asset('storage/'.$logo) }}"
-                             class="fs-preview">
-                    @endif
-                    <p class="text-sm text-gray-500 mt-1">Max 1MB (.png/.jpg)</p>
-                </div>
 
-                {{-- Favicon --}}
-                <div>
-                    <label class="block font-medium text-sm mb-1">Favicon</label>
-                    <input type="file" wire:model="favicon" class="fs-input">
-                    @if($favicon)
-                        <img src="{{ $favicon instanceof \Livewire\TemporaryUploadedFile ? $favicon->temporaryUrl() : asset('storage/'.$favicon) }}"
-                             class="fs-preview">
-                    @endif
-                    <p class="text-sm text-gray-500 mt-1">Max 0.5MB (.ico/.png)</p>
-                </div>
+            {{-- LOGO --}}
+            <div class="mb-4">
+                <label class="text-sm">Logo</label>
+                <input type="file" wire:model="logoUpload">
+
+                @if ($logoUpload)
+                    <img src="{{ $logoUpload->temporaryUrl() }}" class="fs-preview">
+                @elseif ($logo)
+                    <img src="{{ asset('storage/'.$logo) }}" class="fs-preview">
+                @endif
+            </div>
+
+            {{-- FAVICON --}}
+            <div>
+                <label class="text-sm">Favicon</label>
+                <input type="file" wire:model="faviconUpload">
+
+                @if ($faviconUpload)
+                    <img src="{{ $faviconUpload->temporaryUrl() }}" class="fs-preview">
+                @elseif ($favicon)
+                    <img src="{{ asset('storage/'.$favicon) }}" class="fs-preview">
+                @endif
             </div>
         </div>
 
-        {{-- ===== SUBMIT BUTTON ===== --}}
-        <div class="mt-6">
-            <button type="submit" class="fs-submit">
-                Simpan Semua Settings
-            </button>
-            <p class="text-sm text-gray-500 mt-1">Pastikan semua data sudah benar sebelum disimpan.</p>
-        </div>
+        {{-- ===== SUBMIT ===== --}}
+        <x-filament::button type="submit" class="mt-4">
+            Simpan
+        </x-filament::button>
 
     </form>
 </x-filament::page>

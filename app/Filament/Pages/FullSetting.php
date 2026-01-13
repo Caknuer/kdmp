@@ -11,6 +11,8 @@ use Livewire\WithFileUploads;
 
 class FullSetting extends Page
 {
+    use WithFileUploads;
+
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cog';
     // protected static BackedEnum|string|null $navigationGroup = 'Settings';
     protected static UnitEnum|string|null $navigationGroup = 'Settings';
@@ -26,11 +28,15 @@ class FullSetting extends Page
     // Media sosial
     public string $facebook = '';
     public string $instagram = '';
-    public string $twitter = '';
+    public string $tiktok = '';
 
-    // File uploads
-    public $logo;
-    public $favicon;
+    // Upload (Livewire)
+    public $logoUpload;
+    public $faviconUpload;
+
+    // Path tersimpan
+    public string $logo = '';
+    public string $favicon = '';
 
     // Maps
     public string $gmaps = '';
@@ -44,33 +50,35 @@ class FullSetting extends Page
     protected function rules(): array
     {
         return [
-            'site_name'  => 'required|string|max:255',
-            'tagline'    => 'nullable|string|max:255',
-            'email'      => 'nullable|email|max:255',
-            'phone'      => 'nullable|string|max:20',
-            'facebook'   => 'nullable|string|max:255',
-            'instagram'  => 'nullable|string|max:255',
-            'twitter'    => 'nullable|string|max:255',
-            'logo'       => 'nullable|image|max:1024',    // max 1MB
-            'favicon'    => 'nullable|image|max:512',    // max 0.5MB
-            'gmaps'      => 'nullable|string|max:500',
+            'site_name'     => 'required|string|max:255',
+            'tagline'       => 'nullable|string|max:255',
+            'email'         => 'nullable|email|max:255',
+            'phone'         => 'nullable|string|max:20',
+            'facebook'      => 'nullable|string|max:255',
+            'instagram'     => 'nullable|string|max:255',
+            'tiktok'        => 'nullable|string|max:255',
+            'gmaps'         => 'nullable|string|max:500',
+
+            // UPLOAD
+            'logoUpload'    => 'nullable|image|max:1024',
+            'faviconUpload' => 'nullable|image|max:512',
         ];
     }
 
     public function mount(): void
     {
-        $fields = [
-            'site_name', 'tagline', 'email', 'phone',
-            'facebook', 'instagram', 'twitter', 'gmaps'
-        ];
+         $fields = [
+        'site_name', 'tagline', 'email', 'phone',
+        'facebook', 'instagram', 'tiktok', 'gmaps'
+    ];
 
-        foreach ($fields as $field) {
-            $this->$field = $this->getValue($field);
-        }
+    foreach ($fields as $field) {
+        $this->$field = $this->getValue($field);
+    }
 
-        // File uploads (logo & favicon)
-        $this->logo = $this->getValue('logo');
-        $this->favicon = $this->getValue('favicon');
+    // Path saja, BUKAN upload
+    $this->logo = $this->getValue('logo');
+    $this->favicon = $this->getValue('favicon');
     }
 
     protected function getValue(string $key): string
@@ -90,37 +98,32 @@ class FullSetting extends Page
     {
         $this->validate();
 
-        // Upload logo
-        if ($this->logo instanceof \Livewire\TemporaryUploadedFile) {
-            $logoPath = $this->logo->store('settings', 'public');
-            $this->setValue('logo', $logoPath);
-        }
+    if ($this->logoUpload) {
+        $path = $this->logoUpload->store('logo', 'public');
+        $this->setValue('logo', $path);
+        $this->logo = $path;
+    }
 
-        // Upload favicon
-        if ($this->favicon instanceof \Livewire\TemporaryUploadedFile) {
-            $faviconPath = $this->favicon->store('settings', 'public');
-            $this->setValue('favicon', $faviconPath);
-        }
+    if ($this->faviconUpload) {
+        $path = $this->faviconUpload->store('favicon', 'public');
+        $this->setValue('favicon', $path);
+        $this->favicon = $path;
+    }
 
-        // General
-        $this->setValue('site_name', $this->site_name);
-        $this->setValue('tagline', $this->tagline);
+    $this->setValue('site_name', $this->site_name);
+    $this->setValue('tagline', $this->tagline);
+    $this->setValue('email', $this->email, 'contact');
+    $this->setValue('phone', $this->phone, 'contact');
 
-        // Contact
-        $this->setValue('email', $this->email, 'contact');
-        $this->setValue('phone', $this->phone, 'contact');
+    $this->setValue('facebook', $this->facebook, 'social');
+    $this->setValue('instagram', $this->instagram, 'social');
+    $this->setValue('tiktok', $this->tiktok, 'social');
 
-        // Sosial media
-        $this->setValue('facebook', $this->facebook, 'social');
-        $this->setValue('instagram', $this->instagram, 'social');
-        $this->setValue('twitter', $this->twitter, 'social');
+    $this->setValue('gmaps', $this->gmaps);
 
-        // Google Maps
-        $this->setValue('gmaps', $this->gmaps, 'general');
-
-        Notification::make()
-            ->title('Settings berhasil disimpan')
-            ->success()
-            ->send();
+    Notification::make()
+        ->title('Settings berhasil disimpan')
+        ->success()
+        ->send();
     }
 }
