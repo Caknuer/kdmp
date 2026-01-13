@@ -1,7 +1,6 @@
 <header class="navbar">
     <a href="/" class="logo">
-        <img src="{{ setting('logo') ? asset('storage/' . setting('logo')) : asset('images/default-logo.png') }}" 
-     alt="{{ setting('site_name') }}" class="h-10 site-name">
+        <img src="{{ asset('storage/' . setting('logo')) }}" alt="Logo">
     </a>
 
     <nav>

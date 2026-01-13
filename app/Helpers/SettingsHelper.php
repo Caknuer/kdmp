@@ -12,7 +12,10 @@ if (! function_exists('setting')) {
      */
     function setting(string $key, $default = null)
     {
-        $value = Setting::where('key', $key)->value('value');
-        return $value ?? $default;
+        return cache()->remember(
+            'setting_'.$key,
+            now()->addHour(),
+            fn () => Setting::where('key', $key)->value('value') ?? $default
+        );
     }
 }

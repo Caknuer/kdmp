@@ -98,32 +98,34 @@ class FullSetting extends Page
     {
         $this->validate();
 
-    if ($this->logoUpload) {
-        $path = $this->logoUpload->store('logo', 'public');
-        $this->setValue('logo', $path);
-        $this->logo = $path;
-    }
+        if ($this->logoUpload) {
+            $path = $this->logoUpload->store('logo', 'public');
+            $this->setValue('logo', $path);
+            $this->logo = $path;
+        }
 
-    if ($this->faviconUpload) {
-        $path = $this->faviconUpload->store('favicon', 'public');
-        $this->setValue('favicon', $path);
-        $this->favicon = $path;
-    }
+        if ($this->faviconUpload) {
+            $path = $this->faviconUpload->store('favicon', 'public');
+            $this->setValue('favicon', $path);
+            $this->favicon = $path;
+        }
 
-    $this->setValue('site_name', $this->site_name);
-    $this->setValue('tagline', $this->tagline);
-    $this->setValue('email', $this->email, 'contact');
-    $this->setValue('phone', $this->phone, 'contact');
+        $this->setValue('site_name', $this->site_name);
+        $this->setValue('tagline', $this->tagline);
+        $this->setValue('email', $this->email, 'contact');
+        $this->setValue('phone', $this->phone, 'contact');
 
-    $this->setValue('facebook', $this->facebook, 'social');
-    $this->setValue('instagram', $this->instagram, 'social');
-    $this->setValue('tiktok', $this->tiktok, 'social');
+        $this->setValue('facebook', $this->facebook, 'social');
+        $this->setValue('instagram', $this->instagram, 'social');
+        $this->setValue('tiktok', $this->tiktok, 'social');
 
-    $this->setValue('gmaps', $this->gmaps);
+        $this->setValue('gmaps', $this->gmaps);
 
-    Notification::make()
-        ->title('Settings berhasil disimpan')
-        ->success()
-        ->send();
+        Notification::make()
+            ->title('Settings berhasil disimpan')
+            ->success()
+            ->send();
+
+        cache()->flush();
     }
 }
