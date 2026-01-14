@@ -8,8 +8,8 @@ class OrganizationMember extends Model
 {
     protected $fillable = [
         'name',
-        'position',
         'role',
+        'type',
         'photo',
         'bio',
         'order',

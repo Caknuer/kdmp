@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('organization_members', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('position');
-            $table->enum('role', ['pengurus', 'pengawas']);
+            $table->string('role');
+            $table->enum('type', ['pengurus', 'pengawas']);
             $table->string('photo')->nullable();
             $table->text('bio')->nullable();
             $table->integer('order')->default(0);
