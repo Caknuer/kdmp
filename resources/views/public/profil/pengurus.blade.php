@@ -41,13 +41,13 @@
             <span>Bendahara</span>
         </div>
 
-        @foreach($members as $member)
+        {{-- @foreach($members as $member)
         <div @click="open = true">
             <img src="{{ asset('storage/'.$member->photo) }}">
             <h3>{{ $member->name }}</h3>
             <p>{{ $member->role }}</p>
         </div>
-        @endforeach
+        @endforeach --}}
 
     </div>
 </section>
