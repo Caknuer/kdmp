@@ -10,6 +10,7 @@ class Partner extends Model
         'name',
         'logo',
         'website',
+        'order',
         'is_active',
     ];
 

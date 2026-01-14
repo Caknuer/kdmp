@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
+    protected static ?string $navigationLabel = 'Mitra';
+     protected static string|\UnitEnum|null $navigationGroup = 'Konten';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

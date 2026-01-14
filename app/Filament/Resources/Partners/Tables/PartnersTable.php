@@ -10,6 +10,10 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Actions\DeleteAction;
 
 class PartnersTable
 {
@@ -17,7 +21,10 @@ class PartnersTable
     {
         return $table
             ->columns([
-                //
+                ImageColumn::make('logo')->square(),
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('website')->url(),
+                ToggleColumn::make('is_active'),
             ])
             ->filters([
                 TrashedFilter::make(),
@@ -25,6 +32,7 @@ class PartnersTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
