@@ -18,6 +18,7 @@ use Filament\Tables\Table;
 class OrganizationMemberResource extends Resource
 {
     protected static ?string $model = OrganizationMember::class;
+    protected static string|\UnitEnum|null $navigationGroup = 'Konten';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
