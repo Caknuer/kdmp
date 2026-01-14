@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 use App\Http\Controllers\PublicController;
-use App\Http\Controllers\Admin\AuthController;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 

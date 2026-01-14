@@ -8,6 +8,7 @@ use App\Models\BusinessUnit;
 use App\Models\Partner;
 use App\Models\Transaction;
 use App\Models\Setting;
+use App\Models\OrganizationMember;
 
 class PublicController extends Controller
 {
@@ -99,4 +100,21 @@ class PublicController extends Controller
             'transactions' => Transaction::latest()->paginate(20),
         ]);
     }
+
+
+    public function organisasi()
+    {
+        return view('pages.organisasi', [
+            'pengurus' => OrganizationMember::where('type', 'pengurus')
+                ->where('is_active', true)
+                ->orderBy('order')
+                ->get(),
+
+            'pengawas' => OrganizationMember::where('type', 'pengawas')
+                ->where('is_active', true)
+                ->orderBy('order')
+                ->get(),
+        ]);
+    }
+
 }
