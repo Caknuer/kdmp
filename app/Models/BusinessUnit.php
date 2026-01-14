@@ -7,12 +7,13 @@ use Illuminate\Support\Str;
 
 class BusinessUnit extends Model
 {
-     protected $fillable = [
+      protected $fillable = [
         'name',
         'slug',
+        'thumbnail',
         'description',
-        'cover',
         'is_active',
+        'order',
     ];
 
     protected static function booted()

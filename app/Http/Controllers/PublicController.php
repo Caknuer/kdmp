@@ -46,15 +46,19 @@ class PublicController extends Controller
     ======================== */
     public function businessUnits()
     {
-        return view('public.business.index', [
-            'units' => BusinessUnit::all(),
+        return view('public.unit-bisnis.index', [
+            'units' => BusinessUnit::where('is_active', true)
+                ->orderBy('order')
+                ->get(),
         ]);
     }
 
     public function businessDetail($slug)
     {
-        return view('public.business.detail', [
-            'unit' => BusinessUnit::where('slug', $slug)->firstOrFail(),
+        return view('public.unit-bisnis.detail', [
+            'unit' => BusinessUnit::where('slug', $slug)
+                ->where('is_active', true)
+                ->firstOrFail(),
         ]);
     }
 
