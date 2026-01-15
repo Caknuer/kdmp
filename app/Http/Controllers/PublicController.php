@@ -80,8 +80,8 @@ class PublicController extends Controller
     public function articles()
     {
         return view('public.articles.index', [
-            'articles' => Article::where('status', 'published')
-                                ->latest()
+            'articles' => Article::where('is_published', true)
+                                ->latest('published_at')
                                 ->paginate(6),
         ]);
     }
@@ -89,7 +89,9 @@ class PublicController extends Controller
     public function articleDetail($slug)
     {
         return view('public.articles.detail', [
-            'article' => Article::where('slug', $slug)->firstOrFail(),
+            'article' => Article::where('slug', $slug)
+            ->where('is_published', true)
+            ->firstOrFail(),
         ]);
     }
 
