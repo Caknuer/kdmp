@@ -10,7 +10,6 @@ class Article extends Model
     protected $fillable = [
         'title',
         'slug',
-        'excerpt',
         'content',
         'thumbnail',
         'is_published',
@@ -19,6 +18,7 @@ class Article extends Model
 
     protected $casts = [
         'published_at' => 'datetime',
+        'is_published' => 'datetime'
     ];
 
     protected static function booted()

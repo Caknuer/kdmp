@@ -81,21 +81,20 @@ class PublicController extends Controller
     public function articles()
     {
         return view('public.articles.index', [
-            'articles' => Article::whereNotNull('published_at')
-                    ->where('published_at', '<=', now())
-                    ->latest('published_at')
-                    ->limit(4)
-                    ->get(),
+            'articles' => Article::where('is_published')
+                    ->whereNotNull('published_at', '<=', now())
+                    ->orderByDesc('published_at')
+                    ->paginate(6),
         ]);
     }
 
     public function articleDetail($slug)
     {
-        return view('public.articles.detail', [
-            'article' => Article::where('slug', $slug)
+        $article = Article::where('slug', $slug)
             ->where('is_published', true)
-            ->firstOrFail(),
-        ]);
+            ->firstOrFail();
+
+        return view('public.articles.show', compact('article'));
     }
 
     /* =======================

@@ -8,6 +8,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class ArticleForm
 {
@@ -16,24 +17,28 @@ class ArticleForm
         return $schema
             ->components([
                 TextInput::make('title')
-                    ->required(),
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn ($state, callable $set) =>
+                        $set('slug', Str::slug($state))
+                    ),
                 TextInput::make('slug')
-                    ->required(),
-                Textarea::make('excerpt')
-                    ->default(null)
-                    ->columnSpanFull(),
+                    ->required()
+                    ->disabled()
+                    ->dehydrated(),
                 Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
                 FileUpload::make('thumbnail')
                     ->label('Foto Artikel')
                     ->image()
+                    ->disk('public')
                     ->directory('articles')
                     ->imageEditor() // optional tapi bagus
                     ->maxSize(2048) // 2MB
                     ->required(),
                 Toggle::make('is_published')
-                    ->required(),
+                    ->default(true),
                 DateTimePicker::make('published_at'),
             ]);
     }
