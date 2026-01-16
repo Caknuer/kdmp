@@ -18,10 +18,11 @@ class PublicController extends Controller
     public function home()
     {
         return view('public.home', [
-            'articles' => Article::where('status', 'published')
-                                ->latest()
-                                ->take(4)
-                                ->get(),
+            'articles' => Article::whereNotNull('published_at')
+                        ->where('published_at', '<=', now())
+                        ->latest('published_at')
+                        ->limit(4)
+                        ->get(),
 
             'summary' => [
                 'income'  => Transaction::where('type', 'income')->sum('amount'),
@@ -80,9 +81,11 @@ class PublicController extends Controller
     public function articles()
     {
         return view('public.articles.index', [
-            'articles' => Article::where('is_published', true)
-                                ->latest('published_at')
-                                ->paginate(6),
+            'articles' => Article::whereNotNull('published_at')
+                    ->where('published_at', '<=', now())
+                    ->latest('published_at')
+                    ->limit(4)
+                    ->get(),
         ]);
     }
 

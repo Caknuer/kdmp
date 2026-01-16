@@ -23,9 +23,9 @@ class Article extends Model
 
     protected static function booted()
     {
-        static::creating(function ($article) {
-            if (empty($article->slug)) {
-                $article->slug = Str::slug($article->title);
+        static::creating(function ($articles) {
+            if (empty($articles->slug)) {
+                $articles->slug = Str::slug($articles->title);
             }
         });
     }
