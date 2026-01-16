@@ -10,27 +10,6 @@
     </div>
 </section>
 
-<!-- RINGKASAN -->
-<section class="container">
-    <div class="row">
-
-        <div class="card">
-            <h3>Total Pemasukan</h3>
-            <div class="amount">
-                Rp {{ number_format($summary['income'],0,',','.') }}
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>Total Pengeluaran</h3>
-            <div class="amount">
-                Rp {{ number_format($summary['expense'],0,',','.') }}
-            </div>
-        </div>
-
-    </div>
-</section>
-
 <!-- GRAFIK -->
 <section class="container">
     <div class="card">
@@ -47,23 +26,21 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Tanggal</th>
-                    <th>Keterangan</th>
-                    <th>Jenis</th>
-                    <th>Jumlah</th>
+                    <th>Bulan</th>
+                    <th>Pemasukan</th>
+                    <th>Pengeluaran</th>
+                    <th>Saldo Akhir</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($transactions as $trx)
+                @forelse ($monthly as $row)
                     <tr>
-                        <td>{{ $trx->created_at->format('d M Y') }}</td>
-                        <td>{{ $trx->description ?? '-' }}</td>
-                        <td>
-                            {{ ucfirst($trx->type) }}
-                        </td>
-                        <td>
-                            Rp {{ number_format($trx->amount,0,',','.') }}
-                        </td>
+                        <td>{{ $row->month }}</td>
+                        <td>{{ number_format($row->income, 0, ', ',',')}}</td>
+                        <td>{{ number_format($row->expense, 0, ', ',',')}}</td>
+                        <td><strong>
+                            Rp {{ number_format($row->balance,0,',','.') }}
+                        </strong></td>
                     </tr>
                 @empty
                     <tr>
@@ -74,41 +51,6 @@
                 @endforelse
             </tbody>
         </table>
-
-        <div style="margin-top:20px">
-            {{ $transactions->links() }}
-        </div>
     </div>
 </section>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-const ctx = document.getElementById('financeChart');
-
-new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Pemasukan', 'Pengeluaran'],
-        datasets: [{
-            label: 'Jumlah (Rp)',
-            data: [
-                {{ $summary['income'] }},
-                {{ $summary['expense'] }}
-            ],
-            backgroundColor: ['#16a34a', '#dc2626'],
-            borderRadius: 8
-        }]
-    },
-    options: {
-        plugins: {
-            legend: { display: false }
-        },
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-</script>
-
     @endsection

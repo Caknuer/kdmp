@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\PublicFinanceController;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 
@@ -27,5 +28,5 @@ Route::get('/mitra', [PublicController::class, 'partners'])->name('partners');
 Route::get('/berita', [PublicController::class, 'articles'])->name('articles');
 Route::get('/berita/{slug}', [PublicController::class, 'articleDetail'])->name('articles.detail');
 
-Route::get('/transparansi', [PublicController::class, 'finance'])->name('finance');
-Route::redirect('/transparansi-keuangan', '/transparansi');
+Route::get('/transparansi', [PublicFinanceController::class, 'index'])
+    ->name('finance.public');
