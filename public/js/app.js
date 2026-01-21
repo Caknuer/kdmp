@@ -49,3 +49,18 @@ document.addEventListener('click', () => {
 window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 10);
 });
+
+// Pengurus & Pengawas
+document.querySelectorAll('.org-card').forEach(card => {
+    card.addEventListener('click', () => {
+        document.getElementById('orgModal').classList.add('active');
+        document.getElementById('orgName').textContent = card.dataset.name;
+        document.getElementById('orgRole').textContent = card.dataset.role;
+        document.getElementById('orgBio').textContent = card.dataset.bio;
+        document.getElementById('orgPhoto').src = card.dataset.photo;
+    });
+});
+
+document.querySelector('.modal-close').onclick = () => {
+    document.getElementById('orgModal').classList.remove('active');
+};

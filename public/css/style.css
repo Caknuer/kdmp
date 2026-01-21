@@ -334,3 +334,56 @@
         order: -1;
     }
 }
+
+/* Pengurus & Pengawas */
+.org-section {
+    padding: 80px 24px;
+    background: #fff;
+}
+
+.org-section.alt {
+    background: #fafafa;
+}
+
+.org-section .container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.org-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.org-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.org-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+.org-card img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.org-card h3 {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.org-card span {
+    font-size: 14px;
+    color: #777;
+}

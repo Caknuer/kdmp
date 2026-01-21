@@ -112,19 +112,30 @@ class PublicController extends Controller
     }
 
 
-    public function organisasi()
+   /* =======================
+   PROFIL PENGURUS
+    ======================= */
+    public function pengurus()
     {
-        return view('pages.organisasi', [
-            'pengurus' => OrganizationMember::where('type', 'pengurus')
-                ->where('is_active', true)
-                ->orderBy('order')
-                ->get(),
+        $pengurus = OrganizationMember::active()
+            ->pengurus()
+            ->orderBy('order')
+            ->get();
 
-            'pengawas' => OrganizationMember::where('type', 'pengawas')
-                ->where('is_active', true)
-                ->orderBy('order')
-                ->get(),
-        ]);
+        return view('public.profil.pengurus', compact('pengurus'));
+    }
+
+    /* =======================
+    PROFIL PENGAWAS
+    ======================= */
+    public function pengawas()
+    {
+        $pengawas = OrganizationMember::active()
+            ->pengawas()
+            ->orderBy('order')
+            ->get();
+
+        return view('public.profil.pengawas', compact('pengawas'));
     }
 
 }

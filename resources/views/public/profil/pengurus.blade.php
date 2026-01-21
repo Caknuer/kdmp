@@ -10,56 +10,22 @@
     </div>
 </section>
 
-<!-- HALL PENGURUS -->
-<section class="container">
-    <div class="row pengurus-grid">
+<section class="org-section">
+    <div class="container">
 
-        <div class="pengurus-card"
-             data-name="Budi Santoso"
-             data-role="Ketua"
-             data-desc="Bertanggung jawab atas arah dan kebijakan koperasi.">
-            <div class="avatar">BS</div>
-            <h4>Budi Santoso</h4>
-            <span>Ketua</span>
+        <div class="section-header">
+            <h2>Pengurus KDMP</h2>
+            <p>Pengelola utama yang bertanggung jawab atas kegiatan dan operasional.</p>
         </div>
 
-        <div class="pengurus-card"
-             data-name="Siti Aminah"
-             data-role="Sekretaris"
-             data-desc="Mengelola administrasi dan dokumentasi koperasi.">
-            <div class="avatar">SA</div>
-            <h4>Siti Aminah</h4>
-            <span>Sekretaris</span>
+        <div class="org-grid">
+            @foreach ($pengurus as $item)
+                @include('public.partials.org-card', ['item' => $item])
+            @endforeach
         </div>
-
-        <div class="pengurus-card"
-             data-name="Ahmad Fauzi"
-             data-role="Bendahara"
-             data-desc="Mengelola keuangan koperasi secara transparan.">
-            <div class="avatar">AF</div>
-            <h4>Ahmad Fauzi</h4>
-            <span>Bendahara</span>
-        </div>
-
-        {{-- @foreach($members as $member)
-        <div @click="open = true">
-            <img src="{{ asset('storage/'.$member->photo) }}">
-            <h3>{{ $member->name }}</h3>
-            <p>{{ $member->role }}</p>
-        </div>
-        @endforeach --}}
 
     </div>
 </section>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
-    <div class="modal">
-        <button class="close">&times;</button>
-        <h3 id="modal-name"></h3>
-        <small id="modal-role"></small>
-        <p id="modal-desc"></p>
-    </div>
-</div>
 
 @endsection

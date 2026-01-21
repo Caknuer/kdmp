@@ -24,7 +24,7 @@
         </div>
 
         <div class="hero-visual">
-            <img src="/images/bupati.jpeg" alt="Kegiatan Desa">
+            <img src="/images/bupati.jpeg" alt="Kegiatan KDMP Wonokerto">
         </div>
     </div>
 </section>

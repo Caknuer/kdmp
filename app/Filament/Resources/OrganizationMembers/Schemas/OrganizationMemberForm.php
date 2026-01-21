@@ -25,7 +25,9 @@ class OrganizationMemberForm
                 ->required(),
 
             FileUpload::make('photo')
+                ->disk('public')
                 ->directory('organization')
+                ->visibility('public')
                 ->image(),
 
             Textarea::make('bio')->rows(4),
