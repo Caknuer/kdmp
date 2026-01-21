@@ -3,9 +3,12 @@ const menu = document.querySelector('.nav-menu');
 const dropdowns = document.querySelectorAll('.nav-dropdown');
 const navbar = document.querySelector('.navbar');
 
-toggle.addEventListener('click', () => {
-    menu.classList.toggle('open');
-    toggle.classList.toggle('active');
+document.addEventListener('click', (e) => {
+    dropdowns.forEach(dropdown => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+        }
+    });
 });
 
 dropdowns.forEach(dropdown => {
@@ -17,6 +20,15 @@ dropdowns.forEach(dropdown => {
 
         dropdown.classList.toggle('open');
     });
+});
+
+toggle.addEventListener('click', () => {
+    menu.classList.toggle('open');
+    toggle.classList.toggle('active');
+
+    if (!menu.classList.contains('open')) {
+        dropdowns.forEach(d => d.classList.remove('open'));
+    }
 });
 
 window.addEventListener('scroll', () => {

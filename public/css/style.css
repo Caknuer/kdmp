@@ -209,6 +209,15 @@
     .nav-dropdown:hover .dropdown-menu {
         display: none;
     }
+    
+    .arrow {
+    transition: transform 0.2s ease;
+    }
+
+    .nav-dropdown.open .arrow {
+        transform: rotate(180deg);
+    }
+
 }
 
 /* HERO */

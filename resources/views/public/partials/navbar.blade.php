@@ -11,7 +11,7 @@
         <ul class="nav-menu">
             <li><a href="/" class="active">Beranda</a></li>
 
-            <li class="nav-dropdown">
+            <li class="nav-dropdown open">
                 <button class="dropdown-toggle" type="button">
                     Profil <span class="arrow">▾</span>
                 </button>
