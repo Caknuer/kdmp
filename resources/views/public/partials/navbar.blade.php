@@ -1,17 +1,20 @@
 <header class="navbar">
-    <a href="/" class="logo">
-        <img src="{{ setting('logo') ? asset('storage/' . setting('logo')) : asset('images/default-logo.png') }}" 
-     alt="{{ setting('site_name') }}" class="h-10 site-name">
-    </a>
+    <div class="nav-container">
+        <div class="logo">KDMP</div>
 
-    <nav>
-        <ul class="menu" id="menu">
-            <li><a href="/">Beranda</a></li>
+        <button class="nav-toggle" aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle">
+        <ul class="nav-menu">
+            <li><a href="/" class="active">Beranda</a></li>
+
+            <li class="nav-dropdown">
+                <button class="dropdown-toggle" type="button">
                     Profil <span class="arrow">▾</span>
-                </a>
+                </button>
                 <ul class="dropdown-menu">
                     <li><a href="/profil/tentang">Tentang</a></li>
                     <li><a href="/profil/pengurus">Pengurus</a></li>
@@ -25,8 +28,5 @@
             <li><a href="/berita">Berita</a></li>
             <li><a href="/transparansi">Transparansi</a></li>
         </ul>
-
-        <!-- tombol mobile -->
-        <button class="menu-toggle" id="menuToggle">☰</button>
-    </nav>
+    </div>
 </header>
