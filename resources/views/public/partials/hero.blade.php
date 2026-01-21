@@ -1,15 +1,30 @@
 <section class="hero">
-    <div class="hero-inner">
-        <span class="badge">Website Resmi</span>
-        <h1>Koperasi Desa Merah Putih</h1>
-        <p>
-            Membangun kemandirian ekonomi masyarakat desa melalui
-            kolaborasi, transparansi, dan inovasi berkelanjutan.
-        </p>
+    <div class="hero-container">
+        <div class="hero-content">
+            <span class="hero-badge">KDMP • Transparan • Profesional</span>
 
-        <div class="hero-actions">
-            <a href="/profil/tentang" class="btn primary">Tentang KDMP</a>
-            <a href="/berita" class="btn ghost">Berita Terbaru</a>
+            <h1>
+                Membangun Desa <br>
+                <span>Mandiri & Berdaya</span>
+            </h1>
+
+            <p>
+                KDMP berkomitmen mengelola potensi desa secara transparan,
+                profesional, dan berkelanjutan demi kesejahteraan bersama.
+            </p>
+
+            <div class="hero-actions">
+                <a href="/profil/tentang" class="btn-primary">
+                    Tentang KDMP
+                </a>
+                <a href="/transparansi" class="btn-secondary">
+                    Lihat Transparansi
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <img src="/images/bupati.jpeg" alt="Kegiatan Desa">
         </div>
     </div>
 </section>
