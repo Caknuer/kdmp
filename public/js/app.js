@@ -9,11 +9,14 @@ toggle.addEventListener('click', () => {
 });
 
 dropdowns.forEach(dropdown => {
-    dropdown.querySelector('.dropdown-toggle')
-        .addEventListener('click', () => {
-            e.stopPropagation();
-            dropdown.classList.toggle('open');
-        });
+    const toggleBtn = dropdown.querySelector('.dropdown-toggle');
+
+    toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        dropdown.classList.toggle('open');
+    });
 });
 
 window.addEventListener('scroll', () => {
