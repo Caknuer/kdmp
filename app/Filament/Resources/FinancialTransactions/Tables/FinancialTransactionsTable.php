@@ -19,6 +19,9 @@ class FinancialTransactionsTable
                 TextColumn::make('category')->searchable(),
                 TextColumn::make('amount')
                     ->money('IDR', true),
+                // TextColumn::make('published_at')
+                //     ->dateTime()
+                //     ->sortable(),   
 
             ])
             ->filters([

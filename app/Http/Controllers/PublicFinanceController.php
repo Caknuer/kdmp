@@ -24,6 +24,7 @@ class PublicFinanceController extends Controller
             ->groupBy('month')
             ->orderBy('month')
             ->get()
+            ->where('is_published', true)
             ->map(function ($item) {
                 $item->balance = $item->income - $item->expense;
                 return $item;

@@ -7,6 +7,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 
 class FinancialTransactionForm
 {
@@ -33,6 +34,8 @@ class FinancialTransactionForm
                     ->numeric()
                     ->required()
                     ->prefix('Rp'),
+                // Toggle::make('is_published')
+                //     ->default(true),
 
             ]);
     }
