@@ -51,16 +51,51 @@ window.addEventListener('scroll', () => {
 });
 
 // Pengurus & Pengawas
-document.querySelectorAll('.org-card').forEach(card => {
+const cards = document.querySelectorAll('.org-card');
+const modal = document.getElementById('orgModal');
+
+const modalPhoto = document.getElementById('modalPhoto');
+const modalName = document.getElementById('modalName');
+const modalRole = document.getElementById('modalRole');
+const modalBio = document.getElementById('modalBio');
+const modalClose = document.querySelector('.modal-close');
+
+cards.forEach(card => {
     card.addEventListener('click', () => {
-        document.getElementById('orgModal').classList.add('active');
-        document.getElementById('orgName').textContent = card.dataset.name;
-        document.getElementById('orgRole').textContent = card.dataset.role;
-        document.getElementById('orgBio').textContent = card.dataset.bio;
-        document.getElementById('orgPhoto').src = card.dataset.photo;
+        modalPhoto.src = card.dataset.photo;
+        modalName.textContent = card.dataset.name;
+        modalRole.textContent = card.dataset.role;
+        modalBio.textContent = card.dataset.bio || '';
+
+        modal.classList.add('show');
     });
 });
 
-document.querySelector('.modal-close').onclick = () => {
-    document.getElementById('orgModal').classList.remove('active');
+modalClose.addEventListener('click', () => {
+    modal.classList.remove('show');
+});
+
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.classList.remove('show');
+    }
+});
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+const reveals = document.querySelectorAll('.reveal');
+
+const revealOnScroll = () => {
+    reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+
+        if (elementTop < windowHeight - 80) {
+            el.classList.add('active');
+        }
+    });
 };
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);

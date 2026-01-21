@@ -336,54 +336,303 @@
 }
 
 /* Pengurus & Pengawas */
-.org-section {
-    padding: 80px 24px;
-    background: #fff;
+/* =========================
+   HERO
+========================= */
+.page-hero {
+    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+    color: #fff;
+    padding: 90px 20px 70px;
+    text-align: center;
 }
 
-.org-section.alt {
+.page-hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.page-hero p {
+    font-size: 16px;
+    opacity: .9;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,.15);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    margin-bottom: 16px;
+}
+
+/* =========================
+   SECTION
+========================= */
+.org-section {
+    padding: 70px 20px;
     background: #fafafa;
 }
 
-.org-section .container {
-    max-width: 1200px;
+.section-head {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    color: #666;
+    max-width: 600px;
     margin: auto;
 }
 
+/* =========================
+   INFO BAR
+========================= */
+.org-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 20px 24px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.05);
+    margin-bottom: 40px;
+}
+
+.org-info-right {
+    text-align: right;
+    color: #555;
+}
+
+/* =========================
+   GRID & CARD
+========================= */
 .org-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 24px;
 }
 
 .org-card {
     background: #fff;
-    border-radius: 16px;
-    padding: 20px;
+    border-radius: 18px;
+    padding: 28px 20px;
     text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,.05);
+    transition: transform .3s ease, box-shadow .3s ease;
     cursor: pointer;
-    transition: transform .2s ease, box-shadow .2s ease;
 }
 
 .org-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+    box-shadow: 0 18px 45px rgba(0,0,0,.12);
 }
 
 .org-card img {
-    width: 100%;
-    aspect-ratio: 1/1;
+    width: 110px;
+    height: 110px;
     object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 12px;
+    border-radius: 50%;
+    margin-bottom: 14px;
+    border: 4px solid #f1f1f1;
 }
 
 .org-card h3 {
-    font-size: 16px;
-    margin-bottom: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
 }
 
 .org-card span {
     font-size: 14px;
     color: #777;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.empty {
+    grid-column: 1 / -1;
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    color: #666;
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+.modal-content img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin-bottom: 14px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    border: none;
+    background: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+/* Animasi scroll */
+/* =========================
+   SCROLL REVEAL
+========================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all .6s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================
+   CARD STAGGER
+========================= */
+.org-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp .6s ease forwards;
+}
+
+.org-card:nth-child(1) { animation-delay: .1s; }
+.org-card:nth-child(2) { animation-delay: .2s; }
+.org-card:nth-child(3) { animation-delay: .3s; }
+.org-card:nth-child(4) { animation-delay: .4s; }
+.org-card:nth-child(5) { animation-delay: .5s; }
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   MOBILE POLISH
+========================= */
+@media (max-width: 640px) {
+
+    .section-title {
+        font-size: 26px;
+        line-height: 1.3;
+    }
+
+    .section-subtitle {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 28px;
+    }
+
+}
+
+@media (max-width: 640px) {
+
+    .org-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .org-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .org-card img {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .org-card h3 {
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+
+    .org-card span {
+        font-size: 14px;
+        color: #666;
+    }
+
+}
+@media (max-width: 640px) {
+
+    .modal {
+        align-items: flex-end;
+    }
+
+    .modal-content {
+        width: 100%;
+        max-height: 85vh;
+        border-radius: 20px 20px 0 0;
+        padding: 24px 20px;
+        animation: slideUp .3s ease;
+    }
+
+    .modal-content img {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 12px;
+        display: block;
+    }
+
+    .modal-close {
+        top: 12px;
+        right: 16px;
+        font-size: 26px;
+    }
+
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
