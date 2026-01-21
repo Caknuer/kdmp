@@ -18,15 +18,24 @@ class Article extends Model
 
     protected $casts = [
         'published_at' => 'datetime',
-        'is_published' => 'datetime'
+        'is_published' => 'boolean'
     ];
 
-    protected static function booted()
-    {
-        static::creating(function ($articles) {
-            if (empty($articles->slug)) {
-                $articles->slug = Str::slug($articles->title);
-            }
-        });
-    }
+    // protected static function booted()
+    // {
+    //     static::creating(function ($articles) {
+    //         if (empty($articles->slug)) {
+    //             $articles->slug = Str::slug($articles->title);
+    //         }
+    //     });
+    // }
+
+    public function scopePublished($query)
+        {
+            return $query
+                ->where('is_published', true)
+                ->whereNotNull('published_at')
+                ->where('published_at', '<=', now());
+        }
+
 }

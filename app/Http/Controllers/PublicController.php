@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Profile;
 use App\Models\Article;
 use App\Models\BusinessUnit;
 use App\Models\Partner;
@@ -18,11 +17,11 @@ class PublicController extends Controller
     public function home()
     {
         return view('public.home', [
-            'articles' => Article::whereNotNull('published_at')
-                        ->where('published_at', '<=', now())
-                        ->latest('published_at')
-                        ->limit(4)
-                        ->get(),
+            'articles' => Article::published()
+                ->latest('published_at')
+                ->limit(4)
+                ->get(),
+
 
             'summary' => [
                 'income'  => Transaction::where('type', 'income')->sum('amount'),
@@ -31,15 +30,6 @@ class PublicController extends Controller
 
              'setting' => Setting::first(),
         ]);
-    }
-
-    /* =======================
-       PROFIL
-    ======================== */
-    public function profile($slug)
-    {
-        $data = Profile::where('slug', $slug)->firstOrFail();
-        return view('public.profile', compact('data'));
     }
 
     /* =======================
@@ -81,17 +71,16 @@ class PublicController extends Controller
     public function articles()
     {
         return view('public.articles.index', [
-            'articles' => Article::where('is_published')
-                    ->whereNotNull('published_at', '<=', now())
-                    ->orderByDesc('published_at')
-                    ->paginate(6),
+            'articles' => Article::published()
+                ->orderByDesc('published_at')
+                ->paginate(6),
         ]);
     }
 
     public function articleDetail($slug)
     {
-        $article = Article::where('slug', $slug)
-            ->where('is_published', true)
+        $article = Article::published()
+            ->where('slug', $slug)
             ->firstOrFail();
 
         return view('public.articles.show', compact('article'));

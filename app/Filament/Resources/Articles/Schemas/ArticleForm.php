@@ -35,11 +35,17 @@ class ArticleForm
                     ->disk('public')
                     ->directory('articles')
                     ->imageEditor() // optional tapi bagus
-                    ->maxSize(2048) // 2MB
+                    ->maxSize(5048) // 5MB
                     ->required(),
                 Toggle::make('is_published')
-                    ->default(true),
-                DateTimePicker::make('published_at'),
+                    ->label('Publikasikan')
+                    ->default(false)
+                    ->reactive(),
+
+                DateTimePicker::make('published_at')
+                    ->label('Tanggal Publikasi')
+                    ->visible(fn ($get) => $get('is_published'))
+                    ->required(fn ($get) => $get('is_published')),
             ]);
     }
 }
