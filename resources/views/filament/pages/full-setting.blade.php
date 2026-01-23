@@ -69,6 +69,10 @@
             <input type="text" class="fs-input" placeholder="Tagline"
                    wire:model.defer="tagline">
 
+            <label class="block text-sm mt-3">Address</label>
+            <input type="text" class="fs-input" placeholder="Address"
+                   wire:model.defer="addresss">
+
             <label class="block text-sm mt-3">Google Maps</label>
             <textarea class="fs-textarea" rows="4"
                       wire:model.defer="gmaps"></textarea>

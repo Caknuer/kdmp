@@ -28,7 +28,7 @@ class PublicController extends Controller
                 'expense' => Transaction::where('type', 'expense')->sum('amount'),
             ],
 
-             'setting' => Setting::first(),
+            'setting' => $this->getSettings(), // kirim setting
         ]);
     }
 
@@ -41,6 +41,7 @@ class PublicController extends Controller
             'units' => BusinessUnit::where('is_active', true)
                 ->orderBy('order')
                 ->get(),
+            'setting' => $this->getSettings(),
         ]);
     }
 
@@ -127,4 +128,21 @@ class PublicController extends Controller
         return view('public.profil.pengawas', compact('pengawas'));
     }
 
+    /* =======================
+    Fungsi helper untuk Setting
+    ======================= */
+    protected function getSettings()
+    {
+        $settings = Setting::all()->pluck('value', 'key')->toArray();
+
+        return (object) [
+            'site_name' => $settings['site_name'] ?? null,
+            'address' => $settings['address'] ?? null,
+            'phone' => $settings['phone'] ?? null,
+            'email' => $settings['email'] ?? null,
+            'website' => $settings['website'] ?? null,
+            'footer_description' => $settings['footer_description'] ?? null,
+            'gmaps' => $settings['gmaps'] ?? null,
+        ];
+    }
 }

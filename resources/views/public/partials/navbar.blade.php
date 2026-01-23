@@ -1,6 +1,6 @@
 <header class="navbar">
     <div class="nav-container">
-        <div class="logo">KDMP</div>
+        <div class="logo">KDMP WONOKERTO</div>
 
         <button class="nav-toggle" aria-label="Toggle Menu">
             <span></span>

@@ -15,10 +15,10 @@
 
             <div class="hero-actions">
                 <a href="/profil/tentang" class="btn-primary">
-                    Tentang KDMP
+                    Daftar Anggota
                 </a>
                 <a href="/transparansi" class="btn-secondary">
-                    Lihat Transparansi
+                    Cek Saldo
                 </a>
             </div>
         </div>

@@ -41,6 +41,11 @@ class FullSetting extends Page
     // Maps
     public string $gmaps = '';
 
+    // FullSetting.php
+    public string $address = '';
+    public string $footer_description = ''; // opsional
+    public string $website = '';
+
     // Override view
     public function getView(): string
     {
@@ -52,6 +57,7 @@ class FullSetting extends Page
         return [
             'site_name'     => 'required|string|max:255',
             'tagline'       => 'nullable|string|max:255',
+            'address'       => 'nullable|string|max:255',
             'email'         => 'nullable|email|max:255',
             'phone'         => 'nullable|string|max:20',
             'facebook'      => 'nullable|string|max:255',
@@ -68,8 +74,9 @@ class FullSetting extends Page
     public function mount(): void
     {
          $fields = [
-        'site_name', 'tagline', 'email', 'phone',
-        'facebook', 'instagram', 'tiktok', 'gmaps'
+         'site_name', 'tagline', 'email', 'phone',
+        'facebook', 'instagram', 'tiktok', 'gmaps',
+        'address', 'footer_description', 'website'
     ];
 
     foreach ($fields as $field) {
@@ -120,6 +127,10 @@ class FullSetting extends Page
         $this->setValue('tiktok', $this->tiktok, 'social');
 
         $this->setValue('gmaps', $this->gmaps);
+
+        $this->setValue('address', $this->address, 'general');
+        $this->setValue('footer_description', $this->footer_description, 'general');
+        $this->setValue('website', $this->website, 'general');
 
         Notification::make()
             ->title('Settings berhasil disimpan')
