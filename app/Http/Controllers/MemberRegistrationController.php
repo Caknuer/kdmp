@@ -20,11 +20,11 @@ class MemberRegistrationController extends Controller
             'nik'     => 'required|digits:16|unique:members,nik',
             'address' => 'required|string',
             'phone'   => 'required|string|max:20',
-            'ktp'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'ktp_file' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // simpan file KTP
-        $ktpPath = $request->file('ktp')->store('ktp', 'public');
+        $ktpPath = $request->file('ktp_file')->store('ktp', 'public');
 
         // kode akses unik
         $accessCode = strtoupper(Str::random(8));
@@ -40,7 +40,7 @@ class MemberRegistrationController extends Controller
         ]);
 
         return redirect()
-            ->route('member.register')
-            ->with('success', 'Pendaftaran berhasil. Kode akses Anda: ' . $accessCode);
+        ->route('member.register')
+        ->with('success', 'Pendaftaran berhasil. Silakan tunggu konfirmasi admin.');
     }
 }

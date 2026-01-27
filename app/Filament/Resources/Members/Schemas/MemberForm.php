@@ -34,7 +34,7 @@ class MemberForm
                     ->imagePreviewHeight('200')
                     ->maxSize(2048)
                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                    ->visibility('private'),
+                    ->visibility('public'),
                 Toggle::make('is_active')
                     ->required(),
             ]);

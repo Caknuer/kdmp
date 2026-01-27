@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('address');
             $table->string('phone');
             $table->string('access_code')->unique();
-            $table->string('ktp_file')->nullable()->after('phone');
-            $table->boolean('is_active')->default(true);
+            $table->string('ktp_file')->nullable();
+            $table->boolean('is_active')->default(false); // PENDING
             $table->timestamps();
         });
     }
