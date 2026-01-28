@@ -696,6 +696,26 @@
     font-size: 1.2rem;
 }
 
+.summary-card.total-akhir {
+    background: #111827;
+    color: #fff;
+}
+
+.summary-card.total-akhir strong,
+.summary-card.total-akhir h4 {
+    color: #fff;
+}
+
+.summary-card.highlight {
+    background: linear-gradient(135deg,#b91c1c,#7f1d1d);
+    color: #fff;
+}
+
+.summary-card.highlight strong,
+.summary-card.highlight h4 {
+    color: #fff;
+}
+
 /* =====================
    NEWS
 ===================== */
