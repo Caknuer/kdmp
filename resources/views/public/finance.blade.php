@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
 @section('P')
-    
+
 <!-- HERO -->
 <section class="page-hero">
     <div class="page-hero-inner">
@@ -10,7 +10,7 @@
     </div>
 </section>
 
-<!-- GRAFIK -->
+<!-- (OPSIONAL) GRAFIK - kalau nanti mau dipakai -->
 <section class="container">
     <div class="card">
         <h3>Grafik Keuangan</h3>
@@ -30,21 +30,29 @@
                     <th>Pemasukan</th>
                     <th>Pengeluaran</th>
                     <th>Saldo Akhir</th>
+                    <th>Pendaftar Baru</th>
+                    <th>Uang Pendaftaran</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($monthly as $row)
                     <tr>
                         <td>{{ $row->month }}</td>
-                        <td>{{ number_format($row->income, 0, ', ',',')}}</td>
-                        <td>{{ number_format($row->expense, 0, ', ',',')}}</td>
+
+                        <td>Rp {{ number_format($row->income, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($row->expense, 0, ',', '.') }}</td>
+
                         <td><strong>
-                            Rp {{ number_format($row->balance,0,',','.') }}
+                            Rp {{ number_format($row->balance, 0, ',', '.') }}
                         </strong></td>
+
+                        <td>{{ $row->new_members ?? 0 }} orang</td>
+
+                        <td>Rp {{ number_format($row->registration_income ?? 0, 0, ',', '.') }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" style="text-align:center">
+                        <td colspan="6" style="text-align:center">
                             Belum ada data transaksi
                         </td>
                     </tr>
@@ -53,4 +61,5 @@
         </table>
     </div>
 </section>
-    @endsection
+
+@endsection
