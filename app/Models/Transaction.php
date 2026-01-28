@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $fillable = [
-         'date',
+        'date',
         'type',
         'category',
         'description',
         'amount',
+        'member_id',
     ];
 
     protected $casts = [
@@ -19,8 +20,8 @@ class Transaction extends Model
         'amount' => 'decimal:2',
     ];
 
-    public function account()
+    public function member()
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Member::class);
     }
 }

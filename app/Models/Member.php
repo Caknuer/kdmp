@@ -18,6 +18,6 @@ class Member extends Model
 
     public function transactions()
     {
-        return $this->hasMany(memtransaksi::class);
+        return $this->hasMany(Transaction::class);
     }
 }
