@@ -8,6 +8,7 @@ use App\Models\Partner;
 use App\Models\Transaction;
 use App\Models\Setting;
 use App\Models\OrganizationMember;
+use Illuminate\Routing\Controller;
 
 class PublicController extends Controller
 {
@@ -23,9 +24,9 @@ class PublicController extends Controller
                 ->get(),
 
 
-            'summary' => [
-                'income'  => Transaction::where('type', 'income')->sum('amount'),
-                'expense' => Transaction::where('type', 'expense')->sum('amount'),
+            $summary = [
+                'credit' => Transaction::where('type', 'credit')->sum('amount'),
+                'debit'  => Transaction::where('type', 'debit')->sum('amount'),
             ],
 
             'setting' => $this->getSettings(), // kirim setting

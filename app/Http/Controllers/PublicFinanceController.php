@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Member;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
 class PublicFinanceController extends Controller
