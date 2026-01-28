@@ -25,8 +25,8 @@ Route::get('/berita/{slug}', [PublicController::class, 'articleDetail'])->name('
 Route::get('/transparansi', [PublicFinanceController::class, 'index'])
     ->name('finance.public');
 
-Route::get('/daftar', [PublicMemberController::class, 'create']);
-Route::post('/daftar', [PublicMemberController::class, 'store']);
+Route::post('/daftar', [PublicMemberController::class, 'store'])
+    ->name('member.register.store');
 
-Route::get('/cek-saldo', [PublicMemberController::class, 'balanceForm']);
-Route::post('/cek-saldo', [PublicMemberController::class, 'checkBalance']);
+Route::get('/cek-saldo', [PublicMemberController::class, 'balanceForm'])->name('public.balance');
+Route::post('/cek-saldo', [PublicMemberController::class, 'checkBalance'])->name('public.balance.check');
