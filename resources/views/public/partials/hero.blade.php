@@ -14,17 +14,20 @@
             </p>
 
             <div class="hero-actions">
-                <a href="/daftar" class="btn-primary">
+                {{-- ✅ Daftar Anggota --}}
+                <a href="{{ route('member.register') }}" class="btn-primary">
                     Daftar Anggota
                 </a>
-                <a href="/transparansi" class="btn-secondary">
+
+                {{-- ✅ Cek Saldo --}}
+                <a href="{{ route('member.balance.form') }}" class="btn-secondary">
                     Cek Saldo
                 </a>
             </div>
         </div>
 
         <div class="hero-visual">
-            <img src="/images/bupati.jpeg" alt="Kegiatan KDMP Wonokerto">
+            <img src="{{ asset('images/bupati.jpeg') }}" alt="Kegiatan KDMP Wonokerto">
         </div>
     </div>
 </section>

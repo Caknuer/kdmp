@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('member', function (Blueprint $table) {
+        Schema::create('members', function (Blueprint $table) {
             $table->id();
 
             $table->string('code')->unique();          // kode cek saldo
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('member');
+        Schema::dropIfExists('members');
     }
 };

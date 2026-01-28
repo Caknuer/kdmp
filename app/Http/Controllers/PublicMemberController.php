@@ -10,7 +10,7 @@ class PublicMemberController extends Controller
 {
     public function create()
     {
-        return view('public.register');
+        return view('public.members.register');
     }
 
     public function store(Request $request)
