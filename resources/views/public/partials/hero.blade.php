@@ -14,7 +14,7 @@
             </p>
 
             <div class="hero-actions">
-                <a href="/daftar-anggota" class="btn-primary">
+                <a href="/daftar" class="btn-primary">
                     Daftar Anggota
                 </a>
                 <a href="/transparansi" class="btn-secondary">
