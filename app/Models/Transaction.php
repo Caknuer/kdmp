@@ -6,13 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    protected $fillable = [
-        'date',
-        'type',
-        'category',
-        'description',
-        'amount',
-        'member_id',
+   protected $fillable = [
+        'member_id','date','type','category','description','amount'
     ];
 
     protected $casts = [

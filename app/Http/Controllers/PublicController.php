@@ -61,7 +61,6 @@ class PublicController extends Controller
     {
         return view('public.partners', [
             'partners' => Partner::where('is_active', true)
-            ->orderBy()
             ->get(),
         ]);
     }
