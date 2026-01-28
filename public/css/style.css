@@ -859,3 +859,214 @@
     }
 }
 
+/* ================================
+   PUBLIC FORM KDMP (REGISTER + SALDO)
+================================ */
+
+/* Form Container */
+.form-container {
+    max-width: 520px;
+    margin: 70px auto;
+    background: #fff;
+    padding: 40px 32px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    border: 1px solid #f1f1f1;
+}
+
+/* Form Title */
+.form-container h1 {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    color: #7f1d1d;
+    margin-bottom: 25px;
+}
+
+/* Input + Textarea */
+.form-container input,
+.form-container textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    font-size: 15px;
+    transition: 0.25s ease;
+    outline: none;
+    margin-bottom: 6px;
+    font-family: inherit;
+}
+
+.form-container textarea {
+    min-height: 90px;
+    resize: none;
+}
+
+/* Focus */
+.form-container input:focus,
+.form-container textarea:focus {
+    border-color: #b91c1c;
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+
+/* Label */
+.form-container label {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+    color: #333;
+}
+
+/* Button Submit */
+.form-container button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+    color: white;
+    transition: 0.25s;
+}
+
+.form-container button:hover {
+    opacity: 0.92;
+    transform: translateY(-2px);
+}
+
+/* Error Text */
+.text-danger {
+    color: #c40000;
+    font-size: 13px;
+    margin-top: 4px;
+    display: block;
+}
+
+/* ================================
+   ALERT STYLE (SAMA DENGAN TEMA)
+================================ */
+
+.alert {
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.alert.success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+
+.alert.danger {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+.alert.warning {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+}
+
+/* ================================
+   RESULT CARD (SALDO)
+================================ */
+
+.card-result {
+    background: #fff;
+    border-radius: 18px;
+    padding: 22px;
+    border: 1px solid #eee;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    margin-top: 15px;
+}
+
+.card-result h2 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #b91c1c;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Badge Status */
+.badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Badge Colors */
+.badge.pending {
+    background: #fff7ed;
+    color: #9a3412;
+}
+
+.badge.approved {
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.badge.rejected {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+/* Buttons under result */
+.form-container .btn-primary,
+.form-container .btn-secondary {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 10px 6px 0;
+    transition: 0.25s;
+}
+
+.form-container .btn-primary {
+    background: #b91c1c;
+    color: white;
+}
+
+.form-container .btn-primary:hover {
+    background: #7f1d1d;
+}
+
+.form-container .btn-secondary {
+    background: #f3f4f6;
+    color: #111;
+}
+
+.form-container .btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+/* ================================
+   RESPONSIVE FORM
+================================ */
+
+@media (max-width: 600px) {
+    .form-container {
+        margin: 40px 16px;
+        padding: 28px 22px;
+    }
+
+    .form-container h1 {
+        font-size: 22px;
+    }
+
+    .card-result h2 {
+        font-size: 24px;
+    }
+}
