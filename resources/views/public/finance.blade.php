@@ -10,18 +10,72 @@
     </div>
 </section>
 
-<!-- (OPSIONAL) GRAFIK - kalau nanti mau dipakai -->
-<section class="container">
+<!-- FILTER BULAN + RINGKASAN -->
+<section class="container" style="margin-top: 24px;">
     <div class="card">
-        <h3>Grafik Keuangan</h3>
-        <canvas id="financeChart" height="120"></canvas>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
+            <h3 style="margin:0;">Ringkasan Bulan</h3>
+
+            <form method="GET" action="{{ url('/transparansi') }}">
+                <select name="month" onchange="this.form.submit()"
+                        style="padding:10px 12px; border-radius:10px; border:1px solid #e5e5e5;">
+                    @foreach ($availableMonths as $m)
+                        <option value="{{ $m }}" @selected($m === $selectedMonth)>
+                            {{ $m }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
+
+        <!-- RINGKASAN -->
+        <section class="summary-section" style="padding:18px 0 0;">
+            <div class="summary-grid" style="padding:0;">
+
+                <div class="summary-card">
+                    <h4>Uang Masuk</h4>
+                    <strong>Rp {{ number_format($income ?? 0, 0, ',', '.') }}</strong>
+                </div>
+
+                <div class="summary-card">
+                    <h4>Uang Keluar</h4>
+                    <strong>Rp {{ number_format($expense ?? 0, 0, ',', '.') }}</strong>
+                </div>
+
+                <div class="summary-card total-akhir">
+                    <h4>Total Akhir</h4>
+                    <strong>Rp {{ number_format($balance ?? 0, 0, ',', '.') }}</strong>
+                </div>
+
+                <div class="summary-card highlight">
+                    <h4>Dari Pendaftar Baru</h4>
+                    <strong>Rp {{ number_format($registrationIncome ?? 0, 0, ',', '.') }}</strong>
+                </div>
+
+            </div>
+        </section>
     </div>
 </section>
 
-<!-- TABEL TRANSAKSI -->
-<section class="container">
+<!-- GRAFIK -->
+<section class="container" style="margin-top: 18px;">
+    <div class="card-wrap">
+        <h3>Grafik Keuangan</h3>
+
+        <div class="chart-base">
+            <div class="chart-inner">
+                <canvas id="financeChart"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- TABEL TRANSAKSI PER BULAN -->
+<section class="container" style="margin-top: 18px;">
     <div class="card">
-        <h3>Daftar Transaksi</h3>
+        <h3>Daftar Transaksi (Per Bulan)</h3>
 
         <table class="table">
             <thead>
@@ -42,9 +96,7 @@
                         <td>Rp {{ number_format($row->income, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($row->expense, 0, ',', '.') }}</td>
 
-                        <td><strong>
-                            Rp {{ number_format($row->balance, 0, ',', '.') }}
-                        </strong></td>
+                        <td><strong>Rp {{ number_format($row->balance, 0, ',', '.') }}</strong></td>
 
                         <td>{{ $row->new_members ?? 0 }} orang</td>
 
@@ -61,5 +113,8 @@
         </table>
     </div>
 </section>
+<script>
+    window.financeMonthly = @json($monthly);
+</script>
 
 @endsection

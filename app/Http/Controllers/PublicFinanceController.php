@@ -2,52 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
 use App\Models\Member;
-use Illuminate\Routing\Controller;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PublicFinanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // ==========================
-        // TOTAL KESELURUHAN
-        // ==========================
+        // Bulan dipilih (default: bulan ini)
+        $selectedMonth = $request->get('month', now()->format('Y-m'));
 
-        $income = Transaction::where('type', 'credit')->sum('amount');
-        $expense = Transaction::where('type', 'debit')->sum('amount');
+        // Range tanggal bulan tersebut
+        $startDate = "{$selectedMonth}-01";
+        $endDate   = date('Y-m-t', strtotime($startDate));
+
+        /* ==========================================================
+           RINGKASAN (HANYA BULAN DIPILIH)
+        ========================================================== */
+        $income = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'credit')
+            ->sum('amount');
+
+        $expense = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'debit')
+            ->sum('amount');
+
         $balance = $income - $expense;
 
+        // Tambahan dari pendaftar baru (saldo awal) di bulan dipilih
+        $registrationIncome = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'credit')
+            ->where('category', 'initial')
+            ->sum('amount');
 
-        // ==========================
-        // REKAP TRANSAKSI PER BULAN
-        // ==========================
-
+        /* ==========================================================
+           REKAP PER BULAN (UNTUK TABEL LAPORAN)
+        ========================================================== */
         $monthly = Transaction::select(
                 DB::raw("DATE_FORMAT(date, '%Y-%m') as month"),
-
                 DB::raw("SUM(CASE WHEN type = 'credit' THEN amount ELSE 0 END) as income"),
-
                 DB::raw("SUM(CASE WHEN type = 'debit' THEN amount ELSE 0 END) as expense"),
-
-                // Total uang pendaftaran anggota baru
                 DB::raw("SUM(CASE WHEN category = 'initial' AND type = 'credit' THEN amount ELSE 0 END) as registration_income")
             )
             ->groupBy('month')
             ->orderBy('month', 'desc')
             ->get()
             ->map(function ($item) {
-                $item->balance = $item->income - $item->expense;
+                $item->balance = (float) $item->income - (float) $item->expense;
                 return $item;
             });
 
-
-        // ==========================
-        // PENDAFTAR ANGGOTA BARU PER BULAN
-        // (yang sudah disetujui)
-        // ==========================
-
+        /* ==========================================================
+           ANGGOTA BARU APPROVED PER BULAN
+        ========================================================== */
         $memberMonthly = Member::select(
                 DB::raw("DATE_FORMAT(approved_at, '%Y-%m') as month"),
                 DB::raw("COUNT(*) as total_members")
@@ -57,22 +66,28 @@ class PublicFinanceController extends Controller
             ->groupBy('month')
             ->pluck('total_members', 'month');
 
-
-        // ==========================
-        // GABUNGKAN KE LAPORAN BULANAN
-        // ==========================
-
+        // Gabungkan jumlah member baru ke monthly report
         $monthly = $monthly->map(function ($item) use ($memberMonthly) {
             $item->new_members = $memberMonthly[$item->month] ?? 0;
             return $item;
         });
 
+        /* ==========================================================
+           LIST BULAN YANG TERSEDIA (UNTUK DROPDOWN)
+        ========================================================== */
+        $availableMonths = Transaction::select(DB::raw("DATE_FORMAT(date, '%Y-%m') as month"))
+            ->groupBy('month')
+            ->orderBy('month', 'desc')
+            ->pluck('month');
 
         return view('public.finance', compact(
             'income',
             'expense',
             'balance',
-            'monthly'
+            'registrationIncome',
+            'monthly',
+            'availableMonths',
+            'selectedMonth'
         ));
     }
 }

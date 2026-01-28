@@ -67,17 +67,17 @@ cards.forEach(card => {
         modalRole.textContent = card.dataset.role;
         modalBio.textContent = card.dataset.bio || '';
 
-        modal.classList.add('show');
+        modal.classList.add('active');
     });
 });
 
 modalClose.addEventListener('click', () => {
-    modal.classList.remove('show');
+    modal.classList.remove('active');
 });
 
 modal.addEventListener('click', (e) => {
     if (e.target === modal) {
-        modal.classList.remove('show');
+        modal.classList.remove('active');
     }
 });
 
@@ -107,7 +107,7 @@ window.addEventListener('load', revealOnScroll);
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('show');
+            entry.target.classList.add('active');
             observer.unobserve(entry.target);
         }
     });
@@ -116,3 +116,71 @@ const observer = new IntersectionObserver(entries => {
 });
 
 reveals.forEach(el => observer.observe(el));
+
+/* =========================
+   FINANCE CHART (Chart.js)
+========================= */
+(function () {
+    const canvas = document.getElementById('financeChart');
+    if (!canvas) return; // biar halaman lain tidak error
+
+    // data dari blade: window.financeMonthly = [...]
+    const monthly = Array.isArray(window.financeMonthly) ? window.financeMonthly : [];
+
+    // kalau kosong, tidak usah render chart
+    if (!monthly.length) return;
+
+    // ambil 6-12 bulan terakhir biar chart tidak kepanjangan
+    const sliced = monthly.slice(0, 12).reverse();
+
+    const labels = sliced.map(x => x.month);
+    const income = sliced.map(x => Number(x.income || 0));
+    const expense = sliced.map(x => Number(x.expense || 0));
+    const balance = sliced.map(x => Number(x.balance || (Number(x.income || 0) - Number(x.expense || 0))));
+
+    // format rupiah tooltip
+    const rupiah = (n) => {
+        try {
+            return 'Rp ' + Number(n).toLocaleString('id-ID');
+        } catch {
+            return 'Rp ' + n;
+        }
+    };
+
+    // render chart
+    new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                { label: 'Pemasukan', data: income, tension: 0.3 },
+                { label: 'Pengeluaran', data: expense, tension: 0.3 },
+                { label: 'Saldo Akhir', data: balance, tension: 0.3 },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { display: true },
+                tooltip: {
+                    callbacks: {
+                        label: function (ctx) {
+                            return `${ctx.dataset.label}: ${rupiah(ctx.parsed.y)}`;
+                        },
+                    },
+                },
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        callback: function (value) {
+                            return rupiah(value);
+                        },
+                    },
+                },
+            },
+        },
+    });
+})();

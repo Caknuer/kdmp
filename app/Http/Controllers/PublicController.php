@@ -8,7 +8,6 @@ use App\Models\Partner;
 use App\Models\Transaction;
 use App\Models\Setting;
 use App\Models\OrganizationMember;
-use Illuminate\Routing\Controller;
 
 class PublicController extends Controller
 {
@@ -23,13 +22,13 @@ class PublicController extends Controller
                 ->limit(4)
                 ->get(),
 
-
-            $summary = [
+            // Ringkasan tabungan global (untuk homepage)
+            'summary' => [
                 'credit' => Transaction::where('type', 'credit')->sum('amount'),
                 'debit'  => Transaction::where('type', 'debit')->sum('amount'),
             ],
 
-            'setting' => $this->getSettings(), // kirim setting
+            'setting' => $this->getSettings(),
         ]);
     }
 
@@ -42,6 +41,7 @@ class PublicController extends Controller
             'units' => BusinessUnit::where('is_active', true)
                 ->orderBy('order')
                 ->get(),
+
             'setting' => $this->getSettings(),
         ]);
     }
@@ -52,6 +52,8 @@ class PublicController extends Controller
             'unit' => BusinessUnit::where('slug', $slug)
                 ->where('is_active', true)
                 ->firstOrFail(),
+
+            'setting' => $this->getSettings(),
         ]);
     }
 
@@ -61,8 +63,8 @@ class PublicController extends Controller
     public function partners()
     {
         return view('public.partners', [
-            'partners' => Partner::where('is_active', true)
-            ->get(),
+            'partners' => Partner::where('is_active', true)->get(),
+            'setting' => $this->getSettings(),
         ]);
     }
 
@@ -75,6 +77,8 @@ class PublicController extends Controller
             'articles' => Article::published()
                 ->orderByDesc('published_at')
                 ->paginate(6),
+
+            'setting' => $this->getSettings(),
         ]);
     }
 
@@ -84,27 +88,15 @@ class PublicController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        return view('public.articles.show', compact('article'));
-    }
-
-    /* =======================
-       TRANSPARANSI KEUANGAN
-    ======================== */
-    public function finance()
-    {
-        return view('public.finance', [
-            'summary' => [
-                'income'  => Transaction::where('type', 'income')->sum('amount'),
-                'expense' => Transaction::where('type', 'expense')->sum('amount'),
-            ],
-            'transactions' => Transaction::latest()->paginate(20),
+        return view('public.articles.show', [
+            'article' => $article,
+            'setting' => $this->getSettings(),
         ]);
     }
 
-
-   /* =======================
-   PROFIL PENGURUS
-    ======================= */
+    /* =======================
+       PROFIL PENGURUS
+    ======================== */
     public function pengurus()
     {
         $pengurus = OrganizationMember::active()
@@ -112,12 +104,15 @@ class PublicController extends Controller
             ->orderBy('order')
             ->get();
 
-        return view('public.profil.pengurus', compact('pengurus'));
+        return view('public.profil.pengurus', [
+            'pengurus' => $pengurus,
+            'setting' => $this->getSettings(),
+        ]);
     }
 
     /* =======================
-    PROFIL PENGAWAS
-    ======================= */
+       PROFIL PENGAWAS
+    ======================== */
     public function pengawas()
     {
         $pengawas = OrganizationMember::active()
@@ -125,12 +120,15 @@ class PublicController extends Controller
             ->orderBy('order')
             ->get();
 
-        return view('public.profil.pengawas', compact('pengawas'));
+        return view('public.profil.pengawas', [
+            'pengawas' => $pengawas,
+            'setting' => $this->getSettings(),
+        ]);
     }
 
     /* =======================
-    Fungsi helper untuk Setting
-    ======================= */
+       Helper Setting
+    ======================== */
     protected function getSettings()
     {
         $settings = Setting::all()->pluck('value', 'key')->toArray();

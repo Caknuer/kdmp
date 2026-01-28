@@ -1090,3 +1090,212 @@
         font-size: 24px;
     }
 }
+
+/* =========================
+   TRANSPARANSI: CARD + FILTER + CHART + TABLE
+   Theme: KDMP Merah (#b91c1c)
+========================= */
+
+/* Card umum (dipakai di halaman transparansi) */
+.card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.06);
+    margin: 18px 0;
+}
+
+.card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: #111;
+}
+
+/* Filter bulan (select) */
+.card select {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    background: #fff;
+    font-weight: 600;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.card select:focus {
+    border-color: #b91c1c;
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+
+/* Wrapper chart biar rapi */
+#financeChart {
+    height: 100% !important; /* canvas ikut wrapper */
+    width: 100% !important;
+    background: #fff;
+    border-radius: 16px;
+}
+
+/* Jika canvas dibungkus, tambahkan ini (opsional) */
+/* Card khusus transparansi (kalau belum ada) */
+.card-wrap {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.06);
+    margin: 18px 0;
+}
+
+.card-wrap h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: #111;
+}
+
+/* =========================
+   CHART BASE (ANTI GOYANG)
+========================= */
+.chart-base {
+    width: 100%;
+    height: 320px;           /* batas tinggi grafik */
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    padding: 14px;
+    overflow: hidden;
+}
+
+.chart-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.chart-inner canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .chart-base {
+        height: 240px;
+        padding: 10px;
+    }
+}
+
+
+/* =========================
+   TABLE STYLE
+========================= */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid #eee;
+}
+
+/* Header */
+.table thead th {
+    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 14px 14px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* Body */
+.table tbody td {
+    padding: 14px 14px;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 14px;
+    color: #222;
+    vertical-align: top;
+}
+
+/* Zebra rows */
+.table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+/* Hover */
+.table tbody tr:hover {
+    background: rgba(185, 28, 28, 0.06);
+}
+
+/* Angka lebih rapi */
+.table td strong {
+    color: #111;
+    font-weight: 800;
+}
+
+/* Empty state row */
+.table tbody tr td[colspan] {
+    padding: 22px;
+    color: #666;
+}
+
+/* Badge mini untuk teks (kalau nanti dipakai) */
+.badge-mini {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.badge-mini.success {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.badge-mini.danger {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+/* =========================
+   RESPONSIVE TABLE (MOBILE)
+========================= */
+@media (max-width: 900px) {
+    .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 600px) {
+    .card {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .card h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .card select {
+        width: 100%;
+    }
+}
+

@@ -8,7 +8,6 @@
 <section class="summary-section reveal">
     <div class="container summary-grid">
 
-        {{-- Total Setoran --}}
         <div class="summary-card">
             <h4>Total Setoran</h4>
             <strong>
@@ -16,7 +15,6 @@
             </strong>
         </div>
 
-        {{-- Total Penarikan --}}
         <div class="summary-card">
             <h4>Total Penarikan</h4>
             <strong>
@@ -24,18 +22,13 @@
             </strong>
         </div>
 
-        {{-- Saldo Akhir --}}
         <div class="summary-card total-akhir">
             <h4>Saldo Akhir</h4>
             <strong>
-                Rp {{ number_format(
-                    ($summary['credit'] ?? 0) - ($summary['debit'] ?? 0),
-                    0, ',', '.'
-                ) }}
+                Rp {{ number_format(($summary['credit'] ?? 0) - ($summary['debit'] ?? 0), 0, ',', '.') }}
             </strong>
         </div>
 
-        {{-- Status --}}
         <div class="summary-card highlight">
             <h4>Status Program</h4>
             <strong>Tabungan Aktif</strong>
@@ -43,8 +36,6 @@
 
     </div>
 </section>
-
-
 
 <!-- BERITA -->
 <section class="news-section reveal">
@@ -69,7 +60,7 @@
 
                         <div class="news-content">
                             <h3>{{ $article->title }}</h3>
-                            <p>{{ Str::limit(strip_tags($article->content), 150) }}</p>
+                            <p>{{ \Illuminate\Support\Str::limit(strip_tags($article->content), 150) }}</p>
                             <a href="{{ route('articles.detail', $article->slug) }}" class="read-more">Baca →</a>
                         </div>
 
