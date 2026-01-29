@@ -46,12 +46,8 @@
 
         <!-- Thumbnail -->
         <div class="detail-thumb">
-            @php
-                $thumbPath = $thumb ? ltrim(preg_replace('#^storage/#', '', $thumb), '/') : null;
-            @endphp
-
-            @if($thumbPath)
-                <img src="{{ Storage::url($thumbPath) }}" alt="{{ $name }}">
+            @if ($thumb)
+                <img src="{{ asset('storage/' . $thumb) }}" alt="{{ $name }}">
             @else
                 <div class="icon-placeholder">{{ $icon }}</div>
                 <p>(Belum ada thumbnail)</p>

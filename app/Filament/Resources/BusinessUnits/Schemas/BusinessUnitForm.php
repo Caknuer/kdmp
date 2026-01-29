@@ -42,7 +42,7 @@ class BusinessUnitForm
                     ->label('Thumbnail Unit')
                     ->image()
                     ->disk('public')
-                    ->directory('unit-usaha')
+                    ->directory('koperasi/unit-usaha')
                     ->visibility('public')
                     ->imageEditor()
                     ->maxSize(2048)
