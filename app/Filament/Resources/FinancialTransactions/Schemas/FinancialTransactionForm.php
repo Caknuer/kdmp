@@ -7,7 +7,6 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
 
 class FinancialTransactionForm
 {
@@ -16,9 +15,12 @@ class FinancialTransactionForm
         return $schema
             ->components([
                 DatePicker::make('date')
-                    ->required(),
+                    ->label('Tanggal')
+                    ->required()
+                    ->default(now()),
 
                 Select::make('type')
+                    ->label('Jenis')
                     ->options([
                         'income' => 'Pemasukan',
                         'expense' => 'Pengeluaran',
@@ -26,17 +28,22 @@ class FinancialTransactionForm
                     ->required(),
 
                 TextInput::make('category')
-                    ->required(),
+                    ->label('Kategori')
+                    ->placeholder('Contoh: Operasional / Donasi / Pendaftaran')
+                    ->maxLength(255)
+                    ->nullable(),
 
-                Textarea::make('description'),
+                Textarea::make('description')
+                    ->label('Keterangan')
+                    ->rows(2)
+                    ->nullable(),
 
                 TextInput::make('amount')
+                    ->label('Nominal')
                     ->numeric()
                     ->required()
+                    ->minValue(0)
                     ->prefix('Rp'),
-                // Toggle::make('is_published')
-                //     ->default(true),
-
             ]);
     }
 }

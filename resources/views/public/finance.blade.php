@@ -19,12 +19,17 @@
 
             <form method="GET" action="{{ url('/transparansi') }}">
                 <select name="month" onchange="this.form.submit()"
-                        style="padding:10px 12px; border-radius:10px; border:1px solid #e5e5e5;">
-                    @foreach ($availableMonths as $m)
+                        style="padding:10px 12px; border-radius:10px; border:1px solid #e5e5e5;"
+                        @disabled(empty($availableMonths) || count($availableMonths) === 0)>
+                    @forelse ($availableMonths as $m)
                         <option value="{{ $m }}" @selected($m === $selectedMonth)>
                             {{ $m }}
                         </option>
-                    @endforeach
+                    @empty
+                        <option value="{{ now()->format('Y-m') }}">
+                            {{ now()->format('Y-m') }}
+                        </option>
+                    @endforelse
                 </select>
             </form>
         </div>
@@ -68,9 +73,12 @@
                 <canvas id="financeChart"></canvas>
             </div>
         </div>
+
+        @if (empty($monthly) || $monthly->count() === 0)
+            <p style="margin-top:12px; color:#666;">Belum ada data untuk ditampilkan pada grafik.</p>
+        @endif
     </div>
 </section>
-
 
 <!-- TABEL TRANSAKSI PER BULAN -->
 <section class="container" style="margin-top: 18px;">
@@ -92,14 +100,10 @@
                 @forelse ($monthly as $row)
                     <tr>
                         <td>{{ $row->month }}</td>
-
                         <td>Rp {{ number_format($row->income, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($row->expense, 0, ',', '.') }}</td>
-
                         <td><strong>Rp {{ number_format($row->balance, 0, ',', '.') }}</strong></td>
-
                         <td>{{ $row->new_members ?? 0 }} orang</td>
-
                         <td>Rp {{ number_format($row->registration_income ?? 0, 0, ',', '.') }}</td>
                     </tr>
                 @empty
@@ -113,8 +117,10 @@
         </table>
     </div>
 </section>
+
 <script>
     window.financeMonthly = @json($monthly);
+    window.selectedMonth = @json($selectedMonth);
 </script>
 
 @endsection

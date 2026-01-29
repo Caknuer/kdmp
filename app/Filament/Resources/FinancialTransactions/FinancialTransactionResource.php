@@ -7,7 +7,7 @@ use App\Filament\Resources\FinancialTransactions\Pages\EditFinancialTransaction;
 use App\Filament\Resources\FinancialTransactions\Pages\ListFinancialTransactions;
 use App\Filament\Resources\FinancialTransactions\Schemas\FinancialTransactionForm;
 use App\Filament\Resources\FinancialTransactions\Tables\FinancialTransactionsTable;
-use App\Models\Transaction;
+use App\Models\FinanceTransaction;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,7 +16,7 @@ use Filament\Tables\Table;
 
 class FinancialTransactionResource extends Resource
 {
-    protected static ?string $model = Transaction::class;
+    protected static ?string $model = FinanceTransaction::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
