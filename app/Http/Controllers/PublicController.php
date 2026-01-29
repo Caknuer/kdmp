@@ -129,18 +129,39 @@ class PublicController extends Controller
     /* =======================
        Helper Setting
     ======================== */
+    protected function gmapsEmbedFromUrl(?string $url): ?string
+    {
+        if (!$url) return null;
+
+        if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+),(\d+(\.\d+)?)z/', $url, $m)) {
+            $lat = $m[1];
+            $lng = $m[2];
+            $zoom = (int) $m[3];
+            return "https://www.google.com/maps?q={$lat},{$lng}&z={$zoom}&output=embed";
+        }
+
+        if (str_contains($url, 'google.com/maps')) {
+            $join = str_contains($url, '?') ? '&' : '?';
+            return $url . $join . 'output=embed';
+        }
+
+        return null;
+    }
+
     protected function getSettings()
     {
         $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $gmapsUrl = $settings['gmaps_url'] ?? null;
 
         return (object) [
             'site_name' => $settings['site_name'] ?? null,
             'address' => $settings['address'] ?? null,
             'phone' => $settings['phone'] ?? null,
             'email' => $settings['email'] ?? null,
-            'website' => $settings['website'] ?? null,
             'footer_description' => $settings['footer_description'] ?? null,
-            'gmaps' => $settings['gmaps'] ?? null,
+
+            'gmaps_url' => $gmapsUrl,
+            'gmaps_embed_src' => $this->gmapsEmbedFromUrl($gmapsUrl),
         ];
     }
 }

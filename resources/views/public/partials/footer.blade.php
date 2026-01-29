@@ -5,7 +5,11 @@
             <!-- PROFIL -->
             <div class="footer-item">
                 <h3>{{ $setting->site_name ?? 'KDMP Wonokerto' }}</h3>
-                <p>{{ $setting->address ?? '-' }}</p>
+
+                @if(!empty($setting->address))
+                    <p>{{ $setting->address }}</p>
+                @endif
+
                 @if(!empty($setting->footer_description))
                     <p>{{ $setting->footer_description }}</p>
                 @endif
@@ -15,18 +19,39 @@
             <div class="footer-item">
                 <h4>Kontak</h4>
                 <ul class="footer-contact">
-                    <li>📞 <a href="tel:{{ $setting->phone }}">{{ $setting->phone ?? '-' }}</a></li>
-                    <li>✉️ <a href="mailto:{{ $setting->email }}">{{ $setting->email ?? '-' }}</a></li>
-                    @if(!empty($setting->website))
-                        <li>🌐 <a href="{{ $setting->website }}" target="_blank">{{ $setting->website }}</a></li>
-                    @endif
+                    <li>
+                        📞
+                        @if(!empty($setting->phone))
+                            <a href="tel:{{ $setting->phone }}">{{ $setting->phone }}</a>
+                        @else
+                            <span>-</span>
+                        @endif
+                    </li>
+
+                    <li>
+                        ✉️
+                        @if(!empty($setting->email))
+                            <a href="mailto:{{ $setting->email }}">{{ $setting->email }}</a>
+                        @else
+                            <span>-</span>
+                        @endif
+                    </li>
                 </ul>
             </div>
 
-            <!-- MAPS -->
+            <!-- MAPS (kecil) -->
+            <!-- MAPS (kecil) -->
             <div class="footer-item footer-map">
-                @if(!empty($setting->gmaps))
-                    {!! $setting->gmaps !!}
+                @if(!empty($setting->gmaps_embed_src))
+                    <iframe
+                        src="{{ $setting->gmaps_embed_src }}"
+                        width="100%"
+                        height="180"
+                        style="border:0; border-radius:10px;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
                 @else
                     <p>Lokasi belum tersedia</p>
                 @endif

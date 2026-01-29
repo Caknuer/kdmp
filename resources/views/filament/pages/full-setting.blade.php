@@ -1,141 +1,42 @@
 <x-filament::page>
     <style>
-        /* Card style */
-        .fs-card {
-            border: 1px solid #47acd4;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background-color: #d48f8f;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        /* Section heading */
-        .fs-heading {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 0.25rem;
-            color: #ffffff;
-        }
-
-        /* Input & textarea */
-        .fs-input, .fs-textarea {
-            width: 100%;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .fs-input:focus, .fs-textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-        }
-
-        /* File preview */
-        .fs-preview {
-            margin-top: 0.5rem;
-            max-height: 80px;
-            border-radius: 6px;
-        }
-
-        /* Submit button */
-        .fs-submit {
-            background-color: #8e9fb9;
-            color: #fff;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            transition: background-color 0.2s;
-        }
-
-        .fs-submit:hover {
-            background-color: #2563eb;
-        }
+        .fs-card{border:1px solid #47acd4;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;background:#d48f8f;box-shadow:0 4px 6px rgba(0,0,0,.05)}
+        .fs-heading{font-size:1.25rem;font-weight:700;margin-bottom:1rem;border-bottom:2px solid #cbd5e1;padding-bottom:.25rem;color:#fff}
+        .fs-input,.fs-textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:.5rem;margin-bottom:.75rem}
+        .fs-input:focus,.fs-textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.3)}
     </style>
 
     <form wire:submit.prevent="save" class="space-y-6">
-
-        {{-- ===== GENERAL ===== --}}
         <div class="fs-card">
-            <h2 class="fs-heading">General</h2>
+            <h2 class="fs-heading">Footer Settings</h2>
 
-            <input type="text" class="fs-input" placeholder="Nama Situs"
-                   wire:model.defer="site_name">
+            <label class="block text-sm">Nama Situs</label>
+            <input type="text" class="fs-input" wire:model.defer="site_name" placeholder="KDMP Wonokerto">
 
-            <input type="text" class="fs-input" placeholder="Tagline"
-                   wire:model.defer="tagline">
+            <label class="block text-sm">Alamat</label>
+            <input type="text" class="fs-input" wire:model.defer="address" placeholder="Alamat lengkap">
 
-            <label class="block text-sm mt-3">Address</label>
-            <input type="text" class="fs-input" placeholder="Address"
-                   wire:model.defer="addresss">
+            <label class="block text-sm">Deskripsi Footer (opsional)</label>
+            <textarea class="fs-textarea" rows="3" wire:model.defer="footer_description"
+                      placeholder="Deskripsi singkat yang tampil di footer"></textarea>
 
-            <label class="block text-sm mt-3">Google Maps</label>
-            <textarea class="fs-textarea" rows="4"
-                      wire:model.defer="gmaps"></textarea>
+            <label class="block text-sm">Email</label>
+            <input type="email" class="fs-input" wire:model.defer="email" placeholder="admin@email.com">
+
+            <label class="block text-sm">Telepon</label>
+            <input type="text" class="fs-input" wire:model.defer="phone" placeholder="08xxxxxxxxxx">
+
+            <label class="block text-sm">Google Maps Link (Bagikan)</label>
+            <input type="text" class="fs-input" wire:model.defer="gmaps_url"
+                   placeholder="Tempel link Google Maps versi google.com/maps">
+
+            <p class="text-xs text-white/90 mt-1">
+                Tips: buka Google Maps di browser → Bagikan → Salin link (pastikan mengandung <b>google.com/maps</b>).
+            </p>
         </div>
 
-        {{-- ===== CONTACT ===== --}}
-        <div class="fs-card">
-            <h2 class="fs-heading">Kontak</h2>
-
-            <input type="email" class="fs-input" placeholder="Email"
-                   wire:model.defer="email">
-
-            <input type="text" class="fs-input" placeholder="Telepon"
-                   wire:model.defer="phone">
-        </div>
-
-        {{-- ===== SOCIAL ===== --}}
-        <div class="fs-card">
-            <h2 class="fs-heading">Media Sosial</h2>
-
-            <input type="text" class="fs-input" placeholder="Facebook"
-                   wire:model.defer="facebook">
-
-            <input type="text" class="fs-input" placeholder="Instagram"
-                   wire:model.defer="instagram">
-
-            <input type="text" class="fs-input" placeholder="Tiktok"
-                   wire:model.defer="tiktok">
-        </div>
-
-        {{-- ===== LOGO & FAVICON ===== --}}
-        <div class="fs-card">
-            <h2 class="fs-heading">Logo & Favicon</h2>
-
-            {{-- LOGO --}}
-            <div class="mb-4">
-                <label class="text-sm">Logo</label>
-                <input type="file" wire:model="logoUpload">
-
-                @if ($logoUpload)
-                    <img src="{{ $logoUpload->temporaryUrl() }}" class="fs-preview">
-                @elseif ($logo)
-                    <img src="{{ asset('storage/'.$logo) }}" class="fs-preview">
-                @endif
-            </div>
-
-            {{-- FAVICON --}}
-            <div>
-                <label class="text-sm">Favicon</label>
-                <input type="file" wire:model="faviconUpload">
-
-                @if ($faviconUpload)
-                    <img src="{{ $faviconUpload->temporaryUrl() }}" class="fs-preview">
-                @elseif ($favicon)
-                    <img src="{{ asset('storage/'.$favicon) }}" class="fs-preview">
-                @endif
-            </div>
-        </div>
-
-        {{-- ===== SUBMIT ===== --}}
-        <x-filament::button type="submit" class="mt-4">
-            Simpan
+        <x-filament::button type="submit">
+            Simpan Footer
         </x-filament::button>
-
     </form>
 </x-filament::page>
