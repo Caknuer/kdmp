@@ -8,6 +8,7 @@ use App\Models\Partner;
 use App\Models\Transaction;
 use App\Models\Setting;
 use App\Models\OrganizationMember;
+use Illuminate\Support\Str;
 
 class PublicController extends Controller
 {
@@ -22,7 +23,6 @@ class PublicController extends Controller
                 ->limit(4)
                 ->get(),
 
-            // Ringkasan tabungan global (untuk homepage)
             'summary' => [
                 'credit' => Transaction::where('type', 'credit')->sum('amount'),
                 'debit'  => Transaction::where('type', 'debit')->sum('amount'),
@@ -37,24 +37,88 @@ class PublicController extends Controller
     ======================== */
     public function businessUnits()
     {
-        return view('public.business.index', [
-            'units' => BusinessUnit::where('is_active', true)
-                ->orderBy('order')
-                ->get(),
+        $units = BusinessUnit::query()
+            ->where('is_active', true)
+            ->orderBy('order')
+            ->orderBy('name')
+            ->select(['id', 'name', 'slug', 'thumbnail', 'description', 'is_active', 'order'])
+            ->get();
 
+        // Kalau kosong, pakai dummy
+        if ($units->isEmpty()) {
+            $units = $this->dummyBusinessUnits();
+        }
+
+        return view('public.business.index', [
+            'units' => $units,
             'setting' => $this->getSettings(),
         ]);
     }
 
-    public function businessDetail($slug)
+    public function businessDetail(string $slug)
     {
-        return view('public.business.detail', [
-            'unit' => BusinessUnit::where('slug', $slug)
-                ->where('is_active', true)
-                ->firstOrFail(),
+        $unit = BusinessUnit::query()
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->select(['id', 'name', 'slug', 'thumbnail', 'description', 'is_active', 'order'])
+            ->first();
 
+        // kalau tidak ketemu di DB, cari di dummy
+        $isDummy = false;
+
+        if (! $unit) {
+            $unit = $this->findDummyBusinessUnitBySlug($slug);
+            abort_if(! $unit, 404);
+            $isDummy = true;
+        }
+
+        return view('public.business.detail', [
+            'unit' => $unit,
+            'isDummy' => $isDummy,
             'setting' => $this->getSettings(),
         ]);
+    }
+
+    /* =======================
+       DUMMY DATA UNIT BISNIS
+    ======================== */
+    protected function dummyBusinessUnits()
+    {
+        // kamu bisa tambah unit lain di sini
+        return collect([
+            (object)[
+                'id' => null,
+                'name' => 'Unit Simpan Pinjam',
+                'slug' => 'unit-simpan-pinjam',
+                'thumbnail' => null,
+                'description' => "Melayani simpan pinjam anggota dengan prinsip koperasi.\nProses transparan, pencatatan rapi, dan pelayanan cepat.",
+                'is_active' => true,
+                'order' => 1,
+            ],
+            (object)[
+                'id' => null,
+                'name' => 'Unit Perdagangan',
+                'slug' => 'unit-perdagangan',
+                'thumbnail' => null,
+                'description' => "Mengelola penjualan kebutuhan masyarakat dan pemasaran produk UMKM desa.\nHarga bersaing, stok terjaga, dan kualitas diprioritaskan.",
+                'is_active' => true,
+                'order' => 2,
+            ],
+            (object)[
+                'id' => null,
+                'name' => 'Unit Produksi',
+                'slug' => 'unit-produksi',
+                'thumbnail' => null,
+                'description' => "Mengolah potensi desa menjadi produk bernilai tambah.\nFokus pada pengemasan, kualitas, dan pengembangan pasar.",
+                'is_active' => true,
+                'order' => 3,
+            ],
+        ]);
+    }
+
+    protected function findDummyBusinessUnitBySlug(string $slug)
+    {
+        return $this->dummyBusinessUnits()->firstWhere('slug', $slug);
     }
 
     /* =======================
@@ -110,9 +174,6 @@ class PublicController extends Controller
         ]);
     }
 
-    /* =======================
-       PROFIL PENGAWAS
-    ======================== */
     public function pengawas()
     {
         $pengawas = OrganizationMember::active()

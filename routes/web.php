@@ -14,8 +14,8 @@ Route::prefix('profil')->group(function () {
 });
 
 
-Route::get('/unit-bisnis', [PublicController::class, 'businessUnits'])->name('business.units');
-Route::get('/unit-bisnis/{slug}', [PublicController::class, 'businessDetail'])->name('business.unit.detail');
+Route::get('/unit-bisnis', [PublicController::class, 'businessUnits'])->name('public.business.index');
+Route::get('/unit-bisnis/{slug}', [PublicController::class, 'businessDetail'])->name('public.business.detail');
 
 Route::get('/mitra', [PublicController::class, 'partners'])->name('partners');
 

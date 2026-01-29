@@ -5,7 +5,7 @@ namespace App\Filament\Resources\BusinessUnits\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,35 +15,52 @@ class BusinessUnitsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('thumbnail')
+                    ->label('Foto')
+                    ->disk('public') // penting: sesuai FileUpload
+                    ->circular()
+                    ->size(50)
+                    ->defaultImageUrl(url('/images/default-unit.png')),
+
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->label('Nama Unit Usaha')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('slug')
-                    ->searchable(),
-                TextColumn::make('thumbnail')
-                    ->searchable(),
-                IconColumn::make('is_active')
-                    ->boolean(),
+                    ->label('Slug')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('is_active')
+                    ->label('Status')
+                    ->badge()
+                    ->formatStateUsing(fn (bool $state) => $state ? 'Aktif' : 'Nonaktif')
+                    ->color(fn (bool $state) => $state ? 'success' : 'danger')
+                    ->sortable(),
+
                 TextColumn::make('order')
+                    ->label('Urutan')
                     ->numeric()
                     ->sortable(),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Dibuat')
+                    ->dateTime('d M Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Terakhir Update')
+                    ->dateTime('d M Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->label('Edit'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->label('Hapus'),
                 ]),
             ]);
     }

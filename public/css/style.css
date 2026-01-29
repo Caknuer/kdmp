@@ -1306,3 +1306,236 @@
     }
 }
 
+/* ============================
+   HERO SECTION
+============================ */
+.page-hero {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #fff;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.page-hero-inner h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.page-hero-inner p {
+    font-size: 18px;
+    opacity: 0.85;
+}
+
+/* ============================
+   GRID UNIT BISNIS
+============================ */
+.bisnis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 50px;
+    padding-bottom: 60px;
+}
+
+/* ============================
+   CARD UNIT BISNIS
+============================ */
+.bisnis-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 28px 22px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.bisnis-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+}
+
+.bisnis-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.bisnis-card h4 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #111827;
+}
+
+.bisnis-card span {
+    font-size: 14px;
+    color: #475569;
+    background: #f1f5f9;
+    padding: 6px 14px;
+    border-radius: 30px;
+    display: inline-block;
+}
+
+/* ============================
+   DETAIL PAGE LAYOUT
+============================ */
+.detail-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-top: 50px;
+    padding-bottom: 70px;
+}
+
+/* LEFT IMAGE BOX */
+.detail-thumb {
+    flex: 0 0 320px;
+    border-radius: 18px;
+    background: #fff;
+    padding: 22px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.detail-thumb img {
+    width: 100%;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+.detail-thumb .icon-placeholder {
+    font-size: 70px;
+    margin-top: 15px;
+}
+
+/* RIGHT CONTENT BOX */
+.detail-content {
+    flex: 1;
+}
+
+.detail-box {
+    background: #fff;
+    padding: 26px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+}
+
+.detail-box h3 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.detail-box p {
+    line-height: 1.7;
+    color: #334155;
+}
+
+.detail-box ul {
+    padding-left: 18px;
+    margin: 0;
+}
+
+.detail-box ul li {
+    margin-bottom: 8px;
+    color: #334155;
+}
+
+/* BACK BUTTON */
+.back-link {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: #111827;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.back-link:hover {
+    background: #334155;
+}
+
+/* Dummy note */
+.dummy-note {
+    margin-top: 12px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* ============================
+   MODAL (Optional)
+============================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal {
+    width: 90%;
+    max-width: 420px;
+    background: #fff;
+    padding: 28px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.modal-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.modal h3 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.modal small {
+    display: block;
+    margin: 8px 0 14px;
+    opacity: 0.7;
+}
+
+.modal p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #334155;
+}
+
+.modal .close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    border: none;
+    background: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+/* ============================
+   RESPONSIVE MOBILE
+============================ */
+@media (max-width: 768px) {
+    .page-hero-inner h1 {
+        font-size: 32px;
+    }
+
+    .detail-wrapper {
+        flex-direction: column;
+    }
+
+    .detail-thumb {
+        width: 100%;
+    }
+}
