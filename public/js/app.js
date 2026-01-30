@@ -184,3 +184,83 @@ reveals.forEach(el => observer.observe(el));
         },
     });
 })();
+
+// Mitra/Patner
+(function () {
+  const modal = document.getElementById('mitraModal');
+  const closeX = modal.querySelector('.modal-close');
+  const closeBtn = document.getElementById('modalCloseBtn');
+
+  const elLogo = document.getElementById('modalLogo');
+  const elName = document.getElementById('modalName');
+  const elDesc = document.getElementById('modalDesc');
+  const elWebsiteText = document.getElementById('modalWebsiteText');
+  const elWebsiteBtn = document.getElementById('modalWebsiteBtn');
+
+  function openModal({ name, desc, website, logo }) {
+    elName.textContent = name || 'Detail Mitra';
+    elDesc.textContent = desc || '';
+
+    // Website
+    if (website) {
+      elWebsiteText.textContent = website;
+      elWebsiteBtn.style.display = 'inline-flex';
+      elWebsiteBtn.href = website;
+    } else {
+      elWebsiteText.textContent = '';
+      elWebsiteBtn.style.display = 'none';
+      elWebsiteBtn.href = '#';
+    }
+
+    // Logo: URL gambar atau inisial
+    elLogo.innerHTML = '';
+    if (logo && logo.startsWith('http')) {
+      const img = document.createElement('img');
+      img.src = logo;
+      img.alt = name || 'Mitra';
+      elLogo.appendChild(img);
+    } else {
+      elLogo.textContent = logo || '';
+    }
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  // Klik card / keyboard
+  document.querySelectorAll('.mitra-card').forEach(card => {
+    const handler = () => openModal({
+      name: card.dataset.name || '',
+      desc: card.dataset.desc || '',
+      website: card.dataset.website || '',
+      logo: card.dataset.logo || ''
+    });
+
+    card.addEventListener('click', handler);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handler();
+      }
+    });
+  });
+
+  // Tutup
+  closeX.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', closeModal);
+
+  // Klik area gelap = tutup
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // ESC = tutup
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+  });
+})();

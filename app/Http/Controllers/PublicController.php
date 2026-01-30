@@ -124,12 +124,66 @@ class PublicController extends Controller
     /* =======================
        MITRA
     ======================== */
-    public function partners()
+   public function partners()
     {
+        $partners = Partner::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->select(['id', 'name', 'logo', 'website', 'is_active', 'sort_order'])
+            ->get();
+
+        if ($partners->isEmpty()) {
+            $partners = $this->dummyPartners();
+        }
+
         return view('public.partners', [
-            'partners' => Partner::where('is_active', true)->get(),
+            'partners' => $partners,
             'setting' => $this->getSettings(),
         ]);
+    }
+
+    protected function dummyPartners()
+    {
+        return collect([
+            (object)[
+                'id' => null,
+                'name' => 'BUMDes Wonokerto',
+                'logo' => null,
+                'website' => 'https://example.com',
+                'is_active' => true,
+                'order' => 1,
+                'description' => 'Mitra strategis dalam pengelolaan usaha desa.',
+            ],
+            (object)[
+                'id' => null,
+                'name' => 'UMKM Makmur',
+                'logo' => null,
+                'website' => null,
+                'is_active' => true,
+                'order' => 2,
+                'description' => 'Mendukung pengembangan produk lokal desa.',
+            ],
+            (object)[
+                'id' => null,
+                'name' => 'Koperasi Sejahtera',
+                'logo' => null,
+                'website' => null,
+                'is_active' => true,
+                'order' => 3,
+                'description' => 'Kolaborasi penguatan permodalan usaha anggota.',
+            ],
+        ]);
+    }
+
+
+    protected function normalizeUrl(?string $url): ?string
+    {
+        if (! $url) return null;
+
+        return str_starts_with($url, 'http://') || str_starts_with($url, 'https://')
+            ? $url
+            : 'https://' . $url;
     }
 
     /* =======================

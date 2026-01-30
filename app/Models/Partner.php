@@ -10,11 +10,12 @@ class Partner extends Model
         'name',
         'logo',
         'website',
-        'order',
+        'sort_order',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'sort_order' => 'integer',
     ];
 }

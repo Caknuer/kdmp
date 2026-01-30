@@ -1,7 +1,6 @@
 @extends('layouts.public')
 
 @section('P')
-     <!-- HERO -->
 <section class="page-hero">
     <div class="page-hero-inner">
         <h1>Mitra KDMP</h1>
@@ -9,51 +8,72 @@
     </div>
 </section>
 
-<!-- GRID MITRA -->
 <section class="container">
-    <div class="row mitra-grid">
+    <div class="mitra-grid">
+        @foreach ($partners as $partner)
+            @php
+                $logoUrl = !empty($partner->logo) ? asset('storage/' . $partner->logo) : null;
 
-        <div class="mitra-card"
-             data-name="BUMDes Wonokerto"
-             data-type="BUMDes"
-             data-desc="Mitra strategis dalam pengelolaan usaha desa."
-             data-logo="BUMDES">
-            <div class="mitra-logo">BW</div>
-            <h4>BUMDes Wonokerto</h4>
-            <span>BUMDes</span>
-        </div>
+                $initials = collect(explode(' ', $partner->name))
+                    ->filter()
+                    ->take(2)
+                    ->map(fn($w) => strtoupper(mb_substr($w, 0, 1)))
+                    ->implode('');
 
-        <div class="mitra-card"
-             data-name="UMKM Makmur"
-             data-type="UMKM"
-             data-desc="Mendukung pengembangan produk lokal desa."
-             data-logo="UMKM">
-            <div class="mitra-logo">UM</div>
-            <h4>UMKM Makmur</h4>
-            <span>UMKM</span>
-        </div>
+                $desc = $partner->description ?? 'Mitra dalam mendukung program dan kegiatan koperasi.';
+                $website = $partner->website ?? '';
+            @endphp
 
-        <div class="mitra-card"
-             data-name="Koperasi Sejahtera"
-             data-type="Koperasi"
-             data-desc="Kolaborasi penguatan permodalan usaha anggota."
-             data-logo="KS">
-            <div class="mitra-logo">KS</div>
-            <h4>Koperasi Sejahtera</h4>
-            <span>Koperasi</span>
-        </div>
+            <div class="mitra-card"
+                 role="button"
+                 tabindex="0"
+                 data-name="{{ $partner->name }}"
+                 data-desc="{{ $desc }}"
+                 data-website="{{ $website }}"
+                 data-logo="{{ $logoUrl ?? $initials }}">
+                <div class="mitra-logo">
+                    @if ($logoUrl)
+                        <img src="{{ $logoUrl }}" alt="{{ $partner->name }}">
+                    @else
+                        {{ $initials }}
+                    @endif
+                </div>
 
+                <div class="mitra-meta">
+                    <h4>{{ $partner->name }}</h4>
+                    <span class="mitra-chip">Mitra</span>
+                    <div class="mitra-sub">{{ $website ?: 'Klik untuk lihat detail' }}</div>
+                </div>
+            </div>
+        @endforeach
     </div>
 </section>
 
-<!-- MODAL MITRA -->
-<div class="modal-overlay" id="mitraModal">
-    <div class="modal">
-        <button class="close">&times;</button>
-        <div class="modal-logo" id="modal-logo"></div>
-        <h3 id="modal-name"></h3>
-        <small id="modal-type"></small>
-        <p id="modal-desc"></p>
+<!-- JENDELA MENGAMBANG (MODAL) -->
+<div class="modal-overlay" id="mitraModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+        <div class="modal-head">
+            <div class="modal-head-left">
+                <div class="modal-logo" id="modalLogo"></div>
+                <div class="modal-title">
+                    <h3 id="modalName">Detail Mitra</h3>
+                    <small id="modalWebsiteText"></small>
+                </div>
+            </div>
+
+            <button class="modal-close" type="button" aria-label="Tutup">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <p class="modal-desc" id="modalDesc"></p>
+        </div>
+
+        <div class="modal-actions">
+            <a class="btn btn-primary" id="modalWebsiteBtn" href="#" target="_blank" rel="noopener" style="display:none;">
+                Kunjungi Website
+            </a>
+            <button class="btn" type="button" id="modalCloseBtn">Tutup</button>
+        </div>
     </div>
 </div>
 

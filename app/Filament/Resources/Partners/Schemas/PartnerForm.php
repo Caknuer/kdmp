@@ -19,15 +19,22 @@ class PartnerForm
             FileUpload::make('logo')
                 ->image()
                 ->directory('partners')
-                ->imageEditor(),
+                ->visibility('public')
+                ->imageEditor()
+                ->nullable(),
 
             TextInput::make('website')
                 ->url()
+                ->maxLength(255)
+                ->nullable()
                 ->placeholder('https://'),
 
-            TextInput::make('order')
+            TextInput::make('sort_order')
+                ->label('Urutan')
                 ->numeric()
-                ->default(0),
+                ->minValue(0)
+                ->default(0)
+                ->required(),
 
             Toggle::make('is_active')
                 ->default(true),
