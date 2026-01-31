@@ -4,6 +4,7 @@ use App\Http\Controllers\PublicMemberController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\PublicFinanceController;
+use App\Http\Controllers\PublicPostController;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 
@@ -19,8 +20,6 @@ Route::get('/unit-bisnis/{slug}', [PublicController::class, 'businessDetail'])->
 
 Route::get('/mitra', [PublicController::class, 'partners'])->name('partners');
 
-Route::get('/berita', [PublicController::class, 'articles'])->name('articles');
-Route::get('/berita/{slug}', [PublicController::class, 'articleDetail'])->name('articles.detail');
 
 Route::get('/transparansi', [PublicFinanceController::class, 'index'])
     ->name('finance.public');
@@ -36,3 +35,13 @@ Route::get('/cek-saldo', [PublicMemberController::class, 'balanceForm'])
 
 Route::post('/cek-saldo', [PublicMemberController::class, 'checkBalance'])
     ->name('member.balance.check');
+
+Route::get('/berita', [PublicPostController::class, 'beritaIndex']);
+Route::get('/berita/{slug}', [PublicPostController::class, 'beritaShow']);
+
+Route::get('/pengumuman', [PublicPostController::class, 'pengumumanIndex']);
+Route::get('/pengumuman/{slug}', [PublicPostController::class, 'pengumumanShow']);
+
+// OPTIONAL: compatibility route lama
+Route::get('/artikel', [PublicPostController::class, 'artikelRedirect']);
+Route::get('/artikel/{slug}', [PublicPostController::class, 'artikelShowRedirect']);

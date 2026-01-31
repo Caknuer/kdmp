@@ -187,32 +187,6 @@ class PublicController extends Controller
     }
 
     /* =======================
-       ARTIKEL / BERITA
-    ======================== */
-    public function articles()
-    {
-        return view('public.articles.index', [
-            'articles' => Article::published()
-                ->orderByDesc('published_at')
-                ->paginate(6),
-
-            'setting' => $this->getSettings(),
-        ]);
-    }
-
-    public function articleDetail($slug)
-    {
-        $article = Article::published()
-            ->where('slug', $slug)
-            ->firstOrFail();
-
-        return view('public.articles.show', [
-            'article' => $article,
-            'setting' => $this->getSettings(),
-        ]);
-    }
-
-    /* =======================
        PROFIL PENGURUS
     ======================== */
     public function pengurus()
