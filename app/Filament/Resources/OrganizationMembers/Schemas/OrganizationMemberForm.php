@@ -28,7 +28,9 @@ class OrganizationMemberForm
                 ->disk('public')
                 ->directory('organization')
                 ->visibility('public')
-                ->image(),
+                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
+                ->maxSize(5120) // 5MB limit
+                ->preserveFilenames(),
 
             Textarea::make('bio')->rows(4),
 

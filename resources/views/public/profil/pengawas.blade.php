@@ -52,14 +52,27 @@
 </section>
 
 <!-- MODAL DETAIL -->
-<div class="modal" id="orgModal" aria-hidden="true">
-    <div class="modal-content">
-        <button class="modal-close" aria-label="Tutup">&times;</button>
+<!-- MODAL DETAIL -->
+<div class="modal-overlay" id="orgModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+        <div class="modal-head">
+            <div class="modal-head-left">
+                <div class="modal-logo" id="modalPhoto"></div>
+                <div class="modal-title">
+                    <h3 id="modalName">Detail Pengawas</h3>
+                    <small id="modalRole"></small>
+                </div>
+            </div>
+            <button class="modal-close" type="button" aria-label="Tutup">&times;</button>
+        </div>
 
-        <img id="modalPhoto" src="" alt="">
-        <h3 id="modalName"></h3>
-        <p id="modalRole"></p>
-        <div id="modalBio"></div>
+        <div class="modal-body">
+            <p class="modal-desc" id="modalBio"></p>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn" type="button" id="modalCloseBtnOrg">Tutup</button>
+        </div>
     </div>
 </div>
 
