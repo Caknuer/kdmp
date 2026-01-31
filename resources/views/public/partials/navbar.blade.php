@@ -2,10 +2,8 @@
     <div class="nav-container">
         <div class="logo">KDMP WONOKERTO</div>
 
-        <button class="nav-toggle" aria-label="Toggle Menu">
-            <span></span>
-            <span></span>
-            <span></span>
+        <button class="nav-toggle" aria-label="Toggle Menu" type="button" aria-expanded="false">
+            <span></span><span></span><span></span>
         </button>
 
         <ul class="nav-menu">
@@ -13,12 +11,9 @@
                 <a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Beranda</a>
             </li>
 
-            {{-- PROFIL --}}
-            @php
-                $profilActive = request()->is('profil*');
-            @endphp
+            @php $profilActive = request()->is('profil*'); @endphp
             <li class="nav-dropdown {{ $profilActive ? 'open' : '' }}">
-                <button class="dropdown-toggle" type="button">
+                <button class="dropdown-toggle {{ $profilActive ? 'active' : '' }}" type="button" aria-expanded="{{ $profilActive ? 'true' : 'false' }}">
                     Profil <span class="arrow">▾</span>
                 </button>
                 <ul class="dropdown-menu">
@@ -36,12 +31,11 @@
                 <a href="/mitra" class="{{ request()->is('mitra*') ? 'active' : '' }}">Mitra</a>
             </li>
 
-            {{-- INFORMASI (baru) --}}
             @php
                 $infoActive = request()->is('informasi*') || request()->is('berita*') || request()->is('pengumuman*');
             @endphp
             <li class="nav-dropdown {{ $infoActive ? 'open' : '' }}">
-                <button class="dropdown-toggle" type="button">
+                <button class="dropdown-toggle {{ $infoActive ? 'active' : '' }}" type="button" aria-expanded="{{ $infoActive ? 'true' : 'false' }}">
                     Informasi <span class="arrow">▾</span>
                 </button>
                 <ul class="dropdown-menu">

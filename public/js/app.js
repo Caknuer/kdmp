@@ -1,245 +1,255 @@
-const toggle = document.querySelector('.nav-toggle');
-const menu = document.querySelector('.nav-menu');
-const dropdowns = document.querySelectorAll('.nav-dropdown');
-const navbar = document.querySelector('.navbar');
+/* =========================================================
+   KDMP UI - JS (Clean + Consistent)
+   - Navbar: mobile toggle + dropdown
+   - Shadow on scroll
+   - Modal: org + mitra (match .modal-overlay.active)
+   - Scroll reveal: IntersectionObserver (single version)
+   - Finance chart: Chart.js safe init
+========================================================= */
 
-/* TOGGLE MENU MOBILE */
-toggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-
-    menu.classList.toggle('open');
-    toggle.classList.toggle('active');
-
-    if (!menu.classList.contains('open')) {
-        dropdowns.forEach(d => d.classList.remove('open'));
-    }
-});
-
-/* DROPDOWN */
-dropdowns.forEach(dropdown => {
-    const toggleBtn = dropdown.querySelector('.dropdown-toggle');
-
-    toggleBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        dropdown.classList.toggle('open');
-    });
-
-    // Tutup menu setelah klik link (mobile UX)
-    dropdown.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            menu.classList.remove('open');
-            toggle.classList.remove('active');
-            dropdowns.forEach(d => d.classList.remove('open'));
-        });
-    });
-});
-
-/* KLIK LUAR (HANYA MOBILE) */
-document.addEventListener('click', () => {
-    if (window.innerWidth <= 768) {
-        dropdowns.forEach(d => d.classList.remove('open'));
-        menu.classList.remove('open');
-        toggle.classList.remove('active');
-    }
-});
-
-/* SHADOW SAAT SCROLL */
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 10);
-});
-
-// Pengurus & Pengawas
-const cards = document.querySelectorAll('.org-card');
-const modal = document.getElementById('orgModal');
-
-const modalPhoto = document.getElementById('modalPhoto');
-const modalName = document.getElementById('modalName');
-const modalRole = document.getElementById('modalRole');
-const modalBio = document.getElementById('modalBio');
-const modalClose = document.querySelector('.modal-close');
-
-cards.forEach(card => {
-    card.addEventListener('click', () => {
-        modalPhoto.src = card.dataset.photo;
-        modalName.textContent = card.dataset.name;
-        modalRole.textContent = card.dataset.role;
-        modalBio.textContent = card.dataset.bio || '';
-
-        modal.classList.add('active');
-    });
-});
-
-modalClose.addEventListener('click', () => {
-    modal.classList.remove('active');
-});
-
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        modal.classList.remove('active');
-    }
-});
-
-/* =========================
-   SCROLL REVEAL
-========================= */
-const reveals = document.querySelectorAll('.reveal');
-
-const revealOnScroll = () => {
-    reveals.forEach(el => {
-        const windowHeight = window.innerHeight;
-        const elementTop = el.getBoundingClientRect().top;
-
-        if (elementTop < windowHeight - 80) {
-            el.classList.add('active');
-        }
-    });
-};
-
-window.addEventListener('scroll', revealOnScroll);
-window.addEventListener('load', revealOnScroll);
-
-// Home
-/* =====================
-   SCROLL REVEAL
-===================== */
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target);
-        }
-    });
-}, {
-    threshold: 0.15
-});
-
-reveals.forEach(el => observer.observe(el));
-
-/* =========================
-   FINANCE CHART (Chart.js)
-========================= */
 (function () {
-    const canvas = document.getElementById('financeChart');
-    if (!canvas) return; // biar halaman lain tidak error
+  /* =========================
+     NAVBAR
+  ========================= */
+  const navbar = document.querySelector('.navbar');
+  const toggle = document.querySelector('.nav-toggle');
+  const menu = document.querySelector('.nav-menu');
+  const dropdowns = document.querySelectorAll('.nav-dropdown');
 
-    // data dari blade: window.financeMonthly = [...]
-    const monthly = Array.isArray(window.financeMonthly) ? window.financeMonthly : [];
+  // Safety: kalau navbar partial tidak ada di halaman tertentu
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+  }
 
-    // kalau kosong, tidak usah render chart
-    if (!monthly.length) return;
-
-    // ambil 6-12 bulan terakhir biar chart tidak kepanjangan
-    const sliced = monthly.slice(0, 12).reverse();
-
-    const labels = sliced.map(x => x.month);
-    const income = sliced.map(x => Number(x.income || 0));
-    const expense = sliced.map(x => Number(x.expense || 0));
-    const balance = sliced.map(x => Number(x.balance || (Number(x.income || 0) - Number(x.expense || 0))));
-
-    // format rupiah tooltip
-    const rupiah = (n) => {
-        try {
-            return 'Rp ' + Number(n).toLocaleString('id-ID');
-        } catch {
-            return 'Rp ' + n;
-        }
+  if (toggle && menu) {
+    const closeMobileMenu = () => {
+      menu.classList.remove('open');
+      toggle.classList.remove('active');
+      toggle.setAttribute('aria-expanded', 'false');
+      dropdowns.forEach(d => d.classList.remove('open'));
+      dropdowns.forEach(d => {
+        const btn = d.querySelector('.dropdown-toggle');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
     };
 
-    // render chart
-    new Chart(canvas, {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [
-                { label: 'Pemasukan', data: income, tension: 0.3 },
-                { label: 'Pengeluaran', data: expense, tension: 0.3 },
-                { label: 'Saldo Akhir', data: balance, tension: 0.3 },
-            ],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-                legend: { display: true },
-                tooltip: {
-                    callbacks: {
-                        label: function (ctx) {
-                            return `${ctx.dataset.label}: ${rupiah(ctx.parsed.y)}`;
-                        },
-                    },
-                },
-            },
-            scales: {
-                y: {
-                    ticks: {
-                        callback: function (value) {
-                            return rupiah(value);
-                        },
-                    },
-                },
-            },
-        },
+    const openMobileMenu = () => {
+      menu.classList.add('open');
+      toggle.classList.add('active');
+      toggle.setAttribute('aria-expanded', 'true');
+    };
+
+    // Toggle menu (mobile)
+    if (toggle) {
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = menu.classList.contains('open');
+        if (isOpen) closeMobileMenu();
+        else openMobileMenu();
+      });
+    }
+
+    // Dropdown behavior (mobile only)
+    dropdowns.forEach(dropdown => {
+      const toggleBtn = dropdown.querySelector('.dropdown-toggle');
+      if (!toggleBtn) return;
+
+      toggleBtn.addEventListener('click', (e) => {
+        // Hanya aktif di layar kecil
+        if (window.innerWidth > 768) return;
+
+        e.preventDefault();
+        e.stopPropagation(); // Stop bubbling agar tidak menutup menu utama
+
+        // Toggle state dropdown ini
+        const isCurrentlyOpen = dropdown.classList.contains('open');
+
+        // Opsional: Tutup dropdown lain jika ingin accordion style (satu terbuka)
+        // dropdowns.forEach(d => {
+        //   if (d !== dropdown) {
+        //     d.classList.remove('open');
+        //     const btn = d.querySelector('.dropdown-toggle');
+        //     if(btn) btn.setAttribute('aria-expanded', 'false');
+        //   }
+        // });
+
+        if (isCurrentlyOpen) {
+          dropdown.classList.remove('open');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        } else {
+          dropdown.classList.add('open');
+          toggleBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
     });
-})();
 
-// Mitra/Patner
-(function () {
-  const modal = document.getElementById('mitraModal');
-  const closeX = modal.querySelector('.modal-close');
-  const closeBtn = document.getElementById('modalCloseBtn');
+    // Close menu when clicking links (mobile UX)
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        // Cek apakah link ini BUKAN toggle dropdown
+        if (!link.classList.contains('dropdown-toggle') && window.innerWidth <= 768) {
+          closeMobileMenu();
+        }
+      });
+    });
 
-  const elLogo = document.getElementById('modalLogo');
-  const elName = document.getElementById('modalName');
-  const elDesc = document.getElementById('modalDesc');
-  const elWebsiteText = document.getElementById('modalWebsiteText');
-  const elWebsiteBtn = document.getElementById('modalWebsiteBtn');
+    // Klik luar: tutup menu mobile
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        // Jika klik terjadi di luar navbar, tutup
+        if (!navbar.contains(e.target)) {
+          closeMobileMenu();
+        }
+      }
+    });
 
-  function openModal({ name, desc, website, logo }) {
-    elName.textContent = name || 'Detail Mitra';
-    elDesc.textContent = desc || '';
+    // Resize handler
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        closeMobileMenu();
+      }
+    });
 
-    // Website
-    if (website) {
-      elWebsiteText.textContent = website;
-      elWebsiteBtn.style.display = 'inline-flex';
-      elWebsiteBtn.href = website;
-    } else {
-      elWebsiteText.textContent = '';
-      elWebsiteBtn.style.display = 'none';
-      elWebsiteBtn.href = '#';
-    }
-
-    // Logo: URL gambar atau inisial
-    elLogo.innerHTML = '';
-    if (logo && logo.startsWith('http')) {
-      const img = document.createElement('img');
-      img.src = logo;
-      img.alt = name || 'Mitra';
-      elLogo.appendChild(img);
-    } else {
-      elLogo.textContent = logo || '';
-    }
-
-    modal.classList.add('active');
-    modal.setAttribute('aria-hidden', 'false');
   }
 
-  function closeModal() {
-    modal.classList.remove('active');
-    modal.setAttribute('aria-hidden', 'true');
+  /* =========================
+     MODAL HELPERS (overlay-based)
+     CSS: .modal-overlay + .modal + .modal-close
+  ========================= */
+  const lockScroll = (locked) => {
+    document.documentElement.style.overflow = locked ? 'hidden' : '';
+    document.body.style.overflow = locked ? 'hidden' : '';
+  };
+
+  function bindOverlayModal(overlayEl, { onOpen, onClose } = {}) {
+    if (!overlayEl) return null;
+
+    const closeBtn = overlayEl.querySelector('.modal-close');
+    const close = () => {
+      overlayEl.classList.remove('active');
+      overlayEl.setAttribute('aria-hidden', 'true');
+      lockScroll(false);
+      if (typeof onClose === 'function') onClose();
+    };
+
+    const open = (payload) => {
+      if (typeof onOpen === 'function') onOpen(payload);
+      overlayEl.classList.add('active');
+      overlayEl.setAttribute('aria-hidden', 'false');
+      lockScroll(true);
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', close);
+
+    // klik area gelap = tutup
+    overlayEl.addEventListener('click', (e) => {
+      if (e.target === overlayEl) close();
+    });
+
+    // ESC = tutup
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlayEl.classList.contains('active')) close();
+    });
+
+    return { open, close };
   }
 
-  // Klik card / keyboard
+  /* =========================
+     MODAL: Pengurus & Pengawas
+     Trigger: .org-card data-*
+     Modal overlay id: #orgModal (sekarang harus modal-overlay)
+     Element id: #modalPhoto #modalName #modalRole #modalBio
+  ========================= */
+  const orgOverlay = document.getElementById('orgModal');
+  const orgModal = bindOverlayModal(orgOverlay, {
+    onOpen: ({ photo, name, role, bio }) => {
+      const elPhoto = document.getElementById('modalPhoto');
+      const elName = document.getElementById('modalName');
+      const elRole = document.getElementById('modalRole');
+      const elBio = document.getElementById('modalBio');
+
+      if (elPhoto) elPhoto.src = photo || '';
+      if (elName) elName.textContent = name || '';
+      if (elRole) elRole.textContent = role || '';
+      if (elBio) elBio.textContent = bio || '';
+    }
+  });
+
+  document.querySelectorAll('.org-card').forEach(card => {
+    card.addEventListener('click', () => {
+      if (!orgModal) return;
+      orgModal.open({
+        photo: card.dataset.photo || '',
+        name: card.dataset.name || '',
+        role: card.dataset.role || '',
+        bio: card.dataset.bio || ''
+      });
+    });
+  });
+
+  /* =========================
+     MODAL: Mitra/Partner
+     Trigger: .mitra-card data-*
+     Modal overlay id: #mitraModal
+     Element id: #modalLogo #modalName #modalDesc #modalWebsiteText #modalWebsiteBtn
+     Optional close button id: #modalCloseBtn
+  ========================= */
+  const mitraOverlay = document.getElementById('mitraModal');
+  const mitraModal = bindOverlayModal(mitraOverlay, {
+    onOpen: ({ name, desc, website, logo }) => {
+      const elLogo = document.getElementById('modalLogo');
+      const elName = document.getElementById('modalName');
+      const elDesc = document.getElementById('modalDesc');
+      const elWebsiteText = document.getElementById('modalWebsiteText');
+      const elWebsiteBtn = document.getElementById('modalWebsiteBtn');
+
+      if (elName) elName.textContent = name || 'Detail Mitra';
+      if (elDesc) elDesc.textContent = desc || '';
+
+      if (elWebsiteText) elWebsiteText.textContent = website || '';
+      if (elWebsiteBtn) {
+        if (website) {
+          elWebsiteBtn.style.display = 'inline-flex';
+          elWebsiteBtn.href = website;
+        } else {
+          elWebsiteBtn.style.display = 'none';
+          elWebsiteBtn.href = '#';
+        }
+      }
+
+      // Logo: URL gambar atau inisial
+      if (elLogo) {
+        elLogo.innerHTML = '';
+        if (logo && /^https?:\/\//.test(logo)) {
+          const img = document.createElement('img');
+          img.src = logo;
+          img.alt = name || 'Mitra';
+          elLogo.appendChild(img);
+        } else {
+          elLogo.textContent = logo || '';
+        }
+      }
+    }
+  });
+
+  // Optional close button di body modal
+  const mitraCloseBtn = document.getElementById('modalCloseBtn');
+  if (mitraCloseBtn && mitraModal) {
+    mitraCloseBtn.addEventListener('click', mitraModal.close);
+  }
+
   document.querySelectorAll('.mitra-card').forEach(card => {
-    const handler = () => openModal({
-      name: card.dataset.name || '',
-      desc: card.dataset.desc || '',
-      website: card.dataset.website || '',
-      logo: card.dataset.logo || ''
-    });
+    const handler = () => {
+      if (!mitraModal) return;
+      mitraModal.open({
+        name: card.dataset.name || '',
+        desc: card.dataset.desc || '',
+        website: card.dataset.website || '',
+        logo: card.dataset.logo || ''
+      });
+    };
 
     card.addEventListener('click', handler);
     card.addEventListener('keydown', (e) => {
@@ -250,17 +260,78 @@ reveals.forEach(el => observer.observe(el));
     });
   });
 
-  // Tutup
-  closeX.addEventListener('click', closeModal);
-  closeBtn.addEventListener('click', closeModal);
+  /* =========================
+     SCROLL REVEAL (single version)
+     class: .reveal -> add .active when visible
+  ========================= */
+  const reveals = document.querySelectorAll('.reveal');
+  if (reveals.length) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
 
-  // Klik area gelap = tutup
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
+    reveals.forEach(el => observer.observe(el));
+  }
 
-  // ESC = tutup
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
-  });
-})();
+  /* =========================
+     FINANCE CHART (Chart.js) - safe init
+  ========================= */
+  (function () {
+    const canvas = document.getElementById('financeChart');
+    if (!canvas || typeof Chart === 'undefined') return;
+
+    const monthly = Array.isArray(window.financeMonthly) ? window.financeMonthly : [];
+    if (!monthly.length) return;
+
+    const sliced = monthly.slice(0, 12).reverse();
+    const labels = sliced.map(x => x.month);
+    const income = sliced.map(x => Number(x.income || 0));
+    const expense = sliced.map(x => Number(x.expense || 0));
+    const balance = sliced.map(x => Number(x.balance || (Number(x.income || 0) - Number(x.expense || 0))));
+
+    const rupiah = (n) => {
+      try { return 'Rp ' + Number(n).toLocaleString('id-ID'); }
+      catch { return 'Rp ' + n; }
+    };
+
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Pemasukan', data: income, tension: 0.3 },
+          { label: 'Pengeluaran', data: expense, tension: 0.3 },
+          { label: 'Saldo Akhir', data: balance, tension: 0.3 },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              label: function (ctx) {
+                return `${ctx.dataset.label}: ${rupiah(ctx.parsed.y)}`;
+              },
+            },
+          },
+        },
+        scales: {
+          y: {
+            ticks: {
+              callback: function (value) { return rupiah(value); },
+            },
+          },
+        },
+      },
+    });
+  })();
+
+})();   

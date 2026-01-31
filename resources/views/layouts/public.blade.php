@@ -14,19 +14,47 @@
 
     @include('public.partials.navbar')
 
-    <main class="main-content">
-        @yield('P')
-    </main>
+    <main>
+      <section class="section">
+          <div class="container">
+              @yield('P')
+          </div>
+      </section>
+  </main>
 
     @include('public.partials.footer')
     
-    <div class="modal" id="orgModal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <img id="orgPhoto">
-            <h3 id="orgName"></h3>
-            <p id="orgRole"></p>
-            <p id="orgBio"></p>
+    {{-- =========================
+   MODAL: Pengurus / Pengawas
+    ========================= --}}
+    <div class="modal-overlay" id="orgModal" aria-hidden="true">
+
+        <div class="modal">
+
+            {{-- Header --}}
+            <div class="modal-head">
+                <h3 id="modalName">Detail Pengurus</h3>
+
+                <button class="modal-close" type="button">
+                    &times;
+                </button>
+            </div>
+
+            {{-- Body --}}
+            <div class="modal-body">
+
+                <img id="modalPhoto"
+                    src=""
+                    alt="Foto Pengurus"
+                    style="width:110px;height:110px;border-radius:50%;object-fit:cover;margin-bottom:14px;">
+
+                <p id="modalRole"
+                style="font-weight:600;margin-bottom:10px;color:#334155;">
+                </p>
+
+                <p id="modalBio" class="modal-desc"></p>
+
+            </div>
         </div>
     </div>
 
