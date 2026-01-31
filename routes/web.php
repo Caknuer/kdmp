@@ -36,6 +36,8 @@ Route::get('/cek-saldo', [PublicMemberController::class, 'balanceForm'])
 Route::post('/cek-saldo', [PublicMemberController::class, 'checkBalance'])
     ->name('member.balance.check');
 
+Route::get('/informasi', [PublicPostController::class, 'informasiIndex']);
+
 Route::get('/berita', [PublicPostController::class, 'beritaIndex']);
 Route::get('/berita/{slug}', [PublicPostController::class, 'beritaShow']);
 

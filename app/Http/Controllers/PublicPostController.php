@@ -67,4 +67,13 @@ class PublicPostController extends Controller
 
         return redirect($path, 301);
     }
+
+    public function informasiIndex()
+    {
+        $articles = Article::published()
+            ->latest('published_at')
+            ->paginate(9);
+
+        return view('public.informasi.index', compact('articles'));
+    }
 }
