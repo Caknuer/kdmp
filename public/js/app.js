@@ -176,60 +176,86 @@
   /* =========================
      MODAL: MITRA (optional)
   ========================= */
-  const mitraOverlay = document.getElementById("mitraModal");
-  const mitraModal = bindOverlayModal(mitraOverlay, ({ name, desc, website, logo }) => {
-    const elLogo = document.getElementById("modalLogo");
-    const elName = document.getElementById("modalName");
-    const elDesc = document.getElementById("modalDesc");
-    const elWebsiteText = document.getElementById("modalWebsiteText");
-    const elWebsiteBtn = document.getElementById("modalWebsiteBtn");
+  (function () {
+  const overlay = document.getElementById('mitraModal');
+  if (!overlay) return;
 
-    if (elName) elName.textContent = name || "Detail Mitra";
-    if (elDesc) elDesc.textContent = desc || "";
+  const modalLogo = document.getElementById('mitraModalLogo');
+  const modalTitle = document.getElementById('mitraModalTitle');
+  const modalWebsiteText = document.getElementById('mitraModalWebsiteText');
+  const modalDesc = document.getElementById('mitraModalDesc');
+  const modalWebsiteBtn = document.getElementById('mitraModalWebsiteBtn');
+  const closeBtn = overlay.querySelector('.mitra-modal-close');
 
-    if (elWebsiteText) elWebsiteText.textContent = website || "";
-    if (elWebsiteBtn) {
+  const lockScroll = (locked) => {
+    document.documentElement.style.overflow = locked ? 'hidden' : '';
+    document.body.style.overflow = locked ? 'hidden' : '';
+  };
+
+  const open = ({ name, desc, website, logoUrl, initials }) => {
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+    lockScroll(true);
+
+    if (modalTitle) modalTitle.textContent = name || 'Detail Mitra';
+    if (modalDesc) modalDesc.textContent = desc || '-';
+
+    // website text + tombol
+    if (modalWebsiteText) modalWebsiteText.textContent = website || '';
+    if (modalWebsiteBtn) {
       if (website) {
-        elWebsiteBtn.style.display = "inline-flex";
-        elWebsiteBtn.href = website;
+        const normalized = website.match(/^https?:\/\//) ? website : `https://${website}`;
+        modalWebsiteBtn.href = normalized;
+        modalWebsiteBtn.style.display = 'inline-flex';
       } else {
-        elWebsiteBtn.style.display = "none";
-        elWebsiteBtn.href = "#";
+        modalWebsiteBtn.href = '#';
+        modalWebsiteBtn.style.display = 'none';
       }
     }
 
-    if (elLogo) {
-      elLogo.innerHTML = "";
-      if (logo && /^https?:\/\//.test(logo)) {
-        const img = document.createElement("img");
-        img.src = logo;
-        img.alt = name || "Mitra";
-        elLogo.appendChild(img);
+    // logo bulat / inisial
+    if (modalLogo) {
+      modalLogo.innerHTML = '';
+      if (logoUrl) {
+        const img = document.createElement('img');
+        img.src = logoUrl;
+        img.alt = name || 'Mitra';
+        modalLogo.appendChild(img);
       } else {
-        elLogo.textContent = (name || "?").charAt(0).toUpperCase();
+        modalLogo.textContent = (initials || (name || '?').charAt(0)).toUpperCase();
       }
     }
+  };
+
+  const close = () => {
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    lockScroll(false);
+  };
+
+  // events
+  if (closeBtn) closeBtn.addEventListener('click', close);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) close();
   });
 
-  document.querySelectorAll(".mitra-card").forEach((card) => {
-    const handler = () => {
-      if (!mitraModal) return;
-      mitraModal.open({
-        name: card.dataset.name || "",
-        desc: card.dataset.desc || "",
-        website: card.dataset.website || "",
-        logo: card.dataset.logo || "",
-      });
-    };
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) close();
+  });
 
-    card.addEventListener("click", handler);
-    card.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        handler();
-      }
+  document.querySelectorAll('.mitra-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      open({
+        name: card.dataset.mitraName || '',
+        desc: card.dataset.mitraDesc || '',
+        website: card.dataset.mitraWebsite || '',
+        logoUrl: card.dataset.mitraLogo || '',
+        initials: card.dataset.mitraInitials || '',
+      });
     });
   });
+})();
 
   /* =========================
      SCROLL REVEAL

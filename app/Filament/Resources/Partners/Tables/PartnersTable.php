@@ -18,7 +18,7 @@ class PartnersTable
             ->defaultSort('sort_order', 'asc')
             ->columns([
                 TextColumn::make('sort_order')->label('Urutan')->sortable()
-                    ->label('Urutan')
+                    ->label('No')
                     ->sortable(),
 
                 ImageColumn::make('logo')
@@ -27,6 +27,11 @@ class PartnersTable
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
+                
+                TextColumn::make('description')
+                    ->label('Keterangan')
+                    ->searchable()
+                    ->sortable(),                    
 
                 TextColumn::make('website')
                     ->label('Website')

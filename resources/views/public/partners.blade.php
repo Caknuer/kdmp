@@ -12,6 +12,7 @@
     <div class="mitra-grid">
         @foreach ($partners as $partner)
             @php
+                // logo disimpan di storage/app/public/...
                 $logoUrl = !empty($partner->logo) ? asset('storage/' . $partner->logo) : null;
 
                 $initials = collect(explode(' ', $partner->name))
@@ -24,18 +25,20 @@
                 $website = $partner->website ?? '';
             @endphp
 
-            <div class="mitra-card"
-                 role="button"
-                 tabindex="0"
-                 data-name="{{ $partner->name }}"
-                 data-desc="{{ $desc }}"
-                 data-website="{{ $website }}"
-                 data-logo="{{ $logoUrl ?? $initials }}">
+            <button
+                type="button"
+                class="mitra-card"
+                data-mitra-name="{{ e($partner->name) }}"
+                data-mitra-desc="{{ e($desc) }}"
+                data-mitra-website="{{ e($website) }}"
+                data-mitra-logo="{{ $logoUrl ?: '' }}"
+                data-mitra-initials="{{ $initials }}"
+            >
                 <div class="mitra-logo">
                     @if ($logoUrl)
                         <img src="{{ $logoUrl }}" alt="{{ $partner->name }}">
                     @else
-                        {{ $initials }}
+                        <span class="mitra-initials">{{ $initials }}</span>
                     @endif
                 </div>
 
@@ -44,32 +47,32 @@
                     <span class="mitra-chip">Mitra</span>
                     <div class="mitra-sub">{{ $website ?: 'Klik untuk lihat detail' }}</div>
                 </div>
-            </div>
+            </button>
         @endforeach
     </div>
 </section>
 
-<!-- JENDELA MENGAMBANG (MODAL) -->
-<div class="modal-overlay" id="mitraModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
-        <div class="modal-head">
-            <div class="modal-head-left">
-                <div class="modal-logo" id="modalLogo"></div>
-                <div class="modal-title">
-                    <h3 id="modalName">Detail Mitra</h3>
-                    <small id="modalWebsiteText"></small>
+<!-- MODAL KHUSUS MITRA (ID beda dari pengurus) -->
+<div class="mitra-modal-overlay" id="mitraModal" aria-hidden="true">
+    <div class="mitra-modal" role="dialog" aria-modal="true" aria-labelledby="mitraModalTitle">
+        <div class="mitra-modal-head">
+            <div class="mitra-modal-head-left">
+                <div class="mitra-modal-logo" id="mitraModalLogo"></div>
+                <div class="mitra-modal-title">
+                    <h3 id="mitraModalTitle">Detail Mitra</h3>
+                    <small id="mitraModalWebsiteText"></small>
                 </div>
             </div>
 
-            <button class="modal-close" type="button" aria-label="Tutup">&times;</button>
+            <button class="mitra-modal-close" type="button" aria-label="Tutup">&times;</button>
         </div>
 
-        <div class="modal-body">
-            <p class="modal-desc" id="modalDesc"></p>
+        <div class="mitra-modal-body">
+            <p class="mitra-modal-desc" id="mitraModalDesc"></p>
         </div>
 
-        <div class="modal-actions">
-            <a class="btn btn-primary" id="modalWebsiteBtn" href="#" target="_blank" rel="noopener" style="display:none;">
+        <div class="mitra-modal-actions">
+            <a class="mitra-btn mitra-btn-primary" id="mitraModalWebsiteBtn" href="#" target="_blank" rel="noopener" style="display:none;">
                 Kunjungi Website
             </a>
         </div>

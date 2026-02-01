@@ -11,6 +11,7 @@ class Partner extends Model
         'logo',
         'website',
         'sort_order',
+        'description',
         'is_active',
     ];
 

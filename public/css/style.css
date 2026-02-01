@@ -531,29 +531,52 @@ body {
 }
 
 /* =========================
+   MITRA HERO
+========================= */
+.mitra-hero{
+  padding: 56px 0 44px;
+  background: linear-gradient(135deg, #0b1220 0%, #0f1b35 100%);
+  color: #fff;
+}
+.mitra-hero-inner{
+  width: min(1100px, 92%);
+  margin: 0 auto;
+  text-align: center;
+}
+.mitra-hero-inner h1{
+  margin: 0 0 8px;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+}
+.mitra-hero-inner p{
+  margin: 0 auto;
+  max-width: 720px;
+  opacity: 0.9;
+  font-size: 15px;
+}
+
+/* =========================
    MITRA GRID
 ========================= */
-.mitra-grid {
+.mitra-grid{
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   padding: 24px 0 70px;
 }
-
-@media (max-width: 960px) {
-  .mitra-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+@media (max-width: 960px){
+  .mitra-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px){
+  .mitra-grid{ grid-template-columns: 1fr; }
 }
 
-@media (max-width: 600px) {
-  .mitra-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.mitra-card {
-  background: #ffffff;
+/* Card as button */
+.mitra-card{
+  width: 100%;
+  text-align: left;
+  background: #fff;
   border: 1px solid #e7eaf0;
   border-radius: 16px;
   padding: 16px;
@@ -561,52 +584,53 @@ body {
   gap: 14px;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
 }
-
-.mitra-card:hover {
+.mitra-card:hover{
   transform: translateY(-2px);
   border-color: #d7dce7;
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.10);
 }
-
-.mitra-logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  color: #0f172a;
-  overflow: hidden;
-  flex: 0 0 auto;
+.mitra-card:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.14), 0 14px 30px rgba(15, 23, 42, 0.10);
 }
 
-.mitra-logo img {
+/* Logo sama feelnya dengan pengurus: bulat */
+.mitra-logo{
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+}
+.mitra-logo img{
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+}
+.mitra-initials{
+  font-weight: 900;
+  color: #0f172a;
 }
 
-.mitra-meta {
-  min-width: 0;
-}
-
-.mitra-meta h4 {
+.mitra-meta{ min-width: 0; }
+.mitra-meta h4{
   margin: 0 0 6px;
   font-size: 16px;
   line-height: 1.25;
   color: #0f172a;
   overflow-wrap: anywhere;
 }
-
-.mitra-meta .mitra-chip {
+.mitra-chip{
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   font-size: 12px;
   padding: 5px 10px;
   border-radius: 999px;
@@ -614,14 +638,142 @@ body {
   color: #3730a3;
   border: 1px solid #e0e7ff;
 }
-
-.mitra-meta .mitra-sub {
+.mitra-sub{
   margin-top: 6px;
   font-size: 13px;
   color: #64748b;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* =========================
+   MITRA MODAL (ID & class beda)
+========================= */
+.mitra-modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.58);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+.mitra-modal-overlay.active{ display: flex; }
+
+.mitra-modal{
+  width: min(640px, 96%);
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #e7eaf0;
+  box-shadow: 0 22px 60px rgba(0,0,0,.22);
+}
+
+.mitra-modal-head{
+  padding: 16px 18px;
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.mitra-modal-head-left{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.mitra-modal-title h3{
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+.mitra-modal-title small{
+  display: block;
+  margin-top: 2px;
+  opacity: .85;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.mitra-modal-close{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* Logo bulat di modal */
+.mitra-modal-logo{
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  overflow: hidden;
+}
+.mitra-modal-logo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+}
+
+.mitra-modal-body{
+  padding: 18px;
+}
+.mitra-modal-desc{
+  margin: 0;
+  color: #334155;
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.mitra-modal-actions{
+  padding: 0 18px 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mitra-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #e7eaf0;
+  background: #fff;
+  color: #0f172a;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+}
+.mitra-btn-primary{
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #fff;
+}
+
+@media (max-width: 600px){
+  .mitra-modal{
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }
 
 /* =========================
