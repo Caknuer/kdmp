@@ -66,7 +66,7 @@
 <!-- GRAFIK -->
 <section class="container" style="margin-top: 18px;">
     <div class="card-wrap">
-        <h3>Grafik Keuangan</h3>
+        <h3>Grafik Keuangan (Harian - Bulan)</h3>
 
         <div class="chart-base">
             <div class="chart-inner">
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        @if (empty($monthly) || $monthly->count() === 0)
+        @if (empty($daily) || $daily->count() === 0)
             <p style="margin-top:12px; color:#666;">Belum ada data untuk ditampilkan pada grafik.</p>
         @endif
     </div>
@@ -118,9 +118,11 @@
     </div>
 </section>
 
+{{-- Inject data untuk app.js --}}
 <script>
-    window.financeMonthly = @json($monthly);
-    window.selectedMonth = @json($selectedMonth);
+    window.financeDaily = @json($daily ?? []);        // grafik 1 bulan (harian)
+    window.financeMonthly = @json($monthly ?? []);    // opsional
+    window.selectedMonth = @json($selectedMonth ?? null);
 </script>
 
 @endsection

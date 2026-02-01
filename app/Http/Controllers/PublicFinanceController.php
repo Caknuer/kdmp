@@ -57,8 +57,7 @@ class PublicFinanceController extends Controller
         // Rekap bulanan finance_transactions
         $financeMonthly = FinanceTransaction::select(
                 DB::raw("DATE_FORMAT(date, '%Y-%m') as month"),
-                DB::raw("SUM(CASE WHEN type='income' THEN amount ELSE 0 END) as income"),
-                DB::raw("SUM(CASE WHEN type='expense' THEN amount ELSE 0 END) as expense")
+                DB::raw("SUM(CASE WHEN type='income' THEN amount ELSE 0 END) as income")
             )
             ->groupBy('month')
             ->pluck('income', 'month'); // income by month
@@ -138,6 +137,78 @@ class PublicFinanceController extends Controller
         });
 
         /* ==========================================================
+           2.5) DATA HARIAN UNTUK GRAFIK (BULAN DIPILIH) ✅ TAMBAHAN
+           - grafik menampilkan transaksi di dalam 1 bulan, per hari
+           - income & expense digabung dari dua tabel
+        ========================================================== */
+
+        // Harian finance_transactions
+        $financeDailyIncome = FinanceTransaction::select(
+                DB::raw("DATE(date) as day"),
+                DB::raw("SUM(amount) as total")
+            )
+            ->whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'income')
+            ->groupBy('day')
+            ->pluck('total', 'day');
+
+        $financeDailyExpense = FinanceTransaction::select(
+                DB::raw("DATE(date) as day"),
+                DB::raw("SUM(amount) as total")
+            )
+            ->whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'expense')
+            ->groupBy('day')
+            ->pluck('total', 'day');
+
+        // Harian transactions (member)
+        $memberDailyIncome = Transaction::select(
+                DB::raw("DATE(date) as day"),
+                DB::raw("SUM(amount) as total")
+            )
+            ->whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'credit')
+            ->groupBy('day')
+            ->pluck('total', 'day');
+
+        $memberDailyExpense = Transaction::select(
+                DB::raw("DATE(date) as day"),
+                DB::raw("SUM(amount) as total")
+            )
+            ->whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'debit')
+            ->groupBy('day')
+            ->pluck('total', 'day');
+
+        // Ambil semua hari yang ada di bulan itu (dari kedua sumber)
+        $days = collect()
+            ->merge($financeDailyIncome->keys())
+            ->merge($financeDailyExpense->keys())
+            ->merge($memberDailyIncome->keys())
+            ->merge($memberDailyExpense->keys())
+            ->unique()
+            ->sort()
+            ->values();
+
+        // Build daily rows final untuk grafik
+        $daily = $days->map(function ($day) use (
+            $financeDailyIncome,
+            $financeDailyExpense,
+            $memberDailyIncome,
+            $memberDailyExpense
+        ) {
+            $income = (float) ($financeDailyIncome[$day] ?? 0) + (float) ($memberDailyIncome[$day] ?? 0);
+            $expense = (float) ($financeDailyExpense[$day] ?? 0) + (float) ($memberDailyExpense[$day] ?? 0);
+
+            return (object) [
+                'day' => $day,            // "YYYY-MM-DD"
+                'income' => $income,
+                'expense' => $expense,
+                'balance' => $income - $expense,
+            ];
+        });
+
+        /* ==========================================================
            3) DROPDOWN BULAN TERSEDIA (GABUNG)
         ========================================================== */
         $availableMonths = $months;
@@ -148,6 +219,7 @@ class PublicFinanceController extends Controller
             'balance',
             'registrationIncome',
             'monthly',
+            'daily',              // ✅ TAMBAH INI
             'availableMonths',
             'selectedMonth'
         ));
