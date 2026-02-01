@@ -9,6 +9,8 @@ use App\Models\Partner;
 use App\Models\Transaction;
 use App\Models\Setting;
 use App\Models\OrganizationMember;
+use App\Models\FinanceTransaction;
+use Illuminate\Support\Facades\DB;
 
 class PublicController extends Controller
 {
@@ -17,15 +19,53 @@ class PublicController extends Controller
     ======================== */
     public function home()
     {
+        // ambil bulan berjalan (untuk ringkasan home)
+        $selectedMonth = now()->format('Y-m');
+        $startDate = "{$selectedMonth}-01";
+        $endDate   = date('Y-m-t', strtotime($startDate));
+
+        // A. finance_transactions
+        $financeIncome = FinanceTransaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'income')
+            ->sum('amount');
+
+        $financeExpense = FinanceTransaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'expense')
+            ->sum('amount');
+
+        // B. transactions (member)
+        $memberIncome = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'credit')
+            ->sum('amount');
+
+        $memberExpense = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'debit')
+            ->sum('amount');
+
+        // TOTAL gabungan
+        $income  = $financeIncome + $memberIncome;
+        $expense = $financeExpense + $memberExpense;
+        $balance = $income - $expense;
+
+        // pendaftar baru (initial)
+        $registrationIncome = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'credit')
+            ->where('category', 'initial')
+            ->sum('amount');
+
         return view('public.home', [
-            'articles' => Article::published()
+            'latestInfo' => Article::published()
                 ->latest('published_at')
-                ->limit(4)
+                ->limit(6)
                 ->get(),
 
+            // ringkasan keuangan untuk home
             'summary' => [
-                'credit' => Transaction::where('type', 'credit')->sum('amount'),
-                'debit'  => Transaction::where('type', 'debit')->sum('amount'),
+                'month' => $selectedMonth,
+                'income' => $income,
+                'expense' => $expense,
+                'registration_income' => $registrationIncome,
+                'balance' => $balance,
             ],
 
             'setting' => $this->getSettings(),
