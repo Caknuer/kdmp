@@ -5,11 +5,26 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\PublicFinanceController;
 use App\Http\Controllers\PublicPostController;
+use App\Models\AboutPage;
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 
 Route::prefix('profil')->group(function () {
-    Route::get('/tentang', fn () => view('public.profil.tentang'));
+    Route::get('/tentang', function () {
+        $about = AboutPage::where('slug', 'tentang-kdmp')->first();
+
+        // fallback kalau record belum ada
+        if (! $about) {
+            $about = new AboutPage([
+                'profil_singkat' => '',
+                'visi' => '',
+                'misi' => [],
+                'nilai' => [],
+            ]);
+        }
+
+        return view('public.profil.tentang', compact('about'));
+    });
     Route::get('/pengurus', [PublicController::class, 'pengurus']);
     Route::get('/pengawas', [PublicController::class, 'pengawas']);
 });

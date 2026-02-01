@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutPage;
 use App\Models\Article;
 use App\Models\BusinessUnit;
 use App\Models\Partner;
@@ -252,5 +253,22 @@ class PublicController extends Controller
             'gmaps_url' => $gmapsUrl,
             'gmaps_embed_src' => $this->gmapsEmbedFromUrl($gmapsUrl),
         ];
+    }
+
+    public function __invoke()
+    {
+        $about = AboutPage::where('slug', 'tentang-kdmp')->first();
+
+        // kalau belum ada record di DB, biar halaman tetap kebuka
+        if (! $about) {
+            $about = new AboutPage([
+                'profil_singkat' => '',
+                'visi' => '',
+                'misi' => [],
+                'nilai' => [],
+            ]);
+        }
+
+        return view('public.profil.tentang', compact('about'));
     }
 }
