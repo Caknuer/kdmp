@@ -1,57 +1,61 @@
 @extends('layouts.public')
 
 @section('P')
-<section class="page-hero">
+<section class="page-hero page-hero--info">
     <div class="page-hero-inner">
+        <span class="hero-pill">Informasi KDMP</span>
         <h1>Informasi</h1>
         <p>Berita dan pengumuman terbaru dari KDMP</p>
     </div>
 </section>
 
-<section class="container">
-    <div class="row berita-grid">
+<section class="section section--soft">
+    <div class="container">
+        <div class="info-grid">
+            @forelse ($articles as $article)
+                @php
+                    $base = $article->type === 'pengumuman' ? 'pengumuman' : 'berita';
+                @endphp
 
-        @forelse ($articles as $article)
-            @php
-                $base = $article->type === 'pengumuman' ? 'pengumuman' : 'berita';
-            @endphp
+                <a href="{{ url('/'.$base.'/'.$article->slug) }}" class="info-card">
+                    <div class="info-thumb">
+                        @if ($article->thumbnail)
+                            <img
+                                src="{{ asset('storage/'.$article->thumbnail) }}"
+                                alt="{{ $article->title }}"
+                            >
+                        @else
+                            <div class="info-thumb-placeholder">
+                                {{ strtoupper(substr($article->title,0,1)) }}
+                            </div>
+                        @endif
+                    </div>
 
-            <a href="{{ url('/'.$base.'/'.$article->slug) }}" class="berita-card">
+                    <div class="info-body">
+                        <div class="info-meta">
+                            <span class="info-tag {{ $article->type === 'pengumuman' ? 'is-ann' : 'is-news' }}">
+                                {{ $article->type === 'pengumuman' ? 'Pengumuman' : 'Berita' }}
+                            </span>
+                            <span class="info-date">{{ $article->display_date->format('d M Y') }}</span>
+                        </div>
 
-                <div class="berita-thumb">
-                    @if ($article->thumbnail)
-                        <img
-                            src="{{ asset('storage/'.$article->thumbnail) }}"
-                            alt="{{ $article->title }}"
-                            style="width:100%;height:100%;object-fit:cover;border-radius:12px;"
-                        >
-                    @else
-                        {{ strtoupper(substr($article->title,0,1)) }}
-                    @endif
+                        <h3 class="info-title">{{ $article->title }}</h3>
+                        <p class="info-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($article->content), 110) }}</p>
+                        <span class="info-cta">Baca selengkapnya →</span>
+                    </div>
+                </a>
+            @empty
+                <div class="info-empty">
+                    <h3>Belum ada informasi yang dipublikasikan</h3>
+                    <p>Silakan cek kembali nanti. Informasi terbaru akan muncul di halaman ini.</p>
+                    <a class="btn btn--primary" href="{{ url('/') }}">Kembali ke Beranda</a>
                 </div>
+            @endforelse
+        </div>
 
-                <div class="berita-body">
-                    <small style="display:inline-block;margin-bottom:6px;">
-                        {{ $article->type === 'pengumuman' ? 'Pengumuman' : 'Berita' }}
-                        • {{ $article->display_date->format('d M Y') }}
-                    </small>
-
-                    <h3>{{ $article->title }}</h3>
-
-                    <p>{{ \Illuminate\Support\Str::limit(strip_tags($article->content), 100) }}</p>
-                </div>
-
-            </a>
-        @empty
-            <div class="empty-state">
-                Belum ada informasi yang dipublikasikan.
-            </div>
-        @endforelse
-
-    </div>
-
-    <div style="margin-top:30px">
-        {{ $articles->links() }}
+        <div class="info-pagination">
+            {{ $articles->links() }}
+        </div>
     </div>
 </section>
 @endsection

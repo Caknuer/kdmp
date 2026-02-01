@@ -22,7 +22,7 @@ class ArticleForm
                     'berita' => 'Berita',
                     'pengumuman' => 'Pengumuman',
                 ])
-                ->default('berita')
+                ->default('Pilih salah satu opsi')
                 ->required(),
 
             TextInput::make('title')
