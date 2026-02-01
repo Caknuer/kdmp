@@ -1,11 +1,41 @@
-/* RESET */
+/* =========================================================
+   KDMP WONOKERTO - style.css (FULL CLEAN VERSION)
+   - No duplicate hero/container/modal
+   - Modal system unified: .modal-overlay + .modal
+   - Works with app.js (bindOverlayModal)
+========================================================= */
+
+/* =========================
+   RESET
+========================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* NAVBAR */
+/* =========================
+   BASE
+========================= */
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  color: #111;
+  background: #fff;
+}
+
+.container {
+  width: min(1200px, 92%);
+  margin: 0 auto;
+}
+
+/* =========================
+   NAVBAR
+========================= */
 .navbar {
   position: sticky;
   top: 0;
@@ -20,9 +50,9 @@
 }
 
 .nav-container {
-  max-width: 1200px;
+  width: min(1200px, 92%);
   margin: auto;
-  padding: 16px 24px;
+  padding: 16px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,7 +62,7 @@
 /* LOGO */
 .logo {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 800;
   color: #b91c1c;
 }
 
@@ -48,7 +78,7 @@
 .dropdown-toggle {
   text-decoration: none;
   color: #111;
-  font-weight: 500;
+  font-weight: 600;
   background: none;
   border: none;
   cursor: pointer;
@@ -63,7 +93,7 @@
 /* ACTIVE */
 .nav-menu a.active {
   color: #b91c1c;
-  font-weight: 600;
+  font-weight: 700;
   position: relative;
 }
 
@@ -87,8 +117,8 @@
   top: 120%;
   left: 0;
   background: #fff;
-  min-width: 180px;
-  border-radius: 8px;
+  min-width: 190px;
+  border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   list-style: none;
   padding: 8px 0;
@@ -96,6 +126,7 @@
   visibility: hidden;
   transform: translateY(8px);
   transition: 0.2s ease;
+  z-index: 999;
 }
 
 .nav-dropdown:hover .dropdown-menu {
@@ -134,18 +165,9 @@
   transition: 0.3s ease;
 }
 
-.nav-toggle span:nth-child(1) {
-  top: 0;
-}
-
-.nav-toggle span:nth-child(2) {
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.nav-toggle span:nth-child(3) {
-  bottom: 0;
-}
+.nav-toggle span:nth-child(1) { top: 0; }
+.nav-toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.nav-toggle span:nth-child(3) { bottom: 0; }
 
 .nav-toggle.active span:nth-child(1) {
   transform: rotate(45deg);
@@ -161,9 +183,8 @@
   top: 50%;
 }
 
-/* MOBILE */
+/* MOBILE NAV */
 @media (max-width: 768px) {
-
   .nav-toggle {
     display: block;
   }
@@ -184,9 +205,7 @@
 
   .nav-menu.open {
     max-height: 90vh;
-    /* beri ruang lebih banyak */
     overflow-y: auto;
-    /* biar bisa discroll kalau itemnya banyak */
   }
 
   .nav-menu li {
@@ -195,7 +214,7 @@
 
   .nav-menu li a,
   .dropdown-toggle {
-    padding: 14px 24px;
+    padding: 14px 18px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -206,7 +225,7 @@
   .dropdown-menu {
     position: static;
     box-shadow: none;
-    padding-left: 16px;
+    padding-left: 12px;
     display: none;
     opacity: 1;
     visibility: visible;
@@ -217,9 +236,6 @@
     display: block !important;
   }
 
-  /* MATIKAN HOVER MOBILE - Removed conflict */
-  /* .nav-dropdown:hover .dropdown-menu { display: none; } */
-
   .arrow {
     transition: transform 0.2s ease;
   }
@@ -227,10 +243,11 @@
   .nav-dropdown.open .arrow {
     transform: rotate(180deg);
   }
-
 }
 
-/* HERO */
+/* =========================
+   HERO (HOME) - FULL WIDTH
+========================= */
 .hero {
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -239,23 +256,22 @@
 }
 
 .hero-container {
-  max-width: 1200px;
+  width: min(1200px, 92%);
   margin: 0 auto;
-  padding: 80px 24px;
+  padding: 80px 0;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 48px;
   align-items: center;
 }
 
-/* CONTENT */
 .hero-badge {
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 16px;
 }
 
@@ -263,7 +279,7 @@
   font-size: 44px;
   line-height: 1.2;
   margin-bottom: 16px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .hero-content h1 span {
@@ -272,7 +288,7 @@
 
 .hero-content p {
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
   max-width: 520px;
   margin-bottom: 28px;
   opacity: 0.95;
@@ -282,15 +298,19 @@
 .hero-actions {
   display: flex;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .btn-primary,
 .btn-secondary {
   padding: 14px 22px;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   transition: 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-primary {
@@ -319,12 +339,10 @@
   object-fit: cover;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
-
   .hero-container {
     grid-template-columns: 1fr;
-    padding: 64px 20px;
+    padding: 64px 0;
     text-align: center;
   }
 
@@ -339,7 +357,6 @@
 
   .hero-actions {
     justify-content: center;
-    flex-wrap: wrap;
   }
 
   .hero-visual {
@@ -347,65 +364,44 @@
   }
 }
 
-/* Pengurus & Pengawas */
 /* =========================
-   HERO
+   PAGE HERO (Pengurus/Pengawas/Mitra/Unit)
+   SINGLE VERSION ONLY
 ========================= */
 .page-hero {
-  background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+  background: linear-gradient(135deg, #0b1220 0%, #0f1b35 100%);
   color: #fff;
-  padding: 90px 20px 70px;
+  padding: 70px 0 54px;
   text-align: center;
+}
+
+.page-hero-inner {
+  width: min(1100px, 92%);
+  margin: 0 auto;
 }
 
 .page-hero h1 {
-  font-size: 42px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.6px;
 }
 
 .page-hero p {
-  font-size: 16px;
-  opacity: .9;
-}
-
-.hero-badge {
-  display: inline-block;
-  background: rgba(255, 255, 255, .15);
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  margin-bottom: 16px;
+  margin: 0 auto;
+  max-width: 720px;
+  opacity: 0.9;
+  font-size: 15px;
 }
 
 /* =========================
-   SECTION
+   ORG SECTION (Pengurus/Pengawas)
 ========================= */
 .org-section {
-  padding: 70px 20px;
+  padding: 60px 0 80px;
   background: #fafafa;
 }
 
-.section-head {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.section-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.section-subtitle {
-  color: #666;
-  max-width: 600px;
-  margin: auto;
-}
-
-/* =========================
-   INFO BAR
-========================= */
 .org-info {
   display: flex;
   justify-content: space-between;
@@ -413,8 +409,8 @@
   background: #fff;
   padding: 20px 24px;
   border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .05);
-  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-bottom: 36px;
 }
 
 .org-info-right {
@@ -422,53 +418,84 @@
   color: #555;
 }
 
-/* =========================
-   GRID & CARD
-========================= */
+.section-head {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  color: #666;
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
 .org-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
+  gap: 22px;
 }
 
 .org-card {
   background: #fff;
   border-radius: 18px;
-  padding: 28px 20px;
+  padding: 26px 18px;
   text-align: center;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, .05);
-  transition: transform .3s ease, box-shadow .3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
 }
 
 .org-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, .12);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
 }
 
-.org-card img {
+/* Photo card */
+.org-photo,
+.org-photo-placeholder {
   width: 110px;
   height: 110px;
-  object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 14px;
+  margin: 0 auto 14px;
   border: 4px solid #f1f1f1;
+  display: block;
+}
+
+.org-photo {
+  object-fit: cover;
+  background: #f1f5f9;
+}
+
+.org-photo-placeholder {
+  background: #f1f5f9;
+  color: #324b85;
+  display: grid;
+  place-items: center;
+  font-size: 36px;
+  font-weight: 800;
 }
 
 .org-card h3 {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 6px;
+  overflow-wrap: anywhere;
 }
 
 .org-card span {
   font-size: 14px;
   color: #777;
+  overflow-wrap: anywhere;
 }
 
-/* =========================
-   EMPTY STATE
-========================= */
+/* Empty state */
 .empty {
   grid-column: 1 / -1;
   background: #fff;
@@ -478,163 +505,309 @@
   color: #666;
 }
 
-/* =========================
-   MODAL
-========================= */
-/* MODAL CLEANUP - Using proper .modal-overlay structure defined below */
-
-/* Animasi scroll */
-/* =========================
-   SCROLL REVEAL
-========================= */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all .6s ease;
-}
-
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================
-   CARD STAGGER
-========================= */
-.org-card {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp .6s ease forwards;
-}
-
-.org-card:nth-child(1) {
-  animation-delay: .1s;
-}
-
-.org-card:nth-child(2) {
-  animation-delay: .2s;
-}
-
-.org-card:nth-child(3) {
-  animation-delay: .3s;
-}
-
-.org-card:nth-child(4) {
-  animation-delay: .4s;
-}
-
-.org-card:nth-child(5) {
-  animation-delay: .5s;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* =========================
-   MOBILE POLISH
-========================= */
+/* ORG responsive */
 @media (max-width: 640px) {
-
-  .section-title {
-    font-size: 26px;
-    line-height: 1.3;
-  }
-
-  .section-subtitle {
-    font-size: 15px;
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-
-}
-
-@media (max-width: 640px) {
-
   .org-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
 
   .org-card {
     display: flex;
     align-items: center;
     gap: 16px;
+    text-align: left;
     padding: 16px;
     border-radius: 14px;
   }
 
-  .org-card img {
+  .org-photo,
+  .org-photo-placeholder {
     width: 72px;
     height: 72px;
-    border-radius: 50%;
-    object-fit: cover;
+    margin: 0;
     flex-shrink: 0;
   }
-
-  .org-card h3 {
-    font-size: 16px;
-    margin-bottom: 4px;
-  }
-
-  .org-card span {
-    font-size: 14px;
-    color: #666;
-  }
-
 }
 
-@media (max-width: 640px) {
+/* =========================
+   MITRA GRID
+========================= */
+.mitra-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 24px 0 70px;
+}
 
+@media (max-width: 960px) {
+  .mitra-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .mitra-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mitra-card {
+  background: #ffffff;
+  border: 1px solid #e7eaf0;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.mitra-card:hover {
+  transform: translateY(-2px);
+  border-color: #d7dce7;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.10);
+}
+
+.mitra-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  color: #0f172a;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.mitra-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mitra-meta {
+  min-width: 0;
+}
+
+.mitra-meta h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #0f172a;
+  overflow-wrap: anywhere;
+}
+
+.mitra-meta .mitra-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #e0e7ff;
+}
+
+.mitra-meta .mitra-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================
+   MODAL SYSTEM (Unified)
+   Uses: .modal-overlay.active
+========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.58);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  width: min(720px, 96%);
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e7eaf0;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.modal-head {
+  padding: 16px 18px;
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-head-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.modal-title h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.modal-title small {
+  display: block;
+  margin-top: 2px;
+  opacity: 0.85;
+  font-size: 12px;
+}
+
+.modal-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* modal body */
+.modal-body {
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+}
+
+/* ORG modal photo (id used in blade) */
+#modalPhoto {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+/* Mitra modal logo */
+.modal-logo {
+  width: 110px;
+  height: 110px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  color: #0f172a;
+  overflow: hidden;
+}
+
+.modal-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ORG modal bio + Mitra modal desc */
+#modalBio,
+.modal-desc {
+  margin: 0;
+  color: #334155;
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.modal-actions {
+  padding: 0 18px 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #e7eaf0;
+  background: #fff;
+  color: #0f172a;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+
+.btn:hover {
+  filter: brightness(0.98);
+}
+
+/* Modal responsive */
+@media (max-width: 600px) {
   .modal {
-    align-items: flex-end;
+    width: 96%;
+    max-height: 90vh;
+    overflow-y: auto;
   }
 
-  .modal-content {
-    width: 100%;
-    max-height: 85vh;
-    border-radius: 20px 20px 0 0;
-    padding: 24px 20px;
-    animation: slideUp .3s ease;
+  .modal-body {
+    grid-template-columns: 1fr;
   }
 
-  .modal-content img {
-    width: 90px;
-    height: 90px;
-    margin: 0 auto 12px;
-    display: block;
-  }
-
-  .modal-close {
-    top: 12px;
-    right: 16px;
-    font-size: 26px;
-  }
-
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-
-  to {
-    transform: translateY(0);
+  #modalPhoto,
+  .modal-logo {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    margin: 0 auto;
   }
 }
 
-/* Home/Dasboard */
-.container {
-  max-width: 1200px;
-  /* lebar maksimum konten */
-  margin: 0 auto;
-  /* otomatis center */
-  padding: 0 20px;
-  /* jarak kiri-kanan agar tidak nempel pinggir */
-  box-sizing: border-box;
+/* =========================
+   SCROLL REVEAL (optional)
+========================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* =====================
@@ -655,7 +828,7 @@
   background: #fff;
   border-radius: 14px;
   padding: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, .05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
 .summary-card h4 {
@@ -680,32 +853,12 @@
 }
 
 .summary-card.total-akhir {
-  background-color: hsl(223, 7%, 81%);
-  /* biru gelap */
-  color: #fff;
-}
-
-.summary-card.total-akhir strong {
-  font-size: 1.2rem;
-}
-
-.summary-card.total-akhir {
   background: #111827;
   color: #fff;
 }
 
 .summary-card.total-akhir strong,
 .summary-card.total-akhir h4 {
-  color: #fff;
-}
-
-.summary-card.highlight {
-  background: linear-gradient(135deg, #b91c1c, #7f1d1d);
-  color: #fff;
-}
-
-.summary-card.highlight strong,
-.summary-card.highlight h4 {
   color: #fff;
 }
 
@@ -723,13 +876,13 @@
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, .06);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .news-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, .1);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
 }
 
 .news-thumbnail {
@@ -756,16 +909,18 @@
 .news-content h3 {
   font-size: 18px;
   margin-bottom: 8px;
+  overflow-wrap: anywhere;
 }
 
 .news-content p {
   font-size: 14px;
   color: #555;
   margin-bottom: 12px;
+  overflow-wrap: anywhere;
 }
 
 .news-content a.read-more {
-  font-weight: 500;
+  font-weight: 600;
   color: #b91c1c;
   text-decoration: none;
 }
@@ -773,26 +928,20 @@
 .section-title-link {
   text-decoration: none;
   color: inherit;
-  /* ambil warna h2 default */
   transition: color 0.2s;
 }
 
 .section-title-link:hover {
   color: #b91c1c;
-  /* atau sesuai warna hover yang diinginkan */
 }
 
-
-/* Responsive */
 @media (max-width: 768px) {
   .summary-grid {
-    display: grid;
     grid-template-columns: 1fr;
-    /* satu kolom */
     gap: 16px;
   }
 
-  .news-list .news-card {
+  .news-card {
     flex-direction: column;
   }
 
@@ -802,16 +951,17 @@
   }
 }
 
-/* Footer Public */
+/* =========================
+   FOOTER
+========================= */
 .footer {
   background-color: #b91c1c;
   color: #fff;
-  padding: 60px 20px 30px 20px;
-  font-family: sans-serif;
+  padding: 60px 0 30px;
 }
 
 .footer-inner {
-  max-width: 1200px;
+  width: min(1200px, 92%);
   margin: 0 auto;
 }
 
@@ -856,24 +1006,20 @@
 
 .footer-map iframe {
   display: block;
-  /* penting biar gak ada whitespace */
   width: 100%;
   height: 160px;
-  /* kecil */
   border: 0;
   border-radius: 8px;
 }
 
-/* Copyright */
 .footer small {
   display: block;
   text-align: center;
   margin-top: 20px;
   font-size: 13px;
-  color: #ccc;
+  color: #eee;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr;
@@ -886,10 +1032,8 @@
 }
 
 /* ================================
-   PUBLIC FORM KDMP (REGISTER + SALDO)
+   PUBLIC FORM (REGISTER + SALDO)
 ================================ */
-
-/* Form Container */
 .form-container {
   max-width: 520px;
   margin: 70px auto;
@@ -900,16 +1044,14 @@
   border: 1px solid #f1f1f1;
 }
 
-/* Form Title */
 .form-container h1 {
   font-size: 26px;
-  font-weight: 700;
+  font-weight: 800;
   text-align: center;
   color: #7f1d1d;
   margin-bottom: 25px;
 }
 
-/* Input + Textarea */
 .form-container input,
 .form-container textarea {
   width: 100%;
@@ -928,23 +1070,20 @@
   resize: none;
 }
 
-/* Focus */
 .form-container input:focus,
 .form-container textarea:focus {
   border-color: #b91c1c;
   box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
 }
 
-/* Label */
 .form-container label {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   margin-bottom: 6px;
   display: block;
   color: #333;
 }
 
-/* Button Submit */
 .form-container button {
   width: 100%;
   padding: 14px;
@@ -952,7 +1091,7 @@
   border-radius: 14px;
   font-size: 16px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 800;
   background: linear-gradient(135deg, #b91c1c, #7f1d1d);
   color: white;
   transition: 0.25s;
@@ -963,7 +1102,6 @@
   transform: translateY(-2px);
 }
 
-/* Error Text */
 .text-danger {
   color: #c40000;
   font-size: 13px;
@@ -971,10 +1109,7 @@
   display: block;
 }
 
-/* ================================
-   ALERT STYLE (SAMA DENGAN TEMA)
-================================ */
-
+/* ALERT */
 .alert {
   padding: 14px 16px;
   border-radius: 14px;
@@ -1001,10 +1136,7 @@
   color: #9a3412;
 }
 
-/* ================================
-   RESULT CARD (SALDO)
-================================ */
-
+/* RESULT */
 .card-result {
   background: #fff;
   border-radius: 18px;
@@ -1016,74 +1148,24 @@
 
 .card-result h2 {
   font-size: 30px;
-  font-weight: 800;
+  font-weight: 900;
   color: #b91c1c;
   margin-top: 10px;
   text-align: center;
 }
 
-/* Badge Status */
 .badge {
   display: inline-block;
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
-/* Badge Colors */
-.badge.pending {
-  background: #fff7ed;
-  color: #9a3412;
-}
-
-.badge.approved {
-  background: #f0fdf4;
-  color: #166534;
-}
-
-.badge.rejected {
-  background: #fef2f2;
-  color: #991b1b;
-}
-
-/* Buttons under result */
-.form-container .btn-primary,
-.form-container .btn-secondary {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 12px 18px;
-  border-radius: 14px;
-  text-decoration: none;
-  font-weight: 600;
-  margin: 10px 6px 0;
-  transition: 0.25s;
-}
-
-.form-container .btn-primary {
-  background: #b91c1c;
-  color: white;
-}
-
-.form-container .btn-primary:hover {
-  background: #7f1d1d;
-}
-
-.form-container .btn-secondary {
-  background: #f3f4f6;
-  color: #111;
-}
-
-.form-container .btn-secondary:hover {
-  background: #e5e7eb;
-}
-
-/* ================================
-   RESPONSIVE FORM
-================================ */
+.badge.pending { background: #fff7ed; color: #9a3412; }
+.badge.approved { background: #f0fdf4; color: #166534; }
+.badge.rejected { background: #fef2f2; color: #991b1b; }
 
 @media (max-width: 600px) {
   .form-container {
@@ -1101,34 +1183,30 @@
 }
 
 /* =========================
-   TRANSPARANSI: CARD + FILTER + CHART + TABLE
-   Theme: KDMP Merah (#b91c1c)
+   TRANSPARANSI (CARD + CHART + TABLE)
 ========================= */
-
-/* Card umum (dipakai di halaman transparansi) */
 .card {
   background: #fff;
   border: 1px solid #eee;
   border-radius: 18px;
   padding: 22px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, .06);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
   margin: 18px 0;
 }
 
 .card h3 {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 14px;
   color: #111;
 }
 
-/* Filter bulan (select) */
 .card select {
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid #e5e5e5;
   background: #fff;
-  font-weight: 600;
+  font-weight: 700;
   outline: none;
   transition: 0.2s ease;
 }
@@ -1138,40 +1216,9 @@
   box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
 }
 
-/* Wrapper chart biar rapi */
-#financeChart {
-  height: 100% !important;
-  /* canvas ikut wrapper */
-  width: 100% !important;
-  background: #fff;
-  border-radius: 16px;
-}
-
-/* Jika canvas dibungkus, tambahkan ini (opsional) */
-/* Card khusus transparansi (kalau belum ada) */
-.card-wrap {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, .06);
-  margin: 18px 0;
-}
-
-.card-wrap h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 14px;
-  color: #111;
-}
-
-/* =========================
-   CHART BASE (ANTI GOYANG)
-========================= */
 .chart-base {
   width: 100%;
   height: 320px;
-  /* batas tinggi grafik */
   background: #fafafa;
   border: 1px solid #f0f0f0;
   border-radius: 16px;
@@ -1192,7 +1239,6 @@
   height: 100% !important;
 }
 
-/* Responsive */
 @media (max-width: 600px) {
   .chart-base {
     height: 240px;
@@ -1200,10 +1246,6 @@
   }
 }
 
-
-/* =========================
-   TABLE STYLE
-========================= */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -1212,12 +1254,11 @@
   border: 1px solid #eee;
 }
 
-/* Header */
 .table thead th {
   background: linear-gradient(135deg, #b91c1c, #7f1d1d);
   color: #fff;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.4px;
   padding: 14px 14px;
@@ -1225,7 +1266,6 @@
   white-space: nowrap;
 }
 
-/* Body */
 .table tbody td {
   padding: 14px 14px;
   border-bottom: 1px solid #f1f1f1;
@@ -1234,52 +1274,14 @@
   vertical-align: top;
 }
 
-/* Zebra rows */
 .table tbody tr:nth-child(even) {
   background: #fafafa;
 }
 
-/* Hover */
 .table tbody tr:hover {
   background: rgba(185, 28, 28, 0.06);
 }
 
-/* Angka lebih rapi */
-.table td strong {
-  color: #111;
-  font-weight: 800;
-}
-
-/* Empty state row */
-.table tbody tr td[colspan] {
-  padding: 22px;
-  color: #666;
-}
-
-/* Badge mini untuk teks (kalau nanti dipakai) */
-.badge-mini {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.badge-mini.success {
-  background: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-}
-
-.badge-mini.danger {
-  background: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-}
-
-/* =========================
-   RESPONSIVE TABLE (MOBILE)
-========================= */
 @media (max-width: 900px) {
   .table {
     display: block;
@@ -1294,702 +1296,15 @@
   }
 }
 
-@media (max-width: 600px) {
-  .card {
-    padding: 16px;
-    border-radius: 16px;
-  }
-
-  .card h3 {
-    font-size: 16px;
-    margin-bottom: 12px;
-  }
-
-  .card select {
-    width: 100%;
-  }
-}
-
-/* ============================
-   HERO SECTION
-============================ */
-.page-hero {
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: #fff;
-  padding: 80px 20px;
-  text-align: center;
-}
-
-.page-hero-inner h1 {
-  font-size: 42px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.page-hero-inner p {
-  font-size: 18px;
-  opacity: 0.85;
-}
-
-/* ============================
-   GRID UNIT BISNIS
-============================ */
-.bisnis-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  margin-top: 50px;
-  padding-bottom: 60px;
-}
-
-/* ============================
-   CARD UNIT BISNIS
-============================ */
-.bisnis-card {
-  background: #fff;
-  border-radius: 18px;
-  padding: 28px 22px;
-  text-align: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s ease;
-  cursor: pointer;
-  position: relative;
-}
-
-.bisnis-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
-}
-
-.bisnis-icon {
-  font-size: 55px;
-  margin-bottom: 15px;
-}
-
-.bisnis-card h4 {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 6px;
-  color: #111827;
-}
-
-.bisnis-card span {
-  font-size: 14px;
-  color: #475569;
-  background: #f1f5f9;
-  padding: 6px 14px;
-  border-radius: 30px;
-  display: inline-block;
-}
-
-/* ============================
-   DETAIL PAGE LAYOUT
-============================ */
-.detail-wrapper {
-  display: flex;
-  gap: 30px;
-  margin-top: 50px;
-  padding-bottom: 70px;
-}
-
-/* LEFT IMAGE BOX */
-.detail-thumb {
-  flex: 0 0 320px;
-  border-radius: 18px;
-  background: #fff;
-  padding: 22px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  text-align: center;
-}
-
-.detail-thumb img {
-  width: 100%;
-  border-radius: 14px;
-  object-fit: cover;
-}
-
-.detail-thumb .icon-placeholder {
-  font-size: 70px;
-  margin-top: 15px;
-}
-
-/* RIGHT CONTENT BOX */
-.detail-content {
-  flex: 1;
-}
-
-.detail-box {
-  background: #fff;
-  padding: 26px;
-  border-radius: 18px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
-}
-
-.detail-box h3 {
-  margin-top: 0;
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.detail-box p {
-  line-height: 1.7;
-  color: #334155;
-}
-
-.detail-box ul {
-  padding-left: 18px;
-  margin: 0;
-}
-
-.detail-box ul li {
-  margin-bottom: 8px;
-  color: #334155;
-}
-
-/* BACK BUTTON */
-.back-link {
-  display: inline-block;
-  padding: 12px 18px;
-  border-radius: 14px;
-  background: #111827;
-  color: #fff;
-  text-decoration: none;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-.back-link:hover {
-  background: #334155;
-}
-
-/* Dummy note */
-.dummy-note {
-  margin-top: 12px;
-  font-size: 14px;
-  opacity: 0.7;
-}
-
-/* ============================
-   MODAL (Optional)
-============================ */
-/* Duplicate modal styles removed - see bottom of file */
-
-/* ============================
-   RESPONSIVE MOBILE
-============================ */
-@media (max-width: 768px) {
-  .page-hero-inner h1 {
-    font-size: 32px;
-  }
-
-  .detail-wrapper {
-    flex-direction: column;
-  }
-
-  .detail-thumb {
-    width: 100%;
-  }
-}
-
-/* Patner // Mitra */
-
 /* =========================
-   HERO
+   TEXT OVERFLOW SAFETY
 ========================= */
-.page-hero {
-  padding: 56px 0 44px;
-  background: linear-gradient(135deg, #0b1220 0%, #0f1b35 100%);
-  color: #fff;
-}
-
-.page-hero-inner {
-  width: min(1100px, 92%);
-  margin: 0 auto;
-  text-align: center;
-}
-
-.page-hero h1 {
-  margin: 0 0 8px;
-  font-size: clamp(28px, 3vw, 44px);
-  line-height: 1.15;
-  letter-spacing: -0.6px;
-}
-
-.page-hero p {
-  margin: 0 auto;
-  max-width: 720px;
-  opacity: 0.9;
-  font-size: 15px;
-}
-
-/* =========================
-   WRAP
-========================= */
-.container {
-  width: min(1100px, 92%);
-  margin: 0 auto;
-  padding: 28px 0 70px;
-}
-
-/* =========================
-   GRID
-========================= */
-.mitra-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-
-@media (max-width: 960px) {
-  .mitra-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 600px) {
-  .mitra-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* =========================
-   CARD
-========================= */
-.mitra-card {
-  background: #ffffff;
-  border: 1px solid #e7eaf0;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  cursor: pointer;
-
-  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-}
-
-.mitra-card:hover {
-  transform: translateY(-2px);
-  border-color: #d7dce7;
-  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.10);
-}
-
-.mitra-logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  color: #0f172a;
-  overflow: hidden;
-  flex: 0 0 auto;
-}
-
-.mitra-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.mitra-meta {
-  min-width: 0;
-}
-
-.mitra-meta h4 {
-  margin: 0 0 6px;
-  font-size: 16px;
-  line-height: 1.25;
-  color: #0f172a;
-}
-
-.mitra-meta .mitra-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: #eef2ff;
-  color: #3730a3;
-  border: 1px solid #e0e7ff;
-}
-
-.mitra-meta .mitra-sub {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #64748b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* =========================
-   MODAL
-========================= */
-/* Duplicate modal styles removed - see bottom of file */
-
-.modal-head {
-  padding: 16px 18px;
-  background: #0f172a;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.modal-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.modal-title h3 {
-  margin: 0;
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.modal-title small {
-  display: block;
-  margin-top: 2px;
-  opacity: 0.85;
-  font-size: 12px;
-}
-
-.modal-close {
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  cursor: pointer;
-  font-size: 22px;
-  line-height: 1;
-}
-
-.modal-body {
-  padding: 18px;
-  display: grid;
-  grid-template-columns: 84px 1fr;
-  gap: 14px;
-}
-
-@media (max-width: 520px) {
-  .modal-body {
-    grid-template-columns: 1fr;
-  }
-}
-
-.modal-logo {
-  width: 84px;
-  height: 84px;
-  border-radius: 20px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  color: #0f172a;
-  overflow: hidden;
-}
-
-.modal-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.modal-desc {
-  margin: 0;
-  color: #334155;
-  line-height: 1.7;
-}
-
-.modal-actions {
-  padding: 0 18px 18px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #e7eaf0;
-  background: #fff;
-  color: #0f172a;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.btn-primary {
-  background: #0f172a;
-  color: #fff;
-  border-color: #0f172a;
-}
-
-.btn:hover {
-  filter: brightness(0.98);
-}
-
-.mitra-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-
-@media (max-width: 960px) {
-  .mitra-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .mitra-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.mitra-card {
-  background: #fff;
-  border: 1px solid #e7eaf0;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-}
-
-.mitra-card:hover {
-  transform: translateY(-2px);
-  border-color: #d7dce7;
-  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.10);
-}
-
-.mitra-logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  overflow: hidden;
-}
-
-.mitra-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.mitra-meta h4 {
-  margin: 0 0 6px;
-  font-size: 16px;
-  color: #0f172a;
-}
-
-.mitra-chip {
-  display: inline-flex;
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: #eef2ff;
-  color: #3730a3;
-  border: 1px solid #e0e7ff;
-}
-
-/* =========================
-   RESPONSIVE TEXT & MODAL FIXES
-========================= */
-
-/* Fix text overflow in cards */
 .org-card h3,
 .org-card span,
 .mitra-meta h4,
-.mitra-sub,
 .news-content h3,
 .news-content p {
-  overflow-wrap: break-word;
-  /* Prevents long words from overflowing */
-  word-wrap: break-word;
-  hyphens: auto;
-}
-
-.modal-desc {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
+  overflow-wrap: anywhere;
   word-break: break-word;
-  /* Stronger break for very long strings */
-  font-size: 15px;
-  line-height: 1.6;
-  color: #334155;
-  text-align: left;
-  /* Ensure readability */
-}
-
-/* Ensure Modal fits on mobile */
-@media (max-width: 600px) {
-  .modal {
-    width: 95% !important;
-    /* Wider on small screens */
-    max-height: 90vh;
-    overflow-y: auto;
-    /* Scrollable if content is long */
-    padding: 20px !important;
-  }
-
-  .modal-head {
-    flex-direction: row;
-    /* Keep header items aligned */
-    align-items: center;
-    gap: 12px;
-  }
-
-  .modal-title h3 {
-    font-size: 16px;
-    /* Smaller title on mobile */
-  }
-
-  /* Fix grid descriptions */
-  .org-grid,
-  .mitra-grid {
-    grid-template-columns: 1fr;
-    /* Single column on mobile */
-  }
-}
-
-
-/* MODAL */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.58);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  z-index: 9999;
-}
-
-.modal-overlay.active {
-  display: flex;
-}
-
-.modal {
-  width: min(640px, 96%);
-  background: #fff;
-  border-radius: 18px;
-  border: 1px solid #e7eaf0;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, .22);
-  overflow: hidden;
-}
-
-.modal-head {
-  padding: 16px 18px;
-  background: #0f172a;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.modal-head-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.modal-title h3 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.modal-title small {
-  opacity: .85;
-  font-size: 12px;
-  display: block;
-  margin-top: 2px;
-}
-
-.modal-close {
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  cursor: pointer;
-  font-size: 22px;
-}
-
-.modal-logo {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  overflow: hidden;
-}
-
-.modal-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.modal-body {
-  padding: 18px;
-}
-
-.modal-desc {
-  margin: 0;
-  color: #334155;
-  line-height: 1.7;
-}
-
-.modal-actions {
-  padding: 0 18px 18px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.btn {
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #e7eaf0;
-  background: #fff;
-  color: #0f172a;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.btn-primary {
-  background: #0f172a;
-  border-color: #0f172a;
-  color: #fff;
+  hyphens: auto;
 }

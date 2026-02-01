@@ -72,7 +72,6 @@
             <a class="btn btn-primary" id="modalWebsiteBtn" href="#" target="_blank" rel="noopener" style="display:none;">
                 Kunjungi Website
             </a>
-            <button class="btn" type="button" id="modalCloseBtn">Tutup</button>
         </div>
     </div>
 </div>
