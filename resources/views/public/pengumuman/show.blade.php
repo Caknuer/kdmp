@@ -1,31 +1,43 @@
 @extends('layouts.public')
 
 @section('P')
-<section class="container" style="margin-top:120px">
-    <article class="berita-detail">
+<section class="page-hero page-hero--info">
+    <div class="page-hero-inner">
+        <span class="hero-pill">Informasi KDMP</span>
         <h1>{{ $article->title }}</h1>
+        <p>Dipublikasikan pada {{ $article->display_date->format('d M Y') }}</p>
 
-        <div class="meta">
-            Dipublikasikan pada {{ $article->display_date->format('d M Y') }}
+        <div style="margin-top:14px;">
+            <span class="info-tag is-ann">Pengumuman</span>
         </div>
+    </div>
+</section>
 
-        @if ($article->thumbnail)
-            <div style="margin:16px 0;">
-                <img
-                    src="{{ asset('storage/'.$article->thumbnail) }}"
-                    alt="{{ $article->title }}"
-                    style="width:100%;max-height:420px;object-fit:cover;border-radius:16px;"
-                >
+<section class="section section--soft">
+    <div class="container">
+        <article class="post-detail">
+            @if ($article->thumbnail)
+                <div class="post-cover">
+                    <img
+                        src="{{ asset('storage/'.$article->thumbnail) }}"
+                        alt="{{ $article->title }}"
+                    >
+                </div>
+            @endif
+
+            <div class="post-content">
+                {!! $article->content !!}
             </div>
-        @endif
 
-        <div class="content">
-            {!! $article->content !!}
-        </div>
-
-        <a href="{{ url('/pengumuman') }}" class="back-link">
-            ← Kembali ke daftar pengumuman
-        </a>
-    </article>
+            <div class="post-actions">
+                <a href="{{ url('/pengumuman') }}" class="btn btn--dark">
+                    ← Kembali ke daftar pengumuman
+                </a>
+                <a href="{{ url('/informasi') }}" class="btn">
+                    Semua Informasi
+                </a>
+            </div>
+        </article>
+    </div>
 </section>
 @endsection

@@ -1592,7 +1592,7 @@ body {
   color: #0f172a;
 
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1603,7 +1603,7 @@ body {
   color: #475569;
 
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 
@@ -1642,4 +1642,64 @@ body {
 /* pagination spacing */
 .info-pagination {
   margin-top: 18px;
+}
+
+/* =========================
+   DETAIL POST (Berita/Pengumuman)
+========================= */
+
+.post-detail{
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.post-cover{
+  height: 420px;
+  background: #f3f4f6;
+}
+.post-cover img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 768px){
+  .post-cover{ height: 260px; }
+}
+
+.post-content{
+  padding: 22px 20px;
+  max-width: 860px;
+  margin: 0 auto;
+  color: #0f172a;
+  line-height: 1.85;
+  font-size: 16px;
+}
+
+.post-content p{ margin: 0 0 14px; }
+.post-content h2, .post-content h3{
+  margin: 18px 0 10px;
+  line-height: 1.3;
+}
+.post-content ul, .post-content ol{
+  padding-left: 18px;
+  margin: 10px 0 16px;
+}
+.post-content img{
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+
+.post-actions{
+  padding: 18px 20px 22px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-top: 1px solid #f1f1f1;
 }
