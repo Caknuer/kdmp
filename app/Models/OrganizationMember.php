@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class OrganizationMember extends Model
 {
     protected $fillable = [
-        'name',
+        'name_p',
         'role',
         'type',
-        'photo',
+        'photo_p',
         'bio',
         'order',
         'is_active',

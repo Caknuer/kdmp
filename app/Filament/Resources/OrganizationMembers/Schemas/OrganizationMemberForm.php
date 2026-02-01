@@ -14,7 +14,9 @@ class OrganizationMemberForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->schema([
-            TextInput::make('name')->required(),
+            TextInput::make('name_p')
+                ->label('Nama')
+                ->required(),
             TextInput::make('role')->required(),
 
             Select::make('type')
@@ -24,8 +26,9 @@ class OrganizationMemberForm
                 ])
                 ->required(),
 
-            FileUpload::make('photo')
+            FileUpload::make('photo_p')
                 ->disk('public')
+                ->label('Photo')
                 ->directory('organization')
                 ->visibility('public')
                 ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('organization_members', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name_p');
             $table->string('role');
             $table->enum('type', ['pengurus', 'pengawas']);
-            $table->string('photo')->nullable();
+            $table->string('photo_p')->nullable();
             $table->text('bio')->nullable();
             $table->integer('order')->default(0);
             $table->boolean('is_active')->default(true);

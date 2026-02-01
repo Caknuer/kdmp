@@ -9,7 +9,6 @@ use App\Models\Partner;
 use App\Models\Transaction;
 use App\Models\Setting;
 use App\Models\OrganizationMember;
-use Illuminate\Support\Str;
 
 class PublicController extends Controller
 {
@@ -45,7 +44,6 @@ class PublicController extends Controller
             ->select(['id', 'name', 'slug', 'thumbnail', 'description', 'is_active', 'order'])
             ->get();
 
-        // Kalau kosong, pakai dummy
         if ($units->isEmpty()) {
             $units = $this->dummyBusinessUnits();
         }
@@ -64,7 +62,6 @@ class PublicController extends Controller
             ->select(['id', 'name', 'slug', 'thumbnail', 'description', 'is_active', 'order'])
             ->first();
 
-        // kalau tidak ketemu di DB, cari di dummy
         $isDummy = false;
 
         if (! $unit) {
@@ -81,18 +78,17 @@ class PublicController extends Controller
     }
 
     /* =======================
-       DUMMY DATA UNIT BISNIS
+       DUMMY UNIT BISNIS
     ======================== */
     protected function dummyBusinessUnits()
     {
-        // kamu bisa tambah unit lain di sini
         return collect([
             (object)[
                 'id' => null,
                 'name' => 'Unit Simpan Pinjam',
                 'slug' => 'unit-simpan-pinjam',
                 'thumbnail' => null,
-                'description' => "Melayani simpan pinjam anggota dengan prinsip koperasi.\nProses transparan, pencatatan rapi, dan pelayanan cepat.",
+                'description' => "Melayani simpan pinjam anggota dengan prinsip koperasi.\nProses transparan dan pelayanan cepat.",
                 'is_active' => true,
                 'order' => 1,
             ],
@@ -101,7 +97,7 @@ class PublicController extends Controller
                 'name' => 'Unit Perdagangan',
                 'slug' => 'unit-perdagangan',
                 'thumbnail' => null,
-                'description' => "Mengelola penjualan kebutuhan masyarakat dan pemasaran produk UMKM desa.\nHarga bersaing, stok terjaga, dan kualitas diprioritaskan.",
+                'description' => "Mengelola penjualan kebutuhan masyarakat dan pemasaran produk UMKM desa.",
                 'is_active' => true,
                 'order' => 2,
             ],
@@ -110,7 +106,7 @@ class PublicController extends Controller
                 'name' => 'Unit Produksi',
                 'slug' => 'unit-produksi',
                 'thumbnail' => null,
-                'description' => "Mengolah potensi desa menjadi produk bernilai tambah.\nFokus pada pengemasan, kualitas, dan pengembangan pasar.",
+                'description' => "Mengolah potensi desa menjadi produk bernilai tambah.",
                 'is_active' => true,
                 'order' => 3,
             ],
@@ -123,16 +119,34 @@ class PublicController extends Controller
     }
 
     /* =======================
-       MITRA
+       MITRA / PARTNER
+       (FIX: tanpa kolom description di DB)
     ======================== */
-   public function partners()
+    public function partners()
     {
         $partners = Partner::query()
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->orderBy('name')
-            ->select(['id', 'name', 'logo', 'website', 'is_active', 'sort_order'])
-            ->get();
+            ->select([
+                'id',
+                'name',
+                'logo',
+                'website',
+                'is_active',
+                'sort_order',
+            ])
+            ->get()
+            ->map(function ($p) {
+                // Normalisasi website (biar link aman)
+                $p->website = $this->normalizeUrl($p->website);
+
+                // Karena kolom description belum ada di DB,
+                // set null biar Blade/Modal aman jika akses $partner->description
+                $p->description = null;
+
+                return $p;
+            });
 
         if ($partners->isEmpty()) {
             $partners = $this->dummyPartners();
@@ -151,32 +165,31 @@ class PublicController extends Controller
                 'id' => null,
                 'name' => 'BUMDes Wonokerto',
                 'logo' => null,
-                'website' => 'https://example.com',
-                'is_active' => true,
-                'order' => 1,
+                'website' => $this->normalizeUrl('example.com'),
                 'description' => 'Mitra strategis dalam pengelolaan usaha desa.',
+                'is_active' => true,
+                'sort_order' => 1,
             ],
             (object)[
                 'id' => null,
                 'name' => 'UMKM Makmur',
                 'logo' => null,
                 'website' => null,
-                'is_active' => true,
-                'order' => 2,
                 'description' => 'Mendukung pengembangan produk lokal desa.',
+                'is_active' => true,
+                'sort_order' => 2,
             ],
             (object)[
                 'id' => null,
                 'name' => 'Koperasi Sejahtera',
                 'logo' => null,
                 'website' => null,
-                'is_active' => true,
-                'order' => 3,
                 'description' => 'Kolaborasi penguatan permodalan usaha anggota.',
+                'is_active' => true,
+                'sort_order' => 3,
             ],
         ]);
     }
-
 
     protected function normalizeUrl(?string $url): ?string
     {
@@ -188,7 +201,7 @@ class PublicController extends Controller
     }
 
     /* =======================
-       PROFIL PENGURUS
+       PROFIL PENGURUS & PENGAWAS
     ======================== */
     public function pengurus()
     {
@@ -217,11 +230,11 @@ class PublicController extends Controller
     }
 
     /* =======================
-       Helper Setting
+       SETTINGS + GMAPS
     ======================== */
     protected function gmapsEmbedFromUrl(?string $url): ?string
     {
-        if (!$url) return null;
+        if (! $url) return null;
 
         if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+),(\d+(\.\d+)?)z/', $url, $m)) {
             $lat = $m[1];
@@ -243,7 +256,7 @@ class PublicController extends Controller
         $settings = Setting::all()->pluck('value', 'key')->toArray();
         $gmapsUrl = $settings['gmaps_url'] ?? null;
 
-        return (object) [
+        return (object)[
             'site_name' => $settings['site_name'] ?? null,
             'address' => $settings['address'] ?? null,
             'phone' => $settings['phone'] ?? null,
@@ -255,11 +268,13 @@ class PublicController extends Controller
         ];
     }
 
+    /* =======================
+       ABOUT PAGE (Tentang)
+    ======================== */
     public function __invoke()
     {
         $about = AboutPage::where('slug', 'tentang-kdmp')->first();
 
-        // kalau belum ada record di DB, biar halaman tetap kebuka
         if (! $about) {
             $about = new AboutPage([
                 'profil_singkat' => '',

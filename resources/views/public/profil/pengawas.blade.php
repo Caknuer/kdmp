@@ -69,10 +69,6 @@
         <div class="modal-body">
             <p class="modal-desc" id="modalBio"></p>
         </div>
-
-        <div class="modal-actions">
-            <button class="btn" type="button" id="modalCloseBtnOrg">Tutup</button>
-        </div>
     </div>
 </div>
 
