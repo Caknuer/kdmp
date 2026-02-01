@@ -48,14 +48,14 @@
                     <strong>Rp {{ number_format($expense ?? 0, 0, ',', '.') }}</strong>
                 </div>
 
-                <div class="summary-card total-akhir">
-                    <h4>Total Akhir</h4>
-                    <strong>Rp {{ number_format($balance ?? 0, 0, ',', '.') }}</strong>
-                </div>
-
                 <div class="summary-card highlight">
                     <h4>Dari Pendaftar Baru</h4>
                     <strong>Rp {{ number_format($registrationIncome ?? 0, 0, ',', '.') }}</strong>
+                </div>
+
+                <div class="summary-card total-akhir">
+                    <h4>Total Akhir</h4>
+                    <strong>Rp {{ number_format($balance ?? 0, 0, ',', '.') }}</strong>
                 </div>
 
             </div>
@@ -91,9 +91,9 @@
                     <th>Bulan</th>
                     <th>Pemasukan</th>
                     <th>Pengeluaran</th>
-                    <th>Saldo Akhir</th>
                     <th>Pendaftar Baru</th>
                     <th>Uang Pendaftaran</th>
+                    <th>Saldo Akhir</th>
                 </tr>
             </thead>
             <tbody>
@@ -102,9 +102,9 @@
                         <td>{{ $row->month }}</td>
                         <td>Rp {{ number_format($row->income, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($row->expense, 0, ',', '.') }}</td>
-                        <td><strong>Rp {{ number_format($row->balance, 0, ',', '.') }}</strong></td>
                         <td>{{ $row->new_members ?? 0 }} orang</td>
                         <td>Rp {{ number_format($row->registration_income ?? 0, 0, ',', '.') }}</td>
+                        <td><strong>Rp {{ number_format($row->balance, 0, ',', '.') }}</strong></td>
                     </tr>
                 @empty
                     <tr>
