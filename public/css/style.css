@@ -1767,4 +1767,229 @@ body {
   color: #111827;
 }
 
-/* pertahankan style highlight/total-akhir kamu */
+/* =========================
+   UNIT USAHA (Business Units)
+========================= */
+
+/* Grid */
+.bisnis-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 26px 0 70px;
+}
+
+@media (max-width: 960px){
+  .bisnis-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px){
+  .bisnis-grid{ grid-template-columns: 1fr; }
+}
+
+/* Card */
+.bisnis-card{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border: 1px solid #e7eaf0;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  padding: 18px;
+  position: relative;
+}
+
+.bisnis-card:hover{
+  transform: translateY(-3px);
+  border-color: #e2e8f0;
+  box-shadow: 0 18px 40px rgba(0,0,0,.10);
+}
+
+.bisnis-head{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.bisnis-icon{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  flex: 0 0 auto;
+}
+
+/* Thumbnail kecil di index (opsional) */
+.bisnis-logo{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.bisnis-logo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bisnis-meta{
+  min-width: 0;
+}
+.bisnis-meta h4{
+  margin: 0 0 6px;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #0f172a;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.bisnis-chip{
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(185,28,28,.08);
+  border: 1px solid rgba(185,28,28,.18);
+  color: #7f1d1d;
+  font-weight: 800;
+}
+
+.bisnis-desc{
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Empty state */
+.bisnis-empty{
+  grid-column: 1 / -1;
+  background: #fff;
+  border: 1px dashed #e5e7eb;
+  border-radius: 18px;
+  padding: 36px 24px;
+  text-align: center;
+  color: #64748b;
+  box-shadow: 0 10px 25px rgba(0,0,0,.04);
+}
+
+/* =========================
+   UNIT USAHA DETAIL
+========================= */
+.detail-wrapper{
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 22px;
+  padding: 26px 0 70px;
+}
+
+@media (max-width: 900px){
+  .detail-wrapper{ grid-template-columns: 1fr; }
+}
+
+.detail-thumb{
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+}
+
+.detail-thumb img{
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+  background: #f3f4f6;
+}
+@media (max-width: 900px){
+  .detail-thumb img{ height: 240px; }
+}
+
+.icon-placeholder{
+  width: 100%;
+  height: 320px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(185,28,28,.10), rgba(15,23,42,.10));
+  display: grid;
+  place-items: center;
+  font-size: 64px;
+  font-weight: 900;
+  color: #0f172a;
+}
+@media (max-width: 900px){
+  .icon-placeholder{ height: 240px; }
+}
+
+.detail-content{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-box{
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+}
+
+.detail-box h3{
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.detail-box p,
+.detail-box li{
+  color: #334155;
+  line-height: 1.75;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.detail-box ul{
+  padding-left: 18px;
+  margin: 0;
+}
+
+.back-link{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #e7eaf0;
+  background: #0f172a;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+  width: fit-content;
+}
+
+.back-link:hover{
+  filter: brightness(0.98);
+}
+

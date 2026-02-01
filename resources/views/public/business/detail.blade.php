@@ -1,38 +1,77 @@
 @extends('layouts.public')
 
 @section('P')
-
 @php
-    // Pastikan semua variabel aman
     $name  = $unit->name ?? 'Unit Usaha';
     $desc  = $unit->description ?? 'Deskripsi unit usaha belum tersedia.';
     $thumb = $unit->thumbnail ?? null;
 
-    // Helper kategori otomatis
-    $guessCategory = function ($name) {
-        $n = strtolower($name);
-
-        if (str_contains($n, 'simpan') || str_contains($n, 'pinjam')) return 'Keuangan';
-        if (str_contains($n, 'dagang') || str_contains($n, 'toko')) return 'Perdagangan';
-        if (str_contains($n, 'produksi')) return 'Produksi';
+    // Fallback kategori jika DB kosong
+    $categoryFallback = function (?string $name): string {
+        $n = strtolower($name ?? '');
+        if (str_contains($n, 'simpan') || str_contains($n, 'pinjam') || str_contains($n, 'keuangan')) return 'Keuangan';
+        if (str_contains($n, 'dagang') || str_contains($n, 'toko') || str_contains($n, 'perdagangan') || str_contains($n, 'minimarket')) return 'Perdagangan';
+        if (str_contains($n, 'produksi') || str_contains($n, 'olah')) return 'Produksi';
         if (str_contains($n, 'jasa')) return 'Jasa';
-
-        return 'Unit Usaha';
+        return 'Lainnya';
     };
 
-    $category = $guessCategory($name);
+    // Fallback icon aman deploy (Heroicons)
+    $iconFallback = function (string $category): string {
+        return match ($category) {
+            'Keuangan' => 'heroicon-o-banknotes',
+            'Perdagangan' => 'heroicon-o-shopping-cart',
+            'Produksi' => 'heroicon-o-cog-6-tooth',
+            'Jasa' => 'heroicon-o-briefcase',
+            default => 'heroicon-o-building-storefront',
+        };
+    };
 
-    // Icon otomatis
-    $icon = match ($category) {
-        'Keuangan' => '💰',
-        'Perdagangan' => '🛒',
-        'Produksi' => '🏭',
-        'Jasa' => '🧰',
-        default => '🏢',
+    // Ambil dari DB, jika kosong pakai fallback
+    $category = $unit->category ?: $categoryFallback($name);
+    $icon     = $unit->icon ?: $iconFallback($category);
+
+    // URL thumbnail public (aman)
+    $thumbUrl = !empty($thumb)
+        ? Storage::disk('public')->url($thumb)
+        : null;
+
+    // Services dari DB: dipisah baris baru
+    $servicesRaw = $unit->services ?? null;
+    $services = [];
+
+    if (!empty($servicesRaw)) {
+        $services = array_values(array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $servicesRaw))));
+    }
+
+    // fallback layanan kalau services kosong
+    $defaultServices = match ($category) {
+        'Keuangan' => [
+            'Simpanan wajib & sukarela',
+            'Pinjaman anggota koperasi',
+            'Rekap tabungan dan angsuran',
+        ],
+        'Perdagangan' => [
+            'Penjualan kebutuhan pokok',
+            'Pemasaran produk UMKM desa',
+            'Distribusi barang koperasi',
+        ],
+        'Produksi' => [
+            'Pengolahan hasil tani lokal',
+            'Produksi barang koperasi',
+            'Peningkatan nilai tambah produk desa',
+        ],
+        'Jasa' => [
+            'Layanan jasa koperasi sesuai kebutuhan anggota',
+            'Dukungan usaha & layanan komunitas',
+        ],
+        default => [
+            'Layanan usaha koperasi sesuai kebutuhan anggota',
+            'Pemberdayaan ekonomi desa',
+        ],
     };
 @endphp
 
-<!-- HERO -->
 <section class="page-hero">
     <div class="page-hero-inner">
         <h1>{{ $name }}</h1>
@@ -40,64 +79,59 @@
     </div>
 </section>
 
-<!-- DETAIL UNIT -->
 <section class="container">
     <div class="detail-wrapper">
 
-        <!-- Thumbnail -->
+        {{-- Thumbnail / Icon --}}
         <div class="detail-thumb">
-            @if ($thumb)
-                <img src="{{ asset('storage/' . $thumb) }}" alt="{{ $name }}">
+            @if ($thumbUrl)
+                <img src="{{ $thumbUrl }}" alt="{{ $name }}">
             @else
-                <div class="icon-placeholder">{{ $icon }}</div>
-                <p>(Belum ada thumbnail)</p>
+                <div class="icon-placeholder" aria-hidden="true" style="display:grid; place-items:center;">
+                    <x-dynamic-component :component="$icon" class="w-16 h-16" />
+                </div>
+                <p style="margin-top:10px; color:#64748b; text-align:center;">(Belum ada thumbnail)</p>
             @endif
         </div>
 
-        <!-- Content -->
+        {{-- Content --}}
         <div class="detail-content">
 
             <div class="detail-box">
                 <h3>Tentang Unit</h3>
-                <p>{{ $desc }}</p>
+                <p style="white-space: pre-wrap;">{{ $desc }}</p>
             </div>
 
             <div class="detail-box">
                 <h3>Contoh Layanan</h3>
-                <ul>
-                    @if ($category === 'Keuangan')
-                        <li>Simpanan wajib & sukarela</li>
-                        <li>Pinjaman anggota koperasi</li>
-                        <li>Rekap tabungan dan angsuran</li>
-                    @elseif ($category === 'Perdagangan')
-                        <li>Penjualan kebutuhan pokok</li>
-                        <li>Pemasaran produk UMKM desa</li>
-                        <li>Distribusi barang koperasi</li>
-                    @elseif ($category === 'Produksi')
-                        <li>Pengolahan hasil tani lokal</li>
-                        <li>Produksi barang koperasi</li>
-                        <li>Peningkatan nilai tambah produk desa</li>
-                    @else
-                        <li>Layanan usaha koperasi sesuai kebutuhan anggota</li>
-                        <li>Pemberdayaan ekonomi desa</li>
-                    @endif
-                </ul>
+
+                @php
+                    $finalServices = !empty($services) ? $services : $defaultServices;
+                @endphp
+
+                @if (!empty($finalServices))
+                    <ul>
+                        @foreach ($finalServices as $srv)
+                            <li>{{ $srv }}</li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p>Layanan belum tersedia.</p>
+                @endif
             </div>
 
-            <!-- Back -->
             <a href="{{ route('public.business.index') }}" class="back-link">
                 ← Kembali ke Daftar Unit
             </a>
 
-            <!-- Dummy Info -->
             @if (!empty($isDummy))
-                <div class="dummy-note">
+                <div class="dummy-note" style="opacity:.7; font-size:14px;">
                     *Ini data dummy sementara karena unit belum diinput di admin.
                 </div>
             @endif
 
         </div>
+
     </div>
 </section>
-
 @endsection

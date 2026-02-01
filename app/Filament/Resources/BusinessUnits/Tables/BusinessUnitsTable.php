@@ -16,10 +16,10 @@ class BusinessUnitsTable
         return $table
             ->columns([
                 ImageColumn::make('thumbnail')
-                    ->label('Foto')
-                    ->disk('public') // penting: sesuai FileUpload
+                    ->label('Logo')
+                    ->disk('public')
                     ->circular()
-                    ->size(50)
+                    ->size(46)
                     ->defaultImageUrl(url('/images/default-unit.png')),
 
                 TextColumn::make('name')
@@ -27,9 +27,17 @@ class BusinessUnitsTable
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('slug')
-                    ->label('Slug')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('category')
+                    ->label('Kategori')
+                    ->badge()
+                    ->color(fn (?string $state) => match ($state) {
+                        'Keuangan' => 'success',
+                        'Perdagangan' => 'warning',
+                        'Produksi' => 'info',
+                        'Jasa' => 'primary',
+                        default => 'gray',
+                    })
+                    ->sortable(),
 
                 TextColumn::make('is_active')
                     ->label('Status')
@@ -43,6 +51,14 @@ class BusinessUnitsTable
                     ->numeric()
                     ->sortable(),
 
+                TextColumn::make('slug')
+                    ->label('Slug')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('icon')
+                    ->label('Icon')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime('d M Y')
@@ -55,6 +71,7 @@ class BusinessUnitsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('order', 'asc')
             ->recordActions([
                 EditAction::make()->label('Edit'),
             ])

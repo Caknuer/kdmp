@@ -3,29 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class BusinessUnit extends Model
 {
-      protected $fillable = [
+    protected $fillable = [
         'name',
         'slug',
+        'category',
+        'icon',
         'thumbnail',
         'description',
+        'services',
         'is_active',
         'order',
     ];
 
-    protected static function booted()
+    public function scopeActive($query)
     {
-        static::creating(function ($model) {
-            if (empty($model->slug)) {
-                $model->slug = Str::slug($model->name);
-            }
-        });
+        return $query->where('is_active', true);
     }
-
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
 }
