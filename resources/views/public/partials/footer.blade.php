@@ -60,7 +60,7 @@
         </div>
 
         <small>
-            © {{ date('Y') }} {{ $setting->site_name ?? 'KDMP Wonokerto' }}. All rights reserved.
+            © {{ date('Y') }} {{ $setting->site_name ?? 'KDMP Wonokerto' }}. @nr-01.26 . All rights reserved.
         </small>
     </div>
 </footer>
