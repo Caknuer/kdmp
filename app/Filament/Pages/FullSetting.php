@@ -4,84 +4,269 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use BackedEnum;
-use Filament\Notifications\Notification;
-use Filament\Pages\Page;
 use UnitEnum;
 
-class FullSetting extends Page
+use Filament\Pages\Page;
+use Filament\Forms\Form;
+
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Concerns\InteractsWithForms;
+
+use Filament\Notifications\Notification;
+
+use Filament\Schemas\Components\Section;
+
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
+use Filament\Schemas\Schema;
+
+class FullSetting extends Page implements HasForms
 {
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cog';
+    use InteractsWithForms;
+
+    /** =========================
+     *  Navigation Filament
+     *  ========================= */
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cog-6-tooth';
+
     protected static UnitEnum|string|null $navigationGroup = 'Settings';
 
-    // FOOTER ONLY
-    public string $site_name = '';
-    public string $address = '';
-    public string $footer_description = '';
-    public string $email = '';
-    public string $phone = '';
-    public string $gmaps_url = '';
+    protected static ?string $title = 'Full Setting';
 
-    public function getView(): string
-    {
-        return 'filament.pages.full-setting';
-    }
+    protected string $view = 'filament.pages.full-setting';
 
-    protected function rules(): array
+    /** =========================
+     *  Form State
+     *  ========================= */
+    public ?array $data = [];
+
+    /** =========================
+     *  Register Form
+     *  ========================= */
+    protected function getForms(): array
     {
         return [
-            'site_name'          => 'required|string|max:255',
-            'address'            => 'nullable|string|max:255',
-            'footer_description' => 'nullable|string|max:500',
-            'email'              => 'nullable|email|max:255',
-            'phone'              => 'nullable|string|max:20',
-            'gmaps_url'          => 'nullable|url|max:2000',
+            'form',
         ];
     }
 
+    /** =========================
+     *  Load Data on Page Open
+     *  ========================= */
     public function mount(): void
     {
-        foreach (['site_name','address','footer_description','email','phone','gmaps_url'] as $field) {
-            $this->$field = $this->getValue($field);
-        }
+        $this->form->fill($this->getStateFromDb());
     }
 
-    protected function getValue(string $key): string
+    /** =========================
+     *  Form Schema (Filament v4)
+     *  ========================= */
+    public function form(Schema $form): Schema
     {
-        return Setting::where('key', $key)->value('value') ?? '';
+        return $form
+            ->statePath('data')
+            ->schema([
+
+                /** =========================
+                 * BRANDING
+                 * ========================= */
+                Section::make('Branding')
+                    ->description('Atur nama website, logo navbar, dan favicon tab browser.')
+                    ->schema([
+
+                        TextInput::make('site_name')
+                            ->label('Nama Website')
+                            ->required()
+                            ->maxLength(255),
+
+                        FileUpload::make('site_logo')
+                            ->label('Logo Navbar')
+                            ->image()
+                            ->disk('public')
+                            ->directory('site')
+                            ->imagePreviewHeight('80')
+                            ->maxSize(2048)
+                            ->helperText('PNG transparan disarankan.')
+                            ->deletable(true),
+
+                        FileUpload::make('site_favicon')
+                            ->label('Favicon / Icon Tab')
+                            ->disk('public')
+                            ->directory('site')
+                            ->acceptedFileTypes([
+                                'image/png',
+                                'image/x-icon',
+                            ])
+                            ->maxSize(1024)
+                            ->helperText('Ukuran ideal: 32x32 atau 48x48.')
+                            ->deletable(true),
+
+                    ])
+                    ->columns(2),
+
+                /** =========================
+                 * HERO BERANDA
+                 * ========================= */
+                Section::make('Hero Beranda')
+                    ->description('Atur gambar dan teks yang tampil di halaman depan.')
+                    ->schema([
+
+                        FileUpload::make('hero_image')
+                            ->label('Gambar Hero')
+                            ->image()
+                            ->disk('public')
+                            ->directory('hero')
+                            ->imagePreviewHeight('140')
+                            ->maxSize(4096)
+                            ->deletable(true),
+
+                        TextInput::make('hero_badge')
+                            ->label('Badge Hero')
+                            ->maxLength(80)
+                            ->placeholder('KDMP • Transparan • Profesional'),
+
+                        TextInput::make('hero_title')
+                            ->label('Judul Hero Baris 1')
+                            ->maxLength(80),
+
+                        TextInput::make('hero_subtitle')
+                            ->label('Judul Hero Baris 2')
+                            ->maxLength(80),
+
+                        Textarea::make('hero_description')
+                            ->label('Deskripsi Hero')
+                            ->rows(3)
+                            ->maxLength(500),
+
+                    ])
+                    ->columns(2),
+
+                /** =========================
+                 * FOOTER & KONTAK
+                 * ========================= */
+                Section::make('Footer & Kontak')
+                    ->description('Informasi footer dan kontak KDMP.')
+                    ->schema([
+
+                        TextInput::make('address')
+                            ->label('Alamat')
+                            ->maxLength(255),
+
+                        Textarea::make('footer_description')
+                            ->label('Deskripsi Footer')
+                            ->rows(3)
+                            ->maxLength(500),
+
+                        TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->maxLength(255),
+
+                        TextInput::make('phone')
+                            ->label('Nomor Telepon')
+                            ->maxLength(20),
+
+                        TextInput::make('gmaps_url')
+                            ->label('Link Google Maps')
+                            ->helperText('Gunakan link google.com/maps, bukan maps.app.goo.gl')
+                            ->maxLength(2000),
+
+                    ])
+                    ->columns(2),
+
+            ]);
     }
 
-    protected function setValue(string $key, string $value, string $group = 'footer'): void
-    {
-        Setting::updateOrCreate(
-            ['key' => $key],
-            ['value' => $value, 'group' => $group]
-        );
-    }
-
+    /** =========================
+     * SAVE SETTINGS
+     * ========================= */
     public function save(): void
     {
-        $this->validate();
+        $data = $this->form->getState();
 
-        // Wajib link versi google.com/maps agar embed stabil
-        if ($this->gmaps_url && !str_contains($this->gmaps_url, 'google.com/maps')) {
-            $this->addError('gmaps_url', 'Gunakan link Google Maps versi google.com/maps (bukan maps.app.goo.gl). Buka Maps di browser → Bagikan → Salin link.');
+        if (empty($data['site_name'])) {
+            Notification::make()
+                ->title('Nama Website wajib diisi')
+                ->danger()
+                ->send();
             return;
         }
 
-        $this->setValue('site_name', $this->site_name, 'footer');
-        $this->setValue('address', $this->address, 'footer');
-        $this->setValue('footer_description', $this->footer_description, 'footer');
+        if (!empty($data['gmaps_url']) && !str_contains($data['gmaps_url'], 'google.com/maps')) {
+            Notification::make()
+                ->title('Link Google Maps tidak valid')
+                ->body('Gunakan link versi google.com/maps')
+                ->danger()
+                ->send();
+            return;
+        }
 
-        $this->setValue('email', $this->email, 'contact');
-        $this->setValue('phone', $this->phone, 'contact');
+        /** Branding */
+        $this->setValue('site_name', $data['site_name'], 'branding');
+        $this->setValue('site_logo', $data['site_logo'] ?? '', 'branding');
+        $this->setValue('site_favicon', $data['site_favicon'] ?? '', 'branding');
 
-        $this->setValue('gmaps_url', $this->gmaps_url, 'footer');
+        /** Hero */
+        $this->setValue('hero_image', $data['hero_image'] ?? '', 'hero');
+        $this->setValue('hero_badge', $data['hero_badge'] ?? '', 'hero');
+        $this->setValue('hero_title', $data['hero_title'] ?? '', 'hero');
+        $this->setValue('hero_subtitle', $data['hero_subtitle'] ?? '', 'hero');
+        $this->setValue('hero_description', $data['hero_description'] ?? '', 'hero');
 
-        Notification::make()
-            ->title('Footer settings berhasil disimpan')
-            ->success()
-            ->send();
+        /** Footer */
+        $this->setValue('address', $data['address'] ?? '', 'footer');
+        $this->setValue('footer_description', $data['footer_description'] ?? '', 'footer');
+
+        /** Contact */
+        $this->setValue('email', $data['email'] ?? '', 'contact');
+        $this->setValue('phone', $data['phone'] ?? '', 'contact');
+
+        /** Maps */
+        $this->setValue('gmaps_url', $data['gmaps_url'] ?? '', 'footer');
 
         cache()->flush();
+
+        Notification::make()
+            ->title('Settings berhasil disimpan!')
+            ->success()
+            ->send();
+    }
+
+    /** =========================
+     * Load DB State
+     * ========================= */
+    private function getStateFromDb(): array
+    {
+        $rows = Setting::pluck('value', 'key')->toArray();
+
+        return [
+            'site_name' => $rows['site_name'] ?? 'KDMP Wonokerto',
+            'site_logo' => $rows['site_logo'] ?? null,
+            'site_favicon' => $rows['site_favicon'] ?? null,
+
+            'hero_image' => $rows['hero_image'] ?? null,
+            'hero_badge' => $rows['hero_badge'] ?? null,
+            'hero_title' => $rows['hero_title'] ?? null,
+            'hero_subtitle' => $rows['hero_subtitle'] ?? null,
+            'hero_description' => $rows['hero_description'] ?? null,
+
+            'address' => $rows['address'] ?? '',
+            'footer_description' => $rows['footer_description'] ?? '',
+            'email' => $rows['email'] ?? '',
+            'phone' => $rows['phone'] ?? '',
+            'gmaps_url' => $rows['gmaps_url'] ?? '',
+        ];
+    }
+
+    /** =========================
+     * Save to DB Helper
+     * ========================= */
+    private function setValue(string $key, mixed $value, string $group): void
+    {
+        Setting::updateOrCreate(
+            ['key' => $key],
+            ['value' => $value ?? '', 'group' => $group]
+        );
     }
 }

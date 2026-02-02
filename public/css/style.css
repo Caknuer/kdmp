@@ -4,6 +4,31 @@
    - Modal system unified: .modal-overlay + .modal
    - Works with app.js (bindOverlayModal)
 ========================================================= */
+/* OPTIONAL: CSS kecil khusus brand */
+.brand{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        text-decoration:none;
+        min-width:0;
+    }
+    .brand-logo{
+        height:40px;
+        width:auto;
+        display:block;
+        flex:0 0 auto;
+    }
+    .brand-name{
+        line-height:1.1;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        max-width:240px;
+    }
+    @media (max-width:768px){
+        .brand-name{ max-width:160px; }
+        .brand-logo{ height:36px; }
+    }
 
 /* =========================
    RESET
