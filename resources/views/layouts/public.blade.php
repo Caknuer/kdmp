@@ -70,33 +70,6 @@
     @include('public.partials.footer')
 
     {{-- =========================
-        GLOBAL MODAL: Pengurus / Pengawas
-        Dipakai untuk semua halaman pengurus/pengawas
-        (jangan bikin modal orgModal lagi di blade lain)
-    ========================= --}}
-    <div class="modal-overlay" id="orgModal" aria-hidden="true">
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
-
-            <div class="modal-head">
-                <div class="modal-head-left">
-                    <div class="modal-logo" id="modalPhoto"></div>
-
-                    <div class="modal-title">
-                        <h3 id="modalName">Detail</h3>
-                        <small id="modalRole"></small>
-                    </div>
-                </div>
-
-                <button class="modal-close" type="button" aria-label="Tutup">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <p class="modal-desc" id="modalBio"></p>
-            </div>
-        </div>
-    </div>
-
-    {{-- =========================
         JS
     ========================= --}}
 

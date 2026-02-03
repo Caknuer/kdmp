@@ -11,6 +11,16 @@ class ArticlesChart extends ChartWidget
 {
     protected ?string $heading = 'Jumlah Artikel per Bulan';
 
+    protected static ?int $sort = 1;
+
+    // 3 dari 4 kolom (kiri)
+    protected int|string|array $columnSpan = 3;
+
+    protected function getHeight(): ?string
+    {
+        return '50px';
+    }
+
     protected function getData(): array
     {
         $articles = Article::select(
