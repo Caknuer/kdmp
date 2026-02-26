@@ -23,7 +23,7 @@ Route::prefix('profil')->group(function () {
             ]);
         }
 
-        return view('public.profil.tentang', compact('about'));
+        return view('public.profil.tentang-kdmp', compact('about'));
     });
     Route::get('/pengurus', [PublicController::class, 'pengurus']);
     Route::get('/pengawas', [PublicController::class, 'pengawas']);
