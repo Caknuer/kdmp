@@ -9,7 +9,6 @@ return new class extends Migration {
     {
         Schema::create('about_pages', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique(); // 'tentang-kdmp'
             $table->text('profil_singkat')->nullable();
 
             $table->text('visi')->nullable();

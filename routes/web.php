@@ -10,21 +10,7 @@ use App\Models\AboutPage;
 Route::get('/', [PublicController::class, 'home'])->name('home');
 
 Route::prefix('profil')->group(function () {
-    Route::get('/tentang', function () {
-        $about = AboutPage::where('slug', 'tentang-kdmp')->first();
-
-        // fallback kalau record belum ada
-        if (! $about) {
-            $about = new AboutPage([
-                'profil_singkat' => '',
-                'visi' => '',
-                'misi' => [],
-                'nilai' => [],
-            ]);
-        }
-
-        return view('public.profil.tentang', compact('about'));
-    });
+    Route::get('/tentang', [PublicController::class, 'tentang']);
     Route::get('/pengurus', [PublicController::class, 'pengurus']);
     Route::get('/pengawas', [PublicController::class, 'pengawas']);
 });

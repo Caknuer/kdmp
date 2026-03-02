@@ -14,7 +14,8 @@ class AboutPagesTable
     {
         return $table
             ->columns([
-                TextColumn::make('slug')->searchable(),
+                TextColumn::make('profil_singkat')->searchable(),
+                TextColumn::make('visi')->searchable(),
                 TextColumn::make('updated_at')->dateTime(),
             ])
             ->filters([

@@ -12,7 +12,6 @@ class AboutPageSeeder extends Seeder
     public function run(): void
     {
         AboutPage::updateOrCreate(
-            ['slug' => 'tentang-kdmp'],
             [
                 'profil_singkat' => "Koperasi Desa Merah Putih (KDMP) merupakan ...",
                 'visi' => "Menjadi koperasi desa yang mandiri, profesional, ...",
