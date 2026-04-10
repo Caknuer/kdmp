@@ -14,12 +14,12 @@
         profesional, dan berkelanjutan demi kesejahteraan bersama.
     ';
 
-    // Hero Image Dummy
+    // Hero Image
     $heroImagePath = setting('hero_image');
 
     $heroImageUrl = $heroImagePath
         ? asset('storage/' . ltrim($heroImagePath, '/'))
-        : asset('images/bupati.jpeg'); // fallback dummy
+        : null;
 @endphp
 
 
@@ -53,12 +53,17 @@
 
 
         <div class="hero-visual">
-            <img
-                src="{{ $heroImageUrl }}"
-                alt="Hero KDMP"
-                loading="lazy"
-                onerror="this.onerror=null;this.src='public/images/bupati.jpeg';"
-            >
+            @if ($heroImageUrl)
+                <img
+                    src="{{ $heroImageUrl }}"
+                    alt="Hero KDMP"
+                    loading="lazy"
+                >
+            @else
+                <div class="hero-placeholder">
+                    <span>Foto belum tersedia</span>
+                </div>
+            @endif
         </div>
 
     </div>
