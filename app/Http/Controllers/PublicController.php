@@ -311,9 +311,9 @@ class PublicController extends Controller
     /* =======================
        ABOUT PAGE (Tentang)
     ======================== */
-    public function __invoke()
+    public function tentang()
     {
-        $about = AboutPage::where('slug', 'tentang-kdmp')->first();
+        $about = AboutPage::first(); // ← juga perlu diperbaiki, lihat poin 2
 
         if (! $about) {
             $about = new AboutPage([
@@ -323,7 +323,7 @@ class PublicController extends Controller
                 'nilai' => [],
             ]);
         }
-
+        
         return view('public.profil.tentang', compact('about'));
     }
 }

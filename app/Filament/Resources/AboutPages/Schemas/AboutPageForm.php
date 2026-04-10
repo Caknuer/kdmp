@@ -12,10 +12,10 @@ class AboutPageForm
     public static function configure(Schema $schema): Schema
     {
          return $schema->schema([
-            TextInput::make('slug')
-                ->required()
-                ->disabled() // biar slug gak diubah
-                ->dehydrated(), // tetap dikirim saat save kalau perlu
+            // TextInput::make('slug')
+            //     ->required()
+            //     ->disabled() // biar slug gak diubah
+            //     ->dehydrated(), // tetap dikirim saat save kalau perlu
             Textarea::make('profil_singkat')
                 ->rows(6)
                 ->required(),
