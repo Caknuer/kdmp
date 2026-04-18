@@ -33,6 +33,14 @@
     </div>
 </section>
 
+@if (!empty($isDummy))
+    <section class="container">
+        <div class="dummy-note bisnis-dummy-note">
+            <strong>Data contoh aktif:</strong> daftar unit usaha saat ini masih menggunakan data dummy. Lengkapi data unit di admin panel untuk menampilkan informasi nyata.
+        </div>
+    </section>
+@endif
+
 <section class="container">
     <div class="bisnis-grid">
 

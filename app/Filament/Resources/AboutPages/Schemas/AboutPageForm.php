@@ -12,10 +12,13 @@ class AboutPageForm
     public static function configure(Schema $schema): Schema
     {
          return $schema->schema([
-            // TextInput::make('slug')
-            //     ->required()
-            //     ->disabled() // biar slug gak diubah
-            //     ->dehydrated(), // tetap dikirim saat save kalau perlu
+            TextInput::make('slug')
+                ->label('Slug Halaman')
+                ->required()
+                ->maxLength(255)
+                ->unique(ignoreRecord: true)
+                ->helperText('Slug digunakan untuk URL internal dan harus unik.'),
+
             Textarea::make('profil_singkat')
                 ->rows(6)
                 ->required(),

@@ -38,6 +38,11 @@ class AppServiceProvider extends ServiceProvider
                 'footer_description' => $settings['footer_description'] ?? null,
                 'gmaps_url' => $gmapsUrl,
                 'gmaps_embed_src' => $gmapsEmbed,
+                'facebook' => $settings['facebook'] ?? null,
+                'instagram' => $settings['instagram'] ?? null,
+                'twitter' => $settings['twitter'] ?? null,
+                'youtube' => $settings['youtube'] ?? null,
+                'whatsapp' => $settings['whatsapp'] ?? null,
             ]);
         });
     }

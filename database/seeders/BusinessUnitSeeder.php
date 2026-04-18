@@ -46,17 +46,21 @@ class BusinessUnitSeeder extends Seeder
         ];
 
         foreach ($units as $unit) {
-            BusinessUnit::create([
-                'name' => $unit['name'],
-                'slug' => Str::slug($unit['name']),
-                'category' => $unit['category'],
-                'icon' => $unit['icon'],
-                'thumbnail' => null,
-                'description' => $unit['description'],
-                'services' => $unit['services'],
-                'is_active' => true,
-                'order' => $unit['order'],
-            ]);
+            $slug = Str::slug($unit['name']);
+
+            BusinessUnit::updateOrCreate(
+                ['slug' => $slug],
+                [
+                    'name' => $unit['name'],
+                    'category' => $unit['category'],
+                    'icon' => $unit['icon'],
+                    'thumbnail' => null,
+                    'description' => $unit['description'],
+                    'services' => $unit['services'],
+                    'is_active' => true,
+                    'order' => $unit['order'],
+                ]
+            );
         }
     }
 }

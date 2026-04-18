@@ -1,11 +1,20 @@
 @extends('layouts.public')
 
 @section('P')
-<div class="container form-container">
+<section class="page-hero page-hero--info">
+    <div class="page-hero-inner">
+        <span class="hero-pill">Pendaftaran</span>
+        <h1>Pendaftaran Anggota KDMP</h1>
+        <p>Lengkapi formulir di bawah untuk menjadi anggota resmi. Pastikan semua data dan dokumen valid agar pendaftaran berjalan lancar.</p>
+    </div>
+</section>
 
-    <h1>Pendaftaran Anggota</h1>
+<section class="container">
+    <div class="simple-register">
 
-    {{-- Success message --}}
+        <h1>Pendaftaran Anggota</h1>
+
+        {{-- Success message --}}
     @if (session('success'))
         <div class="alert success">
             {{ session('success') }}
@@ -179,5 +188,6 @@
         <button type="submit">Daftar</button>
     </form>
 
-</div>
+    </div>
+</section>
 @endsection

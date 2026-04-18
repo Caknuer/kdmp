@@ -65,19 +65,21 @@ body {
   position: sticky;
   top: 0;
   z-index: 999;
-  background: #fff;
-  border-bottom: 1px solid #eaeaea;
-  transition: box-shadow 0.3s ease;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  backdrop-filter: blur(18px);
 }
 
 .navbar.scrolled {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.96);
 }
 
 .nav-container {
   width: min(1200px, 92%);
   margin: auto;
-  padding: 16px 0;
+  padding: 18px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -95,7 +97,7 @@ body {
 .nav-menu {
   list-style: none;
   display: flex;
-  gap: 24px;
+  gap: 28px;
   align-items: center;
 }
 
@@ -104,15 +106,43 @@ body {
   text-decoration: none;
   color: #111;
   font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 6px 0;
+  padding: 8px 0;
 }
 
 .nav-menu a:hover,
 .dropdown-toggle:hover {
   color: #b91c1c;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+}
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #b91c1c;
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 30px rgba(185, 28, 28, 0.18);
+}
+
+.nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 40px rgba(185, 28, 28, 0.2);
 }
 
 /* ACTIVE */
@@ -212,6 +242,10 @@ body {
 @media (max-width: 768px) {
   .nav-toggle {
     display: block;
+  }
+
+  .nav-actions {
+    display: none;
   }
 
   .nav-menu {
@@ -1191,6 +1225,28 @@ body {
   text-decoration: underline;
 }
 
+.footer-social-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-social-list li {
+  margin-bottom: 10px;
+}
+
+.footer-social-list li a {
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-social-list li a:hover {
+  text-decoration: underline;
+}
+
 .footer-map {
   overflow: hidden;
   border-radius: 8px;
@@ -1204,6 +1260,42 @@ body {
   border: 0;
   border-radius: 8px;
 }
+
+.footer-placeholder {
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+.footer-placeholder h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.footer-placeholder p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.footer-contact li,
+.footer-social-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.footer-item h3,
+.footer-item h4 {
+  color: #fff;
+}
+
 
 .footer small {
   display: block;
@@ -1235,6 +1327,74 @@ body {
   border-radius: 18px;
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
   border: 1px solid #f1f1f1;
+}
+
+.simple-register {
+  max-width: 740px;
+  margin: 60px auto;
+  padding: 32px 28px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.simple-register h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.simple-register .field {
+  margin-bottom: 16px;
+}
+
+.simple-register input,
+.simple-register textarea,
+.simple-register select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d2d6dc;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: 0.25s ease;
+  outline: none;
+}
+
+.simple-register input[type="file"] {
+  background: #f8fafc;
+}
+
+.simple-register input:focus,
+.simple-register textarea:focus,
+.simple-register select:focus,
+.simple-register input[type="file"]:focus {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
+}
+
+.simple-register label {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.simple-register button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #b91c1c;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.simple-register button:hover {
+  opacity: 0.96;
+  transform: translateY(-1px);
 }
 
 .form-container h1 {
@@ -2011,6 +2171,22 @@ body {
   box-shadow: 0 10px 25px rgba(0,0,0,.04);
 }
 
+.bisnis-dummy-note {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 18px 22px;
+  color: #0f172a;
+  box-shadow: 0 8px 24px rgba(15,23,42,.06);
+  margin-bottom: 20px;
+}
+
+.bisnis-dummy-note strong {
+  display: inline-block;
+  margin-bottom: 4px;
+  font-weight: 900;
+}
+
 /* =========================
    UNIT USAHA DETAIL
 ========================= */
@@ -2092,6 +2268,21 @@ body {
 .detail-box ul{
   padding-left: 18px;
   margin: 0;
+}
+
+.business-location-map {
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(15,23,42,.08);
+}
+
+.business-location-map iframe {
+  display: block;
+  width: 100%;
+  height: 260px;
+  border: 0;
+  border-radius: 14px;
 }
 
 .back-link{

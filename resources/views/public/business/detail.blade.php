@@ -79,6 +79,14 @@
     </div>
 </section>
 
+@if (!empty($isDummy))
+    <section class="container">
+        <div class="dummy-note bisnis-dummy-note">
+            <strong>Data dummy:</strong> halaman ini menampilkan unit usaha contoh karena data riil belum tersedia.
+        </div>
+    </section>
+@endif
+
 <section class="container">
     <div class="detail-wrapper">
 
@@ -117,6 +125,30 @@
                     </ul>
                 @else
                     <p>Layanan belum tersedia.</p>
+                @endif
+            </div>
+
+            <div class="detail-box">
+                <h3>Lokasi</h3>
+
+                @if(!empty($setting->address))
+                    <p>{{ $setting->address }}</p>
+                @else
+                    <p>Alamat belum tersedia.</p>
+                @endif
+
+                @if(!empty($setting->gmaps_embed_src))
+                    <div class="business-location-map">
+                        <iframe
+                            src="{{ $setting->gmaps_embed_src }}"
+                            width="100%"
+                            height="260"
+                            style="border:0; border-radius:14px;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
                 @endif
             </div>
 

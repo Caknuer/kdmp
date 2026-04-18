@@ -7,7 +7,6 @@ use BackedEnum;
 use UnitEnum;
 
 use Filament\Pages\Page;
-use Filament\Forms\Form;
 
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -167,6 +166,27 @@ class FullSetting extends Page implements HasForms
                             ->label('Nomor Telepon')
                             ->maxLength(20),
 
+                        TextInput::make('whatsapp')
+                            ->label('WhatsApp')
+                            ->helperText('Nomor WhatsApp dengan kode negara, misalnya +6281xxxx')
+                            ->maxLength(40),
+
+                        TextInput::make('facebook')
+                            ->label('Facebook URL')
+                            ->maxLength(255),
+
+                        TextInput::make('instagram')
+                            ->label('Instagram URL')
+                            ->maxLength(255),
+
+                        TextInput::make('twitter')
+                            ->label('Twitter URL')
+                            ->maxLength(255),
+
+                        TextInput::make('youtube')
+                            ->label('YouTube URL')
+                            ->maxLength(255),
+
                         TextInput::make('gmaps_url')
                             ->label('Link Google Maps')
                             ->helperText('Gunakan link google.com/maps, bukan maps.app.goo.gl')
@@ -221,6 +241,11 @@ class FullSetting extends Page implements HasForms
         /** Contact */
         $this->setValue('email', $data['email'] ?? '', 'contact');
         $this->setValue('phone', $data['phone'] ?? '', 'contact');
+        $this->setValue('whatsapp', $data['whatsapp'] ?? '', 'contact');
+        $this->setValue('facebook', $data['facebook'] ?? '', 'contact');
+        $this->setValue('instagram', $data['instagram'] ?? '', 'contact');
+        $this->setValue('twitter', $data['twitter'] ?? '', 'contact');
+        $this->setValue('youtube', $data['youtube'] ?? '', 'contact');
 
         /** Maps */
         $this->setValue('gmaps_url', $data['gmaps_url'] ?? '', 'footer');
@@ -255,6 +280,11 @@ class FullSetting extends Page implements HasForms
             'footer_description' => $rows['footer_description'] ?? '',
             'email' => $rows['email'] ?? '',
             'phone' => $rows['phone'] ?? '',
+            'whatsapp' => $rows['whatsapp'] ?? '',
+            'facebook' => $rows['facebook'] ?? '',
+            'instagram' => $rows['instagram'] ?? '',
+            'twitter' => $rows['twitter'] ?? '',
+            'youtube' => $rows['youtube'] ?? '',
             'gmaps_url' => $rows['gmaps_url'] ?? '',
         ];
     }

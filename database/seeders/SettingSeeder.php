@@ -16,6 +16,11 @@ class SettingSeeder extends Seeder
 
             ['key' => 'email', 'value' => 'admin@email.com', 'group' => 'contact'],
             ['key' => 'phone', 'value' => '08xxxxxxxxxx', 'group' => 'contact'],
+            ['key' => 'whatsapp', 'value' => '+628xxxxxxxxxx', 'group' => 'contact'],
+            ['key' => 'facebook', 'value' => '', 'group' => 'contact'],
+            ['key' => 'instagram', 'value' => '', 'group' => 'contact'],
+            ['key' => 'twitter', 'value' => '', 'group' => 'contact'],
+            ['key' => 'youtube', 'value' => '', 'group' => 'contact'],
 
             ['key' => 'gmaps_url', 'value' => '', 'group' => 'footer'],
         ];

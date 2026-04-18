@@ -10,7 +10,6 @@ use App\Models\Transaction;
 use App\Models\Setting;
 use App\Models\OrganizationMember;
 use App\Models\FinanceTransaction;
-use Illuminate\Support\Facades\DB;
 
 class PublicController extends Controller
 {
@@ -84,12 +83,16 @@ class PublicController extends Controller
             ->select(['id', 'name', 'slug', 'thumbnail', 'description', 'is_active', 'order'])
             ->get();
 
+        $isDummy = false;
+
         if ($units->isEmpty()) {
             $units = $this->dummyBusinessUnits();
+            $isDummy = true;
         }
 
         return view('public.business.index', [
             'units' => $units,
+            'isDummy' => $isDummy,
             'setting' => $this->getSettings(),
         ]);
     }
@@ -129,6 +132,9 @@ class PublicController extends Controller
                 'slug' => 'unit-simpan-pinjam',
                 'thumbnail' => null,
                 'description' => "Melayani simpan pinjam anggota dengan prinsip koperasi.\nProses transparan dan pelayanan cepat.",
+                'category' => null,
+                'icon' => null,
+                'services' => null,
                 'is_active' => true,
                 'order' => 1,
             ],
@@ -138,6 +144,9 @@ class PublicController extends Controller
                 'slug' => 'unit-perdagangan',
                 'thumbnail' => null,
                 'description' => "Mengelola penjualan kebutuhan masyarakat dan pemasaran produk UMKM desa.",
+                'category' => null,
+                'icon' => null,
+                'services' => null,
                 'is_active' => true,
                 'order' => 2,
             ],
@@ -147,6 +156,9 @@ class PublicController extends Controller
                 'slug' => 'unit-produksi',
                 'thumbnail' => null,
                 'description' => "Mengolah potensi desa menjadi produk bernilai tambah.",
+                'category' => null,
+                'icon' => null,
+                'services' => null,
                 'is_active' => true,
                 'order' => 3,
             ],
