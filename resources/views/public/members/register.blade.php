@@ -15,19 +15,23 @@
         <h1>Pendaftaran Anggota</h1>
 
         {{-- Success message --}}
-    @if (session('success'))
-        <div class="alert success">
-            {{ session('success') }}
-        </div>
-    @endif
+        @if (session('success'))
+            <div class="alert success">
+                ✓ {{ session('success') }}
+            </div>
+        @endif
 
-    {{-- Show code after register --}}
-    @if (session('code'))
-        <div class="alert success">
-            <b>Kode Anda:</b> {{ session('code') }} <br>
-            Simpan kode ini untuk cek saldo.
-        </div>
-    @endif
+        {{-- Show code after register --}}
+        @if (session('code'))
+            <div class="alert success">
+                <b>Selamat!</b> Pendaftaran berhasil. Silakan cek email Anda untuk menerima kredensial login. <br>
+                <small style="display: block; margin-top: 8px;">Kode Anggota: <strong>{{ session('code') }}</strong></small>
+                @if (session('password'))
+                    <small style="display: block; margin-top: 8px;">Password Sementara: <strong>{{ session('password') }}</strong></small>
+                    <small style="display: block; margin-top: 4px; color: #666;">Harap ubah password setelah login pertama kali.</small>
+                @endif
+            </div>
+        @endif
 
     {{-- Validation Errors --}}
     @if ($errors->any())

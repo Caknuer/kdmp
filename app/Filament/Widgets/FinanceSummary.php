@@ -9,7 +9,9 @@ class FinanceSummary extends Widget
 {
     protected string $view = 'filament.widgets.finance-summary';
 
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 2;
+    
+    protected static ?string $heading = 'Ringkasan Keuangan';
 
     protected int|string|array $columnSpan = 1;
 
@@ -25,6 +27,8 @@ class FinanceSummary extends Widget
 
     public function getSaldo(): int|float
     {
-        return $this->getIncome() - $this->getExpense();
+        $income = $this->getIncome();
+        $expense = $this->getExpense();
+        return $income - $expense;
     }
 }

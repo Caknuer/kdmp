@@ -9,16 +9,37 @@ use Illuminate\Support\Facades\DB;
 
 class ArticlesChart extends ChartWidget
 {
-    protected ?string $heading = 'Jumlah Artikel per Bulan';
+    protected ?string $heading = 'Statistik Artikel per Bulan';
+    
+    protected static ?string $heading_override = 'Statistik Artikel per Bulan';
 
-    protected static ?int $sort = 1;
+    protected static ?int $sort = 4;
 
-    // 3 dari 4 kolom (kiri)
     protected int|string|array $columnSpan = 3;
 
     protected function getHeight(): ?string
     {
-        return '50px';
+        return 'auto';
+    }
+    
+    public function getChartOptions(): array
+    {
+        return [
+            'plugins' => [
+                'legend' => [
+                    'display' => true,
+                    'position' => 'bottom',
+                ],
+            ],
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => true,
+                    'ticks' => [
+                        'stepSize' => 1,
+                    ],
+                ],
+            ],
+        ];
     }
 
     protected function getData(): array
@@ -36,7 +57,7 @@ class ArticlesChart extends ChartWidget
         $data = [];
 
         foreach (range(1, 12) as $month) {
-            $labels[] = Carbon::create()->month($month)->translatedFormat('F');
+            $labels[] = Carbon::create()->month($month)->translatedFormat('M');
 
             $found = $articles->firstWhere('month', $month);
             $data[] = $found ? $found->total : 0;
@@ -45,8 +66,13 @@ class ArticlesChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Artikel',
+                    'label' => 'Artikel Dibuat',
                     'data' => $data,
+                    'backgroundColor' => 'rgba(244, 63, 94, 0.5)',
+                    'borderColor' => 'rgb(244, 63, 94)',
+                    'borderWidth' => 2,
+                    'borderRadius' => 4,
+                    'hoverBackgroundColor' => 'rgba(225, 29, 72, 0.7)',
                 ],
             ],
             'labels' => $labels,

@@ -12,22 +12,18 @@ class AboutPageForm
     public static function configure(Schema $schema): Schema
     {
          return $schema->schema([
-            TextInput::make('slug')
-                ->label('Slug Halaman')
-                ->required()
-                ->maxLength(255)
-                ->unique(ignoreRecord: true)
-                ->helperText('Slug digunakan untuk URL internal dan harus unik.'),
-
             Textarea::make('profil_singkat')
+                ->label('Profil Singkat')
                 ->rows(6)
                 ->required(),
 
             Textarea::make('visi')
+                ->label('Visi')
                 ->rows(4)
                 ->required(),
 
             Repeater::make('misi')
+                ->label('Misi')
                 ->schema([
                     TextInput::make('item')->required(),
                 ])
@@ -38,13 +34,20 @@ class AboutPageForm
                 ->required(),
 
             Repeater::make('nilai')
+                ->label('Nilai-Nilai')
                 ->schema([
                     TextInput::make('icon')
+                        ->label('Icon')
                         ->helperText('Contoh: 🤝 / 📊 / 🚀 / 🌱')
                         ->maxLength(4)
                         ->required(),
-                    TextInput::make('title')->required(),
-                    Textarea::make('desc')->rows(2)->required(),
+                    TextInput::make('title')
+                        ->label('Judul Nilai')
+                        ->required(),
+                    Textarea::make('desc')
+                        ->label('Deskripsi')
+                        ->rows(2)
+                        ->required(),
                 ])
                 ->addActionLabel('Tambah Nilai')
                 ->required(),

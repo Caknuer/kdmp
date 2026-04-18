@@ -26,16 +26,27 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->darkMode(false)
 
             // Branding
             ->brandName('KDMP Wonokerto')
             ->brandLogo(fn () => asset('images/kdmp.png'))
             ->brandLogoHeight('3rem')
+            ->favicon(fn () => asset('images/kdmp.png'))
 
-            // Warna
+            // Modern Color Scheme - Professional Red/Blue
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Rose,
+                'danger' => Color::Red,
+                'warning' => Color::Amber,
+                'success' => Color::Green,
+                'info' => Color::Blue,
             ])
+            
+            // Typography & Styling
+            ->font('Poppins')
+            ->globalSearchKeyBindings(['cmd+k', 'ctrl+k'])
+            ->sidebarCollapsibleOnDesktop()
 
             // Resource & Page
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

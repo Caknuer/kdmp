@@ -13,11 +13,14 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::firstOrCreate(
-            ['email' => 'admin@kdmp.test'],
+        $adminEmail = env('ADMIN_EMAIL', 'studio.mazte@gmail.com');
+        $adminPassword = env('ADMIN_PASSWORD', 'Admin1234!');
+
+        User::updateOrCreate(
+            ['email' => $adminEmail],
             [
                 'name' => 'Admin KDMP',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make($adminPassword),
                 'role' => 'admin',
                 'is_active' => true,
             ]

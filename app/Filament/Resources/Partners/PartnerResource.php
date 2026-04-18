@@ -21,12 +21,20 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
+    
     protected static ?string $navigationLabel = 'Mitra';
+    
+    protected static ?string $pluralModelLabel = 'Mitra';
+    
+    protected static ?string $modelLabel = 'Mitra';
+    
+    protected static ?int $navigationSort = 5;
+    
     protected static string|\UnitEnum|null $navigationGroup = 'Konten';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-hand-raised';
 
-    protected static ?string $recordTitleAttribute = 'Partner';
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {

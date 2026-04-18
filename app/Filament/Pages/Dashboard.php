@@ -6,6 +6,7 @@ use BackedEnum;
 use Filament\Pages\Dashboard as BaseDashboard;
 
 use App\Filament\Widgets\DashboardHero;
+use App\Filament\Widgets\FinanceSummary;
 use App\Filament\Widgets\QuickActions;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\ArticlesChart;
@@ -28,6 +29,7 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
+            FinanceSummary::class,
             // ArticlesChart::class,
         ];
     }

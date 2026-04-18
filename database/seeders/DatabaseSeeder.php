@@ -18,15 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::firstOrCreate(
-            ['email' => 'admin@gmail.com'],
-            [
-                'name' => 'Admin',
-                'password' => Hash::make('password'),
-            ]
-        );
-
-
         $this->call([
             SettingSeeder::class,
             BusinessUnitSeeder::class,

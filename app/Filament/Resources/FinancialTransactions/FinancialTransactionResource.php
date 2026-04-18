@@ -18,7 +18,15 @@ class FinancialTransactionResource extends Resource
 {
     protected static ?string $model = FinanceTransaction::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Transaksi Keuangan';
+
+    protected static ?string $pluralModelLabel = 'Transaksi Keuangan';
+
+    protected static ?string $modelLabel = 'Transaksi Keuangan';
+
+    protected static ?int $navigationSort = 3;
+
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-banknotes';
 
     public static function form(Schema $schema): Schema
     {

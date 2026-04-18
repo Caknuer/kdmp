@@ -31,7 +31,9 @@ class FullSetting extends Page implements HasForms
 
     protected static UnitEnum|string|null $navigationGroup = 'Settings';
 
-    protected static ?string $title = 'Full Setting';
+    protected static ?string $title = 'Pengaturan Website';
+
+    protected static ?int $navigationSort = 999;
 
     protected string $view = 'filament.pages.full-setting';
 

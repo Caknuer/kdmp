@@ -119,5 +119,33 @@
                 <a href="/transparansi" class="{{ request()->is('transparansi*') ? 'active' : '' }}">Transparansi</a>
             </li>
         </ul>
+
+        {{-- NAV ACTIONS: Login/Member --}}
+        <div class="nav-actions">
+            @if(auth('member')->check())
+                <div class="nav-member-menu">
+                    <button class="nav-member-toggle" type="button">
+                        👤 {{ auth('member')->user()->name }}
+                    </button>
+                    <ul class="nav-member-dropdown">
+                        <li>
+                            <a href="{{ route('member.dashboard') }}">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <form method="POST" action="{{ route('member.logout') }}" style="display: inline;">
+                                @csrf
+                                <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer; width: 100%; text-align: left; padding: 10px 16px;">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <a href="{{ route('member.login') }}" class="nav-cta">LOGIN</a>
+            @endif
+        </div>
     </div>
 </header>

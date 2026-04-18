@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MemberRegistrationMail;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class PublicMemberController extends Controller
@@ -27,9 +31,52 @@ class PublicMemberController extends Controller
             'job'       => ['required', 'string', 'max:255'],
             'ktp_photo' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'photo_3x4' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+        ], [
+            'nik.unique' => 'NIK sudah terdaftar.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'nik.required' => 'NIK wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'address.required' => 'Alamat lengkap wajib diisi.',
+            'phone.required' => 'Nomor WhatsApp wajib diisi.',
+            'gender.required' => 'Jenis kelamin wajib dipilih.',
+            'position.required' => 'Posisi wajib dipilih.',
+            'role.required' => 'Role wajib dipilih.',
+            'job.required' => 'Pekerjaan wajib diisi.',
+            'ktp_photo.required' => 'Foto KTP wajib diupload.',
+            'ktp_photo.image' => 'File KTP harus berupa gambar.',
+            'ktp_photo.mimes' => 'Format foto KTP harus JPG, JPEG, atau PNG.',
+            'ktp_photo.max' => 'Ukuran foto KTP maksimal 2MB.',
+            'photo_3x4.required' => 'Foto 3x4 wajib diupload.',
+            'photo_3x4.image' => 'File foto 3x4 harus berupa gambar.',
+            'photo_3x4.mimes' => 'Format foto 3x4 harus JPG, JPEG, atau PNG.',
+            'photo_3x4.max' => 'Ukuran foto 3x4 maksimal 2MB.',
+        ], [
+            'nik.unique' => 'NIK sudah terdaftar.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'nik.required' => 'NIK wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'address.required' => 'Alamat lengkap wajib diisi.',
+            'phone.required' => 'Nomor WhatsApp wajib diisi.',
+            'gender.required' => 'Jenis kelamin wajib dipilih.',
+            'position.required' => 'Posisi wajib dipilih.',
+            'role.required' => 'Role wajib dipilih.',
+            'job.required' => 'Pekerjaan wajib diisi.',
+            'ktp_photo.required' => 'Foto KTP wajib diupload.',
+            'ktp_photo.image' => 'File KTP harus berupa gambar.',
+            'ktp_photo.mimes' => 'Format foto KTP harus JPG, JPEG, atau PNG.',
+            'ktp_photo.max' => 'Ukuran foto KTP maksimal 2MB.',
+            'photo_3x4.required' => 'Foto 3x4 wajib diupload.',
+            'photo_3x4.image' => 'File foto 3x4 harus berupa gambar.',
+            'photo_3x4.mimes' => 'Format foto 3x4 harus JPG, JPEG, atau PNG.',
+            'photo_3x4.max' => 'Ukuran foto 3x4 maksimal 2MB.',
         ]);
 
         $code = $this->generateCode();
+        $plainPassword = Str::random(10);
 
         $ktpPath = $request->file('ktp_photo')->store('ktp', 'public');
         $photo3x4Path = $request->file('photo_3x4')->store('photos_3x4', 'public');
@@ -39,6 +86,7 @@ class PublicMemberController extends Controller
             'name'            => $data['name'],
             'nik'             => $data['nik'],
             'email'           => $data['email'],
+            'password'        => Hash::make($plainPassword),
             'address'         => $data['address'],
             'phone'           => $data['phone'],
             'gender'          => $data['gender'],
@@ -52,10 +100,14 @@ class PublicMemberController extends Controller
             'registered_at'   => now(),
         ]);
 
+        // Send registration email with credentials
+        Mail::to($member->email)->send(new MemberRegistrationMail($member, $plainPassword));
+
         return redirect()
             ->back()
-            ->with('success', 'Berhasil mendaftar, silakan tunggu konfirmasi admin.')
-            ->with('code', $member->code);
+            ->with('success', 'Berhasil mendaftar! Silakan cek email Anda untuk menerima kredensial login.')
+            ->with('code', $member->code)
+            ->with('password', $plainPassword);
     }
 
     public function balanceForm()
@@ -90,6 +142,56 @@ class PublicMemberController extends Controller
             'balance' => $member->balance,
             'message' => null,
         ]);
+    }
+
+    public function login()
+    {
+        return view('public.members.login');
+    }
+
+    public function loginStore(Request $request)
+    {
+        $data = $request->validate([
+            'email'    => ['required', 'email'],
+            'password' => ['required', 'string', 'min:6'],
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 6 karakter.',
+        ]);
+
+        $member = Member::where('email', $data['email'])->first();
+
+        if (! $member || ! Hash::check($data['password'], $member->password)) {
+            return back()->withErrors(['email' => 'Email atau password salah.'])->withInput();
+        }
+
+        if ($member->status !== 'approved') {
+            return back()->withErrors(['email' => 'Akun Anda masih menunggu persetujuan admin.'])->withInput();
+        }
+
+        Auth::guard('member')->login($member, $request->boolean('remember'));
+
+        return redirect()
+            ->route('member.dashboard')
+            ->with('success', 'Selamat datang, ' . $member->name . '!');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::guard('member')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()
+            ->route('home')
+            ->with('success', 'Anda telah berhasil logout.');
+    }
+
+    public function dashboard()
+    {
+        return view('public.members.dashboard');
     }
 
     private function generateCode(): string

@@ -1,35 +1,21 @@
 <x-filament::page>
-    <style>
-        .fs-wrap { display: grid; gap: 18px; }
-        .fs-card{
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            padding: 18px;
-            background: #ffffff;
-            box-shadow: 0 6px 18px rgba(0,0,0,.05);
-        }
-        .fs-heading{
-            font-size: 1.05rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .fs-help{
-            font-size: 12px;
-            color: #64748b;
-            margin-top: -6px;
-            margin-bottom: 8px;
-        }
-    </style>
+    <div class="space-y-6">
+        <div class="rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 p-6">
+            <h2 class="text-lg font-semibold text-gray-900">Pengaturan Website</h2>
+            <p class="text-sm text-gray-600 mt-1">Kelola semua konfigurasi branding, hero, footer, dan kontak KDMP dari sini.</p>
+        </div>
 
-     <form wire:submit.prevent="save" class="space-y-6">
+        <form wire:submit.prevent="save" class="space-y-6">
+            {{ $this->form }}
 
-        {{ $this->form }}
-
-        <x-filament::button type="submit" color="primary">
-            Simpan Settings
-        </x-filament::button>
-
-    </form>
+            <div class="flex gap-4">
+                <x-filament::button type="submit" color="primary" icon="heroicon-m-check">
+                    Simpan Semua Settings
+                </x-filament::button>
+                <x-filament::button type="button" color="gray" wire:click="$refresh">
+                    Reset
+                </x-filament::button>
+            </div>
+        </form>
+    </div>
 </x-filament::page>

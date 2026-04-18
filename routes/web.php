@@ -31,6 +31,22 @@ Route::get('/daftar', [PublicMemberController::class, 'create'])
 Route::post('/daftar', [PublicMemberController::class, 'store'])
     ->name('member.register.store');
 
+Route::get('/login', [PublicMemberController::class, 'login'])
+    ->name('member.login')
+    ->middleware('guest');
+
+Route::post('/login', [PublicMemberController::class, 'loginStore'])
+    ->name('member.login.store')
+    ->middleware('guest');
+
+Route::post('/logout', [PublicMemberController::class, 'logout'])
+    ->name('member.logout')
+    ->middleware('auth:member');
+
+Route::get('/dashboard', [PublicMemberController::class, 'dashboard'])
+    ->name('member.dashboard')
+    ->middleware('auth:member');
+
 Route::get('/cek-saldo', [PublicMemberController::class, 'balanceForm'])
     ->name('member.balance.form');
 

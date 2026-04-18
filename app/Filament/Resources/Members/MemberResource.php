@@ -19,7 +19,15 @@ class MemberResource extends Resource
 {
     protected static ?string $model = Member::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Anggota';
+
+    protected static ?string $pluralModelLabel = 'Anggota';
+
+    protected static ?string $modelLabel = 'Anggota';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     public static function form(Schema $schema): Schema
     {

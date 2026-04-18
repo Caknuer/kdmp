@@ -18,9 +18,18 @@ use UnitEnum;
 class AboutPageResource extends Resource
 {
     protected static ?string $model = AboutPage::class;
+    
+    protected static ?string $navigationLabel = 'Halaman Tentang';
+    
+    protected static ?string $pluralModelLabel = 'Halaman Tentang';
+    
+    protected static ?string $modelLabel = 'Halaman Tentang';
+    
+    protected static ?int $navigationSort = 991;
+    
     protected static UnitEnum|string|null $navigationGroup = 'Settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-information-circle';
 
     public static function form(Schema $schema): Schema
     {
