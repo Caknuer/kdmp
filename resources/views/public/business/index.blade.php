@@ -1,11 +1,7 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 @php
-    /**
-     * Fallback map jika data belum lengkap
-     * Icon disimpan sebagai string (Heroicons) untuk aman saat deploy.
-     */
     $categoryFallback = function (?string $name): string {
         $n = strtolower($name ?? '');
         if (str_contains($n, 'simpan') || str_contains($n, 'pinjam') || str_contains($n, 'keuangan')) return 'Keuangan';
@@ -17,11 +13,11 @@
 
     $iconFallback = function (string $category): string {
         return match ($category) {
-            'Keuangan' => 'heroicon-o-banknotes',
-            'Perdagangan' => 'heroicon-o-shopping-cart',
-            'Produksi' => 'heroicon-o-cog-6-tooth',
-            'Jasa' => 'heroicon-o-briefcase',
-            default => 'heroicon-o-building-storefront',
+            'Keuangan' => 'money-bill-wave',
+            'Perdagangan' => 'store',
+            'Produksi' => 'seedling',
+            'Jasa' => 'handshake',
+            default => 'building',
         };
     };
 @endphp
@@ -29,7 +25,7 @@
 <section class="page-hero">
     <div class="page-hero-inner">
         <h1>Unit Bisnis KDMP</h1>
-        <p>Unit usaha yang dikelola untuk mendukung ekonomi desa</p>
+        <p>Unit usaha yang dikelola untuk mendukung ekonomi warga dan desa Wonokerto</p>
     </div>
 </section>
 
@@ -43,34 +39,26 @@
 
 <section class="container">
     <div class="bisnis-grid">
-
         @forelse ($units as $unit)
             @php
-                // Ambil dari DB, kalau kosong pakai fallback
-                $cat  = $unit->category ?: $categoryFallback($unit->name);
-                $icon = $unit->icon ?: $iconFallback($cat);
-
-                // Thumbnail public
-                $thumbUrl = !empty($unit->thumbnail)
-                    ? Storage::disk('public')->url($unit->thumbnail)
-                    : null;
-
-                // Deskripsi ringkas
+                $cat = $unit->category ?: $categoryFallback($unit->name);
+                $iconName = $unit->icon ? str_replace('fa-', '', $unit->icon) : $iconFallback($cat);
+                $thumbUrl = $unit->thumbnail_url ?? (!empty($unit->thumbnail) ? Storage::disk('public')->url($unit->thumbnail) : null);
                 $desc = $unit->description ?: 'Deskripsi unit usaha belum tersedia.';
             @endphp
 
             <a class="bisnis-card" href="{{ route('public.business.detail', $unit->slug) }}">
                 <div class="bisnis-head">
-
-                    {{-- Thumbnail jika ada --}}
                     @if ($thumbUrl)
                         <div class="bisnis-logo">
-                            <img src="{{ $thumbUrl }}" alt="{{ $unit->name }}">
+                            <img src="{{ $thumbUrl }}" alt="{{ $unit->name }}" onerror="this.parentElement.style.display='none'; this.parentElement.nextElementSibling.style.display='grid';">
+                        </div>
+                        <div class="bisnis-icon" aria-hidden="true" style="display:none; place-items:center; color:#0f172a; font-size:1.75rem;">
+                            <i class="fas fa-{{ $iconName }}"></i>
                         </div>
                     @else
-                        {{-- Jika tidak ada thumbnail, tampilkan icon dari DB (Heroicon) --}}
-                        <div class="bisnis-icon" aria-hidden="true" style="display:grid; place-items:center;">
-                            <x-dynamic-component :component="$icon" class="w-8 h-8" />
+                        <div class="bisnis-icon" aria-hidden="true" style="display:grid; place-items:center; color:#0f172a; font-size:1.75rem;">
+                            <i class="fas fa-{{ $iconName }}"></i>
                         </div>
                     @endif
 
@@ -81,17 +69,15 @@
                 </div>
 
                 <div class="bisnis-desc">
-                    {{ $desc }}
+                    {{ Str::limit($desc, 120) }}
                 </div>
             </a>
-
         @empty
             <div class="bisnis-empty">
                 <h3 style="margin:0 0 8px; font-weight:900; color:#0f172a;">Belum ada unit usaha</h3>
                 <p>Silakan tambahkan data unit usaha dari admin panel.</p>
             </div>
         @endforelse
-
     </div>
 </section>
 @endsection

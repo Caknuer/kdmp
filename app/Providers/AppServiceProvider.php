@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\URL;
 use App\Models\Setting;
 
 class AppServiceProvider extends ServiceProvider
@@ -40,10 +41,15 @@ class AppServiceProvider extends ServiceProvider
                 'gmaps_embed_src' => $gmapsEmbed,
                 'facebook' => $settings['facebook'] ?? null,
                 'instagram' => $settings['instagram'] ?? null,
-                'twitter' => $settings['twitter'] ?? null,
+                'tiktok' => $settings['tiktok'] ?? $settings['twitter'] ?? null,
                 'youtube' => $settings['youtube'] ?? null,
                 'whatsapp' => $settings['whatsapp'] ?? null,
             ]);
         });
+        
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
+
     }
 }

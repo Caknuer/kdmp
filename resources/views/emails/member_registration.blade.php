@@ -110,10 +110,10 @@
                     <div class="credential-label">Email</div>
                     <div class="credential-value">{{ $member->email }}</div>
                 </div>
-                <div class="credential-item">
-                    <div class="credential-label">Password Sementara</div>
-                    <div class="credential-value">{{ $password }}</div>
-                </div>
+            <div class="credential-item">
+                <div class="credential-label">Password Sementara</div>
+                <div class="credential-value">{{ $password ?? '(Hubungi admin untuk reset password)' }}</div>
+            </div>
             </div>
 
             <div class="warning">
@@ -122,7 +122,7 @@
 
             <p>Akun Anda masih dalam status <strong>"Menunggu Konfirmasi Admin"</strong>. Admin akan melakukan verifikasi data Anda. Anda akan menerima notifikasi ketika akun Anda disetujui.</p>
 
-            <a href="{{ route('member.login') }}" class="button">Login ke Akun Saya</a>
+            <a href="{{ route('login') }}" class="button">Login ke Akun Saya</a>
 
             <hr style="margin: 24px 0; border: none; border-top: 1px solid #e5e7eb;">
 

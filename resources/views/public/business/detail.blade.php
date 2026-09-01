@@ -1,12 +1,11 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 @php
     $name  = $unit->name ?? 'Unit Usaha';
     $desc  = $unit->description ?? 'Deskripsi unit usaha belum tersedia.';
-    $thumb = $unit->thumbnail ?? null;
+    $thumbUrl = $unit->thumbnail_url ?? (!empty($unit->thumbnail) ? Storage::disk('public')->url($unit->thumbnail) : null);
 
-    // Fallback kategori jika DB kosong
     $categoryFallback = function (?string $name): string {
         $n = strtolower($name ?? '');
         if (str_contains($n, 'simpan') || str_contains($n, 'pinjam') || str_contains($n, 'keuangan')) return 'Keuangan';
@@ -16,58 +15,55 @@
         return 'Lainnya';
     };
 
-    // Fallback icon aman deploy (Heroicons)
     $iconFallback = function (string $category): string {
         return match ($category) {
-            'Keuangan' => 'heroicon-o-banknotes',
-            'Perdagangan' => 'heroicon-o-shopping-cart',
-            'Produksi' => 'heroicon-o-cog-6-tooth',
-            'Jasa' => 'heroicon-o-briefcase',
-            default => 'heroicon-o-building-storefront',
+            'Keuangan' => 'money-bill-wave',
+            'Perdagangan' => 'store',
+            'Produksi' => 'seedling',
+            'Jasa' => 'handshake',
+            default => 'building',
         };
     };
 
-    // Ambil dari DB, jika kosong pakai fallback
     $category = $unit->category ?: $categoryFallback($name);
-    $icon     = $unit->icon ?: $iconFallback($category);
+    $iconName = $unit->icon ? str_replace('fa-', '', $unit->icon) : $iconFallback($category);
 
-    // URL thumbnail public (aman)
-    $thumbUrl = !empty($thumb)
-        ? Storage::disk('public')->url($thumb)
-        : null;
-
-    // Services dari DB: dipisah baris baru
+    // Parsing services dari database (bisa dipisah newline atau koma)
     $servicesRaw = $unit->services ?? null;
     $services = [];
 
     if (!empty($servicesRaw)) {
-        $services = array_values(array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $servicesRaw))));
+        // Cek jika menggunakan baris baru atau koma
+        if (str_contains($servicesRaw, "\n") || str_contains($servicesRaw, "\r")) {
+            $services = array_values(array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", $servicesRaw))));
+        } else {
+            $services = array_values(array_filter(array_map('trim', explode(',', $servicesRaw))));
+        }
     }
 
-    // fallback layanan kalau services kosong
     $defaultServices = match ($category) {
         'Keuangan' => [
             'Simpanan wajib & sukarela',
-            'Pinjaman anggota koperasi',
-            'Rekap tabungan dan angsuran',
+            'Pinjaman modal usaha anggota',
+            'Tabungan dan investasi masa depan',
         ],
         'Perdagangan' => [
-            'Penjualan kebutuhan pokok',
+            'Penjualan sembako dan kebutuhan pokok',
             'Pemasaran produk UMKM desa',
-            'Distribusi barang koperasi',
+            'Penyaluran sarana pertanian dan produksi',
         ],
         'Produksi' => [
-            'Pengolahan hasil tani lokal',
-            'Produksi barang koperasi',
-            'Peningkatan nilai tambah produk desa',
+            'Pengolahan potensi dan hasil bumi desa',
+            'Standardisasi dan pengemasan produk',
+            'Peningkatan nilai tambah komoditas lokal',
         ],
         'Jasa' => [
-            'Layanan jasa koperasi sesuai kebutuhan anggota',
-            'Dukungan usaha & layanan komunitas',
+            'Layanan jasa dan utilitas desa',
+            'Dukungan usaha dan kemitraan masyarakat',
         ],
         default => [
-            'Layanan usaha koperasi sesuai kebutuhan anggota',
-            'Pemberdayaan ekonomi desa',
+            'Layanan usaha koperasi untuk kesejahteraan anggota',
+            'Pemberdayaan ekonomi masyarakat desa',
         ],
     };
 @endphp
@@ -75,14 +71,14 @@
 <section class="page-hero">
     <div class="page-hero-inner">
         <h1>{{ $name }}</h1>
-        <p>{{ $category }}</p>
+        <p><span class="bisnis-chip" style="color:white; border-color:rgba(255,255,255,0.4); background:rgba(255,255,255,0.15);">{{ $category }}</span></p>
     </div>
 </section>
 
 @if (!empty($isDummy))
     <section class="container">
         <div class="dummy-note bisnis-dummy-note">
-            <strong>Data dummy:</strong> halaman ini menampilkan unit usaha contoh karena data riil belum tersedia.
+            <strong>Data contoh aktif:</strong> halaman ini menampilkan unit usaha contoh karena data riil belum tersedia di admin panel.
         </div>
     </section>
 @endif
@@ -93,12 +89,15 @@
         {{-- Thumbnail / Icon --}}
         <div class="detail-thumb">
             @if ($thumbUrl)
-                <img src="{{ $thumbUrl }}" alt="{{ $name }}">
-            @else
-                <div class="icon-placeholder" aria-hidden="true" style="display:grid; place-items:center;">
-                    <x-dynamic-component :component="$icon" class="w-16 h-16" />
+                <img src="{{ $thumbUrl }}" alt="{{ $name }}" style="width:100%; border-radius:16px; object-fit:cover; max-height:360px;"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                <div class="icon-placeholder" aria-hidden="true" style="display:none; place-items:center; color:#0f172a; height:200px; font-size:4rem; background:#f1f5f9; border-radius:16px;">
+                    <i class="fas fa-{{ $iconName }}"></i>
                 </div>
-                <p style="margin-top:10px; color:#64748b; text-align:center;">(Belum ada thumbnail)</p>
+            @else
+                <div class="icon-placeholder" aria-hidden="true" style="display:grid; place-items:center; color:#0f172a; height:200px; font-size:4rem; background:#f1f5f9; border-radius:16px;">
+                    <i class="fas fa-{{ $iconName }}"></i>
+                </div>
             @endif
         </div>
 
@@ -107,43 +106,48 @@
 
             <div class="detail-box">
                 <h3>Tentang Unit</h3>
-                <p style="white-space: pre-wrap;">{{ $desc }}</p>
+                <div style="color:#334155; line-height:1.7; white-space:pre-line;">
+                    {{ $desc }}
+                </div>
             </div>
 
             <div class="detail-box">
-                <h3>Contoh Layanan</h3>
+                <h3>Layanan & Produk yang Disediakan</h3>
 
                 @php
                     $finalServices = !empty($services) ? $services : $defaultServices;
                 @endphp
 
                 @if (!empty($finalServices))
-                    <ul>
+                    <ul class="list-styled" style="margin:0; padding-left:20px; line-height:1.8;">
                         @foreach ($finalServices as $srv)
                             <li>{{ $srv }}</li>
                         @endforeach
                     </ul>
                 @else
-                    <p>Layanan belum tersedia.</p>
+                    <p style="color:#64748b;">Rincian layanan belum ditambahkan.</p>
                 @endif
             </div>
 
             <div class="detail-box">
-                <h3>Lokasi</h3>
+                <h3>Lokasi & Operasional</h3>
 
                 @if(!empty($setting->address))
-                    <p>{{ $setting->address }}</p>
+                    <p style="margin-bottom:12px; color:#334155;">
+                        <i class="fas fa-map-marker-alt text-danger" style="margin-right:6px;"></i>
+                        {{ $setting->address }}
+                    </p>
                 @else
-                    <p>Alamat belum tersedia.</p>
+                    <p style="color:#64748b;">Lokasi kantor pusat KDMP Wonokerto.</p>
                 @endif
 
                 @if(!empty($setting->gmaps_embed_src))
-                    <div class="business-location-map">
+                    <div class="business-location-map" style="margin-top:14px;">
                         <iframe
                             src="{{ $setting->gmaps_embed_src }}"
                             width="100%"
-                            height="260"
-                            style="border:0; border-radius:14px;"
+                            height="240"
+                            style="border:0; border-radius:12px;"
                             allowfullscreen=""
                             loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade">
@@ -152,15 +156,11 @@
                 @endif
             </div>
 
-            <a href="{{ route('public.business.index') }}" class="back-link">
-                ← Kembali ke Daftar Unit
-            </a>
-
-            @if (!empty($isDummy))
-                <div class="dummy-note" style="opacity:.7; font-size:14px;">
-                    *Ini data dummy sementara karena unit belum diinput di admin.
-                </div>
-            @endif
+            <div style="margin-top:24px;">
+                <a href="{{ route('public.business.index') }}" class="back-link" style="display:inline-flex; align-items:center; gap:8px; font-weight:600; text-decoration:none;">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Daftar Unit
+                </a>
+            </div>
 
         </div>
 

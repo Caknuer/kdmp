@@ -13,7 +13,11 @@ class PublicPostController extends Controller
             ->latest('published_at')
             ->paginate(9);
 
-        return view('public.berita.index', compact('articles'));
+        return view('public.berita.index', [
+            'pageTitle' => 'Berita',
+            'pageDescription' => 'Berita terbaru dari KDMP Wonokerto.',
+            'articles' => $articles,
+        ]);
     }
 
     public function beritaShow(string $slug)
@@ -23,7 +27,11 @@ class PublicPostController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        return view('public.berita.show', compact('article'));
+        return view('public.berita.show', [
+            'pageTitle' => $article->title,
+            'pageDescription' => \Illuminate\Support\Str::limit(strip_tags($article->content), 160),
+            'article' => $article,
+        ]);
     }
 
     public function pengumumanIndex()
@@ -33,7 +41,11 @@ class PublicPostController extends Controller
             ->latest('published_at')
             ->paginate(9);
 
-        return view('public.pengumuman.index', compact('articles'));
+        return view('public.pengumuman.index', [
+            'pageTitle' => 'Pengumuman',
+            'pageDescription' => 'Pengumuman resmi dari KDMP Wonokerto.',
+            'articles' => $articles,
+        ]);
     }
 
     public function pengumumanShow(string $slug)
@@ -43,7 +55,11 @@ class PublicPostController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        return view('public.pengumuman.show', compact('article'));
+        return view('public.pengumuman.show', [
+            'pageTitle' => $article->title,
+            'pageDescription' => \Illuminate\Support\Str::limit(strip_tags($article->content), 160),
+            'article' => $article,
+        ]);
     }
 
     // OPTIONAL: redirect route lama /artikel ke /berita
@@ -75,5 +91,19 @@ class PublicPostController extends Controller
             ->paginate(9);
 
         return view('public.informasi.index', compact('articles'));
+    }
+
+    public function informasiShow(string $slug)
+    {
+        $article = Article::published()
+            ->type('informasi')
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return view('public.informasi.show', [
+            'pageTitle' => $article->title,
+            'pageDescription' => \Illuminate\Support\Str::limit(strip_tags($article->content), 160),
+            'article' => $article,
+        ]);
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 <section class="page-hero page-hero--info">
     <div class="page-hero-inner">
         <span class="hero-pill">Login</span>
@@ -62,6 +62,11 @@
                     <input type="checkbox" name="remember" value="1">
                     <span>Ingat saya</span>
                 </label>
+                <div style="text-align: right; margin-top: 8px;">
+                    <a href="{{ route('member.forgot.password') }}" style="color: #b91c1c; font-size: 0.9em; text-decoration: none;">
+                        Lupa Password?
+                    </a>
+                </div>
             </div>
 
             <button type="submit">Login</button>
@@ -69,7 +74,7 @@
 
         <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb; text-align: center;">
             <p style="margin: 0 0 12px; color: #6b7280;">Belum memiliki akun?</p>
-            <a href="{{ route('member.register') }}" style="color: #b91c1c; font-weight: 600; text-decoration: none;">
+            <a href="{{ route('register') }}" style="color: #b91c1c; font-weight: 600; text-decoration: none;">
                 Daftar di sini
             </a>
         </div>

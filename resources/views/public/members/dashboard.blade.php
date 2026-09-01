@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 <section class="container" style="padding: 60px 0;">
     <div style="max-width: 900px; margin: 0 auto;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">

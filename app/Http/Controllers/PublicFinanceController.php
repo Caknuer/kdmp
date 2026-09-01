@@ -12,43 +12,9 @@ class PublicFinanceController extends Controller
 {
     public function index(Request $request)
     {
-        // Bulan dipilih
-        $selectedMonth = $request->get('month', now()->format('Y-m'));
-        $startDate = "{$selectedMonth}-01";
-        $endDate   = date('Y-m-t', strtotime($startDate));
-
-        /* ==========================================================
-           1) RINGKASAN BULAN DIPILIH (GABUNG)
-        ========================================================== */
-
-        // A. dari finance_transactions
-        $financeIncome = FinanceTransaction::whereBetween('date', [$startDate, $endDate])
-            ->where('type', 'income')
-            ->sum('amount');
-
-        $financeExpense = FinanceTransaction::whereBetween('date', [$startDate, $endDate])
-            ->where('type', 'expense')
-            ->sum('amount');
-
-        // B. dari transactions (member)
-        $memberIncome = Transaction::whereBetween('date', [$startDate, $endDate])
-            ->where('type', 'credit')
-            ->sum('amount');
-
-        $memberExpense = Transaction::whereBetween('date', [$startDate, $endDate])
-            ->where('type', 'debit')
-            ->sum('amount');
-
-        // TOTAL GABUNG
-        $income  = $financeIncome + $memberIncome;
-        $expense = $financeExpense + $memberExpense;
-        $balance = $income - $expense;
-
-        // Tambahan pendaftar baru (saldo awal member)
-        $registrationIncome = Transaction::whereBetween('date', [$startDate, $endDate])
-            ->where('type', 'credit')
-            ->where('category', 'initial')
-            ->sum('amount');
+        // Bulan yang diminta user, jika ada
+        $requestedMonth = $request->get('month');
+        $defaultMonth = now()->format('Y-m');
 
         /* ==========================================================
            2) REKAP BULANAN (GABUNG 2 TABEL)
@@ -93,6 +59,50 @@ class PublicFinanceController extends Controller
             ->unique()
             ->sortDesc()
             ->values();
+
+        $availableMonths = $months;
+
+        // Pilih bulan yang masuk akal: request month, atau bulan terbaru yang tersedia
+        $selectedMonth = $requestedMonth ?: ($availableMonths->first() ?? $defaultMonth);
+        if ($availableMonths->count() && !$availableMonths->contains($selectedMonth)) {
+            $selectedMonth = $availableMonths->first();
+        }
+
+        $startDate = "{$selectedMonth}-01";
+        $endDate   = date('Y-m-t', strtotime($startDate));
+
+        /* ==========================================================
+           1) RINGKASAN BULAN DIPILIH (GABUNG)
+        ========================================================== */
+
+        // A. dari finance_transactions
+        $financeIncome = FinanceTransaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'income')
+            ->sum('amount');
+
+        $financeExpense = FinanceTransaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'expense')
+            ->sum('amount');
+
+        // B. dari transactions (member)
+        $memberIncome = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'credit')
+            ->sum('amount');
+
+        $memberExpense = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'debit')
+            ->sum('amount');
+
+        // TOTAL GABUNG
+        $income  = $financeIncome + $memberIncome;
+        $expense = $financeExpense + $memberExpense;
+        $balance = $income - $expense;
+
+        // Tambahan pendaftar baru (saldo awal member)
+        $registrationIncome = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->where('type', 'credit')
+            ->where('category', 'initial')
+            ->sum('amount');
 
         // Pendaftar baru approved per bulan
         $memberApprovedMonthly = Member::select(
@@ -208,20 +218,23 @@ class PublicFinanceController extends Controller
             ];
         });
 
-        /* ==========================================================
+/* ==========================================================
            3) DROPDOWN BULAN TERSEDIA (GABUNG)
         ========================================================== */
         $availableMonths = $months;
 
-        return view('public.finance', compact(
+        return view('public.finance', array_merge([
+            'pageTitle' => 'Transparansi Keuangan',
+            'pageDescription' => 'Laporan transparansi keuangan KDMP Wonokerto.',
+        ], compact(
             'income',
             'expense',
             'balance',
             'registrationIncome',
             'monthly',
-            'daily',              // ✅ TAMBAH INI
+            'daily',
             'availableMonths',
             'selectedMonth'
-        ));
+        )));
     }
 }

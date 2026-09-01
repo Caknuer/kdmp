@@ -16,7 +16,7 @@ class MemberRegistrationMail extends Mailable
 
     public function __construct(
         public Member $member,
-        public string $password,
+        public ?string $password = null,
     ) {}
 
     public function envelope(): Envelope

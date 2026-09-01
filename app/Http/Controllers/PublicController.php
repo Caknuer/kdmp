@@ -10,6 +10,8 @@ use App\Models\Transaction;
 use App\Models\Setting;
 use App\Models\OrganizationMember;
 use App\Models\FinanceTransaction;
+use App\Models\Member;
+use Illuminate\Support\Facades\Schema;
 
 class PublicController extends Controller
 {
@@ -52,7 +54,42 @@ class PublicController extends Controller
             ->where('category', 'initial')
             ->sum('amount');
 
+        // Statistik Anggota Koperasi (Aman jika kolom role/status belum ada di DB)
+        $hasMembersTable = Schema::hasTable('members');
+        $hasRole = $hasMembersTable && Schema::hasColumn('members', 'role');
+        $hasStatus = $hasMembersTable && Schema::hasColumn('members', 'status');
+        $hasRegisteredAt = $hasMembersTable && Schema::hasColumn('members', 'registered_at');
+
+        $totalMembers = $hasMembersTable ? Member::count() : 0;
+        $activeMembers = $hasStatus ? Member::where('status', 'approved')->count() : $totalMembers;
+        $pendingMembers = $hasStatus ? Member::where('status', 'pending')->count() : 0;
+        $platinumMembers = $hasRole ? Member::where('role', 'platinum')->count() : 0;
+        $premiumMembers = $hasRole ? Member::where('role', 'premium')->count() : 0;
+
+        $memberStats = [
+            'total' => $totalMembers,
+            'active' => $activeMembers,
+            'pending' => $pendingMembers,
+            'platinum' => $platinumMembers,
+            'premium' => $premiumMembers,
+        ];
+
+        // Statistik Mitra & Unit Usaha
+        $partnerCount = Partner::count();
+        $businessUnitCount = BusinessUnit::count();
+
+        // Daftar Anggota Terbaru (untuk transparansi jumlah terdaftar)
+        $recentMembersQuery = Member::query();
+        if ($hasRegisteredAt) {
+            $recentMembersQuery->orderBy('registered_at', 'desc');
+        }
+        $recentMembers = $hasMembersTable ? $recentMembersQuery->orderBy('id', 'desc')->take(8)->get() : collect();
+
         return view('public.home', [
+            'pageTitle' => 'Beranda',
+
+            'pageDescription' => 'Koperasi Desa Merah Putih Wonokerto - Mengelola potensi desa secara transparan dan profesional.',
+
             'latestInfo' => Article::published()
                 ->latest('published_at')
                 ->limit(6)
@@ -67,6 +104,11 @@ class PublicController extends Controller
                 'balance' => $balance,
             ],
 
+            'memberStats' => $memberStats,
+            'partnerCount' => $partnerCount,
+            'businessUnitCount' => $businessUnitCount,
+            'recentMembers' => $recentMembers,
+
             'setting' => $this->getSettings(),
         ]);
     }
@@ -80,7 +122,6 @@ class PublicController extends Controller
             ->where('is_active', true)
             ->orderBy('order')
             ->orderBy('name')
-            ->select(['id', 'name', 'slug', 'thumbnail', 'description', 'is_active', 'order'])
             ->get();
 
         $isDummy = false;
@@ -91,6 +132,8 @@ class PublicController extends Controller
         }
 
         return view('public.business.index', [
+            'pageTitle' => 'Unit Bisnis',
+            'pageDescription' => 'Daftar unit bisnis KDMP Wonokerto yang mendukung perekonomian desa.',
             'units' => $units,
             'isDummy' => $isDummy,
             'setting' => $this->getSettings(),
@@ -102,7 +145,6 @@ class PublicController extends Controller
         $unit = BusinessUnit::query()
             ->where('slug', $slug)
             ->where('is_active', true)
-            ->select(['id', 'name', 'slug', 'thumbnail', 'description', 'is_active', 'order'])
             ->first();
 
         $isDummy = false;
@@ -114,6 +156,8 @@ class PublicController extends Controller
         }
 
         return view('public.business.detail', [
+            'pageTitle' => $unit->name,
+            'pageDescription' => $unit->description ? strip_tags($unit->description) : 'Detail unit bisnis ' . $unit->name,
             'unit' => $unit,
             'isDummy' => $isDummy,
             'setting' => $this->getSettings(),
@@ -131,10 +175,11 @@ class PublicController extends Controller
                 'name' => 'Unit Simpan Pinjam',
                 'slug' => 'unit-simpan-pinjam',
                 'thumbnail' => null,
+                'thumbnail_url' => null,
                 'description' => "Melayani simpan pinjam anggota dengan prinsip koperasi.\nProses transparan dan pelayanan cepat.",
-                'category' => null,
-                'icon' => null,
-                'services' => null,
+                'category' => 'Keuangan',
+                'icon' => 'money-bill-wave',
+                'services' => "Simpanan Wajib & Sukarela\nPinjaman Modal Usaha\nTabungan Masa Depan",
                 'is_active' => true,
                 'order' => 1,
             ],
@@ -143,10 +188,11 @@ class PublicController extends Controller
                 'name' => 'Unit Perdagangan',
                 'slug' => 'unit-perdagangan',
                 'thumbnail' => null,
+                'thumbnail_url' => null,
                 'description' => "Mengelola penjualan kebutuhan masyarakat dan pemasaran produk UMKM desa.",
-                'category' => null,
-                'icon' => null,
-                'services' => null,
+                'category' => 'Perdagangan',
+                'icon' => 'store',
+                'services' => "Toko Sembako Murah\nPemasaran Produk UMKM\nPenyaluran Pupuk & Sarana Pertanian",
                 'is_active' => true,
                 'order' => 2,
             ],
@@ -155,10 +201,11 @@ class PublicController extends Controller
                 'name' => 'Unit Produksi',
                 'slug' => 'unit-produksi',
                 'thumbnail' => null,
+                'thumbnail_url' => null,
                 'description' => "Mengolah potensi desa menjadi produk bernilai tambah.",
-                'category' => null,
-                'icon' => null,
-                'services' => null,
+                'category' => 'Produksi',
+                'icon' => 'seedling',
+                'services' => "Pengolahan Hasil Pertanian\nProduksi Pangan Lokal\nPengemasan & Standardisasi",
                 'is_active' => true,
                 'order' => 3,
             ],
@@ -172,7 +219,6 @@ class PublicController extends Controller
 
     /* =======================
        MITRA / PARTNER
-       (FIX: tanpa kolom description di DB)
     ======================== */
     public function partners()
     {
@@ -180,31 +226,15 @@ class PublicController extends Controller
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->orderBy('name')
-            ->select([
-                'id',
-                'name',
-                'logo',
-                'website',
-                'is_active',
-                'sort_order',
-            ])
             ->get()
             ->map(function ($p) {
-                // Normalisasi website (biar link aman)
                 $p->website = $this->normalizeUrl($p->website);
-
-                // Karena kolom description belum ada di DB,
-                // set null biar Blade/Modal aman jika akses $partner->description
-                $p->description = null;
-
                 return $p;
             });
 
-        if ($partners->isEmpty()) {
-            $partners = $this->dummyPartners();
-        }
-
         return view('public.partners', [
+            'pageTitle' => 'Mitra Kami',
+            'pageDescription' => 'Daftar mitra dan kolaborator KDMP Wonokerto.',
             'partners' => $partners,
             'setting' => $this->getSettings(),
         ]);
@@ -263,6 +293,8 @@ class PublicController extends Controller
             ->get();
 
         return view('public.profil.pengurus', [
+            'pageTitle' => 'Pengurus',
+            'pageDescription' => 'Daftar pengurus KDMP Wonokerto.',
             'pengurus' => $pengurus,
             'setting' => $this->getSettings(),
         ]);
@@ -276,6 +308,8 @@ class PublicController extends Controller
             ->get();
 
         return view('public.profil.pengawas', [
+            'pageTitle' => 'Pengawas',
+            'pageDescription' => 'Daftar pengawas KDMP Wonokerto.',
             'pengawas' => $pengawas,
             'setting' => $this->getSettings(),
         ]);
@@ -336,6 +370,11 @@ class PublicController extends Controller
             ]);
         }
         
-        return view('public.profil.tentang', compact('about'));
+        return view('public.profil.tentang', [
+            'pageTitle' => 'Tentang Kami',
+            'pageDescription' => 'Profil, visi, misi, dan nilai-nilai KDMP Wonokerto.',
+            'about' => $about,
+            'setting' => $this->getSettings(),
+        ]);
     }
 }

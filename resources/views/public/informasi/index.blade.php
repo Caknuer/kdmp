@@ -1,11 +1,11 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 <section class="page-hero page-hero--info">
     <div class="page-hero-inner">
-        <span class="hero-pill">Informasi KDMP</span>
-        <h1>Informasi</h1>
-        <p>Berita dan pengumuman terbaru dari KDMP</p>
+        <span class="hero-pill">📋 Informasi KDMP</span>
+        <h1>Semua Informasi</h1>
+        <p>Berita dan pengumuman terbaru dari KDMP Wonokerto</p>
     </div>
 </section>
 
@@ -14,7 +14,11 @@
         <div class="info-grid">
             @forelse ($articles as $article)
                 @php
-                    $base = $article->type === 'pengumuman' ? 'pengumuman' : 'berita';
+                    $base = match($article->type) {
+                        'pengumuman' => 'pengumuman',
+                        'informasi' => 'informasi',
+                        default => 'berita'
+                    };
                 @endphp
 
                 <a href="{{ url('/'.$base.'/'.$article->slug) }}" class="info-card">
@@ -34,7 +38,7 @@
                     <div class="info-body">
                         <div class="info-meta">
                             <span class="info-tag {{ $article->type === 'pengumuman' ? 'is-ann' : 'is-news' }}">
-                                {{ $article->type === 'pengumuman' ? 'Pengumuman' : 'Berita' }}
+                                {{ $article->type === 'pengumuman' ? '📢 Pengumuman' : '📰 Berita' }}
                             </span>
                             <span class="info-date">{{ $article->display_date->format('d M Y') }}</span>
                         </div>

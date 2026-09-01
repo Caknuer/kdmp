@@ -1,11 +1,11 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 <section class="page-hero page-hero--info">
     <div class="page-hero-inner">
-        <span class="hero-pill">Informasi KDMP</span>
-        <h1>Pengumuman</h1>
-        <p>Pengumuman resmi dan informasi penting KDMP</p>
+        <span class="hero-pill">📢 Pengumuman KDMP</span>
+        <h1>Pengumuman Terbaru</h1>
+        <p>Pengumuman resmi dan informasi penting dari KDMP Wonokerto</p>
     </div>
 </section>
 
@@ -29,7 +29,7 @@
 
                     <div class="info-body">
                         <div class="info-meta">
-                            <span class="info-tag is-ann">Pengumuman</span>
+                            <span class="info-tag is-ann">📢 Pengumuman</span>
                             <span class="info-date">{{ $article->display_date->format('d M Y') }}</span>
                         </div>
 

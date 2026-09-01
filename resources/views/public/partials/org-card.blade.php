@@ -1,5 +1,5 @@
 @php
-    $photoP = $item->photo_p ? asset('storage/' . $item->photo_p) : '';
+    $photoP = $item->photo_url;
     $name = $item->name_p ?? '-';
     $role = $item->role ?? '';
     $bio  = $item->bio ?? '';
@@ -30,7 +30,8 @@
             {{ $initial }}
         </div>
     @else
-        <div class="org-photo-placeholder">
+        <div class="org-photo-placeholder"
+             style="background: #e5e7eb; color: #6b7280; display: grid; place-items: center;">
             {{ $initial }}
         </div>
     @endif

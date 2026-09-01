@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 
 <!-- HERO -->
 <section class="page-hero">
@@ -25,13 +25,6 @@
                 <span>Status</span><br>
                 <strong>Aktif</strong>
             </div>
-        </div>
-
-        <div class="section-head reveal">
-            <h2 class="section-title">Struktur Pengawas</h2>
-            <p class="section-subtitle">
-                Susunan Pengawas yang bertanggung jawab atas pengelolaan organisasi
-            </p>
         </div>
 
         <div class="org-grid">

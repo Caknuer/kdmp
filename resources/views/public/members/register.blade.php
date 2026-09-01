@@ -1,11 +1,11 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 <section class="page-hero page-hero--info">
     <div class="page-hero-inner">
         <span class="hero-pill">Pendaftaran</span>
         <h1>Pendaftaran Anggota KDMP</h1>
-        <p>Lengkapi formulir di bawah untuk menjadi anggota resmi. Pastikan semua data dan dokumen valid agar pendaftaran berjalan lancar.</p>
+        <p>Daftar sebagai anggota KDMP dengan mudah. Pilih tipe keanggotaan yang sesuai dengan kebutuhan Anda.</p>
     </div>
 </section>
 
@@ -24,12 +24,9 @@
         {{-- Show code after register --}}
         @if (session('code'))
             <div class="alert success">
-                <b>Selamat!</b> Pendaftaran berhasil. Silakan cek email Anda untuk menerima kredensial login. <br>
+                <b>Selamat!</b> Pendaftaran berhasil. <br>
                 <small style="display: block; margin-top: 8px;">Kode Anggota: <strong>{{ session('code') }}</strong></small>
-                @if (session('password'))
-                    <small style="display: block; margin-top: 8px;">Password Sementara: <strong>{{ session('password') }}</strong></small>
-                    <small style="display: block; margin-top: 4px; color: #666;">Harap ubah password setelah login pertama kali.</small>
-                @endif
+                <small style="display: block; margin-top: 8px;">Silakan <a href="{{ route('login') }}" style="color: #007bff; text-decoration: underline;">login di sini</a> menggunakan email dan password Anda.</small>
             </div>
         @endif
 
@@ -49,18 +46,6 @@
           enctype="multipart/form-data">
 
         @csrf
-
-        <div class="field">
-            <label for="nik">NIK</label>
-            <input id="nik" type="text"
-                   name="nik"
-                   placeholder="NIK (16 digit)"
-                   value="{{ old('nik') }}"
-                   required>
-            @error('nik')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-        </div>
 
         <div class="field">
             <label for="name">Nama Lengkap</label>
@@ -87,111 +72,116 @@
         </div>
 
         <div class="field">
-            <label for="phone">No WhatsApp</label>
-            <input id="phone" type="text"
-                   name="phone"
-                   placeholder="No WhatsApp"
-                   value="{{ old('phone') }}"
+            <label for="password">Password</label>
+            <input id="password" type="password"
+                   name="password"
+                   placeholder="Password (Minimal 8 karakter)"
                    required>
-            @error('phone')
+            @error('password')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
 
         <div class="field">
-            <label for="gender">Jenis Kelamin</label>
-            <select id="gender" name="gender" required>
-                <option value="">Pilih Jenis Kelamin</option>
-                <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Perempuan</option>
-                <option value="other" {{ old('gender') === 'other' ? 'selected' : '' }}>Lainnya</option>
-            </select>
-            @error('gender')
+            <label for="password_confirmation">Konfirmasi Password</label>
+            <input id="password_confirmation" type="password"
+                   name="password_confirmation"
+                   placeholder="Konfirmasi Password"
+                   required>
+            @error('password_confirmation')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
 
         <div class="field">
-            <label for="position">Posisi</label>
-            <select id="position" name="position" required>
-                <option value="">Pilih Posisi</option>
-                <option value="pengawas" {{ old('position') === 'pengawas' ? 'selected' : '' }}>Pengawas</option>
-                <option value="pengurus" {{ old('position') === 'pengurus' ? 'selected' : '' }}>Pengurus</option>
-                <option value="anggota" {{ old('position') === 'anggota' ? 'selected' : '' }}>Anggota</option>
-            </select>
-            @error('position')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-        </div>
-
-        <div class="field">
-            <label for="role">Role</label>
+            <label for="role">Tipe Keanggotaan</label>
             <select id="role" name="role" required>
-                <option value="">Pilih Role</option>
-                <option value="pengawas" {{ old('role') === 'pengawas' ? 'selected' : '' }}>Pengawas</option>
-                <option value="pengurus" {{ old('role') === 'pengurus' ? 'selected' : '' }}>Pengurus</option>
-                <option value="anggota" {{ old('role') === 'anggota' ? 'selected' : '' }}>Anggota</option>
+                <option value="">Pilih Tipe Keanggotaan</option>
+                <option value="platinum" {{ old('role') === 'platinum' ? 'selected' : '' }}>
+                    🏆 Platinum - Khusus untuk Menabung
+                </option>
+                <option value="premium" {{ old('role') === 'premium' ? 'selected' : '' }}>
+                    💎 Premium - Anggota Resmi dengan Hak Penuh
+                </option>
             </select>
             @error('role')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
 
-        <div class="field">
-            <label for="job">Pekerjaan</label>
-            <input id="job" type="text"
-                   name="job"
-                   placeholder="Pekerjaan"
-                   value="{{ old('job') }}"
-                   required>
-            @error('job')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
+        <div class="membership-info">
+            <div class="info-box" id="platinum-info" style="display: none;">
+                <h4>🏆 Anggota Platinum</h4>
+                <ul>
+                    <li>✅ Khusus untuk menabung saja</li>
+                    <li>✅ Tidak perlu verifikasi dokumen berat</li>
+                    <li>✅ Langsung aktif setelah daftar</li>
+                    <li>✅ Fokus pada layanan simpan pinjam</li>
+                </ul>
+            </div>
+
+            <div class="info-box" id="premium-info" style="display: none;">
+                <h4>💎 Anggota Premium</h4>
+                <ul>
+                    <li>✅ Anggota resmi dengan hak penuh</li>
+                    <li>✅ Perlu melengkapi dokumen (KTP, foto 3x4)</li>
+                    <li>✅ Verifikasi oleh admin</li>
+                    <li>✅ Hak suara dalam rapat</li>
+                    <li>✅ Bonus dan dividen</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="field">
-            <label for="address">Alamat Lengkap</label>
-            <textarea id="address" name="address"
-                      placeholder="Alamat Lengkap"
-                      required>{{ old('address') }}</textarea>
-            @error('address')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-        </div>
-
-        <div class="field">
-            <label for="registered_at">Tanggal Pendaftaran</label>
-            <input id="registered_at" type="date"
-                   value="{{ now()->format('Y-m-d') }}"
-                   readonly>
-            <small class="description">Tanggal pendaftaran otomatis terisi.</small>
-        </div>
-
-        <div class="field">
-            <label for="ktp_photo">Upload Foto KTP</label>
-            <input id="ktp_photo" type="file"
-                   name="ktp_photo"
-                   accept="image/*"
-                   required>
-            @error('ktp_photo')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-        </div>
-
-        <div class="field">
-            <label for="photo_3x4">Upload Foto 3x4</label>
-            <input id="photo_3x4" type="file"
-                   name="photo_3x4"
-                   accept="image/*"
-                   required>
-            @error('photo_3x4')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-        </div>
-
-        <button type="submit">Daftar</button>
+        <button type="submit">Daftar Sekarang</button>
     </form>
 
     </div>
 </section>
+
+<style>
+.membership-info {
+    margin: 20px 0;
+}
+
+.info-box {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.info-box h4 {
+    margin: 0 0 10px 0;
+    color: #495057;
+}
+
+.info-box ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.info-box li {
+    margin: 5px 0;
+    color: #6c757d;
+}
+</style>
+
+<script>
+document.getElementById('role').addEventListener('change', function() {
+    const platinumInfo = document.getElementById('platinum-info');
+    const premiumInfo = document.getElementById('premium-info');
+
+    if (this.value === 'platinum') {
+        platinumInfo.style.display = 'block';
+        premiumInfo.style.display = 'none';
+    } else if (this.value === 'premium') {
+        platinumInfo.style.display = 'none';
+        premiumInfo.style.display = 'block';
+    } else {
+        platinumInfo.style.display = 'none';
+        premiumInfo.style.display = 'none';
+    }
+});
+</script>
 @endsection

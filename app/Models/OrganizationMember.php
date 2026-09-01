@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class OrganizationMember extends Model
 {
@@ -38,11 +39,28 @@ class OrganizationMember extends Model
 
     public function getPhotoUrlAttribute()
     {
-        if ($this->photo && file_exists(storage_path('app/public/' . $this->photo))) {
-            return asset('storage/' . $this->photo);
+        if (! $this->photo_p) {
+            return null;
         }
 
-        return asset('images/avatar.png');
-    }
+        $path = ltrim($this->photo_p, '/');
 
+        // External URL
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        // Storage public file
+        $storagePath = storage_path('app/public/' . $path);
+        if (file_exists($storagePath)) {
+            return asset('storage/' . $path);
+        }
+
+        // Public path directly
+        if (file_exists(public_path($path))) {
+            return asset($path);
+        }
+
+        return asset('storage/' . $path);
+    }
 }

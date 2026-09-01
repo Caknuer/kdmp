@@ -281,86 +281,90 @@
 ========================= */
 (function () {
   const canvas = document.getElementById("financeChart");
-  if (!canvas || typeof Chart === "undefined") return;
+  if (!canvas) return;
 
-  // ✅ sekarang pakai daily (hasil dari controller: [{day, income, expense, balance}, ...])
-  const daily = Array.isArray(window.financeDaily) ? window.financeDaily : [];
-  if (!daily.length) return;
+  const buildChart = () => {
+    if (typeof Chart === "undefined") return;
 
-  // urutkan berdasarkan tanggal (aman kalau dari backend sudah urut, tapi ini buat jaga-jaga)
-  const sorted = daily
-    .slice()
-    .sort((a, b) => String(a.day).localeCompare(String(b.day)));
+    const daily = Array.isArray(window.financeDaily) ? window.financeDaily : [];
+    if (!daily.length) return;
 
-  // format label jadi "01", "02", ... biar ringkas (tetap bisa ganti ke full date)
-  const labels = sorted.map((x) => {
-    const d = String(x.day || "");
-    // "YYYY-MM-DD" -> ambil "DD"
-    const parts = d.split("-");
-    return parts.length === 3 ? parts[2] : d;
-  });
+    const sorted = daily
+      .slice()
+      .sort((a, b) => String(a.day).localeCompare(String(b.day)));
 
-  const income = sorted.map((x) => Number(x.income || 0));
-  const expense = sorted.map((x) => Number(x.expense || 0));
-  const balance = sorted.map((x) =>
-    Number(x.balance || Number(x.income || 0) - Number(x.expense || 0))
-  );
+    const labels = sorted.map((x) => {
+      const d = String(x.day || "");
+      const parts = d.split("-");
+      return parts.length === 3 ? parts[2] : d;
+    });
 
-  const rupiah = (n) => {
-    try {
-      return "Rp " + Number(n).toLocaleString("id-ID");
-    } catch {
-      return "Rp " + n;
+    const income = sorted.map((x) => Number(x.income || 0));
+    const expense = sorted.map((x) => Number(x.expense || 0));
+    const balance = sorted.map((x) =>
+      Number(x.balance || Number(x.income || 0) - Number(x.expense || 0))
+    );
+
+    const rupiah = (n) => {
+      try {
+        return "Rp " + Number(n).toLocaleString("id-ID");
+      } catch {
+        return "Rp " + n;
+      }
+    };
+
+    if (window.__financeChartInstance) {
+      window.__financeChartInstance.destroy();
+      window.__financeChartInstance = null;
     }
+
+    window.__financeChartInstance = new Chart(canvas, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          { label: "Pemasukan", data: income, tension: 0.3 },
+          { label: "Pengeluaran", data: expense, tension: 0.3 },
+          { label: "Saldo Harian", data: balance, tension: 0.3 },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              title: function (items) {
+                const idx = items?.[0]?.dataIndex ?? 0;
+                const fullDate = String(sorted[idx]?.day || "");
+                return fullDate || items?.[0]?.label || "";
+              },
+              label: function (ctx) {
+                return `${ctx.dataset.label}: ${rupiah(ctx.parsed.y)}`;
+              },
+            },
+          },
+        },
+        scales: {
+          y: {
+            ticks: {
+              callback: function (value) {
+                return rupiah(value);
+              },
+            },
+          },
+        },
+      },
+    });
   };
 
-  // ✅ destroy chart lama kalau ada (penting kalau page pakai cache/SPA-like)
-  if (window.__financeChartInstance) {
-    window.__financeChartInstance.destroy();
-    window.__financeChartInstance = null;
+  if (typeof Chart === "undefined") {
+    window.addEventListener("load", buildChart);
+  } else {
+    buildChart();
   }
-
-  window.__financeChartInstance = new Chart(canvas, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [
-        { label: "Pemasukan", data: income, tension: 0.3 },
-        { label: "Pengeluaran", data: expense, tension: 0.3 },
-        { label: "Saldo Harian", data: balance, tension: 0.3 },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      plugins: {
-        legend: { display: true },
-        tooltip: {
-          callbacks: {
-            // tampilkan tanggal asli di tooltip judul
-            title: function (items) {
-              const idx = items?.[0]?.dataIndex ?? 0;
-              const fullDate = String(sorted[idx]?.day || "");
-              return fullDate || items?.[0]?.label || "";
-            },
-            label: function (ctx) {
-              return `${ctx.dataset.label}: ${rupiah(ctx.parsed.y)}`;
-            },
-          },
-        },
-      },
-      scales: {
-        y: {
-          ticks: {
-            callback: function (value) {
-              return rupiah(value);
-            },
-          },
-        },
-      },
-    },
-  });
 })();
 
 })();

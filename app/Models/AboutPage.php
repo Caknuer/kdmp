@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-Class AboutPage extends Model
+class AboutPage extends Model
 {
     protected $fillable = [
         'profil_singkat',

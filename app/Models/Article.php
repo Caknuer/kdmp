@@ -38,4 +38,22 @@ class Article extends Model
     {
         return $this->published_at ?? $this->created_at;
     }
+
+    public function getTypeEmojiAttribute()
+    {
+        return match($this->type) {
+            'pengumuman' => '📢',
+            'informasi' => '📋',
+            default => '📰',
+        };
+    }
+
+    public function getTypeDisplayAttribute()
+    {
+        return match($this->type) {
+            'pengumuman' => 'Pengumuman',
+            'informasi' => 'Informasi',
+            default => 'Berita',
+        };
+    }
 }

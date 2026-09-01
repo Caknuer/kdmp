@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('P')
+@section('content')
 <div class="container form-container">
 
     <h1>Hasil Cek Saldo</h1>

@@ -19,8 +19,14 @@ class SettingSeeder extends Seeder
             ['key' => 'whatsapp', 'value' => '+628xxxxxxxxxx', 'group' => 'contact'],
             ['key' => 'facebook', 'value' => '', 'group' => 'contact'],
             ['key' => 'instagram', 'value' => '', 'group' => 'contact'],
-            ['key' => 'twitter', 'value' => '', 'group' => 'contact'],
+            ['key' => 'tiktok', 'value' => '', 'group' => 'contact'],
             ['key' => 'youtube', 'value' => '', 'group' => 'contact'],
+
+            ['key' => 'hero_badge', 'value' => 'KDMP • Transparan • Profesional', 'group' => 'hero'],
+            ['key' => 'hero_title', 'value' => 'Membangun Desa', 'group' => 'hero'],
+            ['key' => 'hero_subtitle', 'value' => 'Mandiri & Berdaya', 'group' => 'hero'],
+            ['key' => 'hero_description', 'value' => 'KDMP berkomitmen mengelola potensi desa secara transparan, profesional, dan berkelanjutan demi kesejahteraan bersama.', 'group' => 'hero'],
+            ['key' => 'hero_images', 'value' => json_encode([]), 'group' => 'hero'],
 
             ['key' => 'gmaps_url', 'value' => '', 'group' => 'footer'],
         ];

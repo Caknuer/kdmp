@@ -81,7 +81,7 @@
                     $socials = [
                         'facebook' => $setting->facebook ?? null,
                         'instagram' => $setting->instagram ?? null,
-                        'twitter' => $setting->twitter ?? null,
+                        'tiktok' => $setting->tiktok ?? null,
                         'youtube' => $setting->youtube ?? null,
                     ];
                 @endphp
@@ -94,7 +94,7 @@
                                     <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">
                                         @if($network === 'facebook') 📘 @endif
                                         @if($network === 'instagram') 📸 @endif
-                                        @if($network === 'twitter') 🐦 @endif
+                                        @if($network === 'tiktok') 🎵 @endif
                                         @if($network === 'youtube') ▶️ @endif
                                         {{ ucfirst($network) }}
                                     </a>
@@ -113,7 +113,7 @@
         </div>
 
         <small>
-            © {{ date('Y') }} {{ $setting->site_name ?? 'KDMP Wonokerto' }}. @nr-01.26 . All rights reserved.
+            © {{ date('Y') }} {{ $setting->site_name ?? 'KDMP Wonokerto' }}. @nurdev-v.1.0.2 08/30/26 . All rights reserved.
         </small>
     </div>
 </footer>

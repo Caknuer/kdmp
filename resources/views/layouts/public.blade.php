@@ -6,31 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {{-- =========================
-        TITLE (fallback dummy)
+        TITLE (Dynamic per page)
     ========================= --}}
     @php
-        $siteName = setting('site_name') ?: 'KDMP';
+        $siteName = setting('site_name') ?: 'KDMP Wonokerto';
+        $pageTitle = $pageTitle ?? null;
+        $fullTitle = $pageTitle ? "{$pageTitle} | {$siteName}" : $siteName;
     @endphp
-    <title>{{ $siteName }}</title>
+    <title>{{ $fullTitle }}</title>
+
+    {{-- SEO Meta Tags --}}
+    <meta name="description" content="{{ $pageDescription ?? 'Koperasi Desa Merah Putih (KDMP) Wonokerto - Mengelola potensi desa secara transparan, profesional, dan berkelanjutan demi kesejahteraan bersama.' }}">
+    <meta name="keywords" content="{{ $pageKeywords ?? 'koperasi, desa, wonokerto, kdmp, simpan pinjam, UMKM' }}">
+    <meta name="author" content="KDMP Wonokerto">
+    <meta name="robots" content="index, follow">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $fullTitle }}">
+    <meta property="og:description" content="{{ $pageDescription ?? 'Koperasi Desa Merah Putih Wonokerto' }}">
+    <meta property="og:image" content="{{ asset('images/kdmp.png') }}">
+
+    {{-- Twitter --}}
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="{{ $fullTitle }}">
+    <meta property="twitter:description" content="{{ $pageDescription ?? 'Koperasi Desa Merah Putih Wonokerto' }}">
+    <meta property="twitter:image" content="{{ asset('images/kdmp.png') }}">
 
     {{-- CSRF --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- =========================
         FAVICON (dynamic)
-        value DB: "site/favicon.png" / "site/favicon.ico"
     ========================= --}}
     @php
         $favicon = setting('site_favicon');
-
-        // amanin kalau ada leading slash
         $favicon = $favicon ? ltrim($favicon, '/') : null;
-
-        $faviconUrl = $favicon
-            ? asset('storage/' . $favicon)
-            : asset('favicon.ico');
-
-        // optional: type favicon
+        $faviconUrl = $favicon ? asset('storage/' . $favicon) : asset('favicon.ico');
         $faviconType = null;
         if ($favicon) {
             $ext = strtolower(pathinfo($favicon, PATHINFO_EXTENSION));
@@ -41,53 +55,46 @@
             };
         }
     @endphp
-
     <link rel="icon" href="{{ $faviconUrl }}" @if($faviconType) type="{{ $faviconType }}" @endif>
 
-    {{-- =========================
-        CSS
-    ========================= --}}
+    {{-- Preconnect untuk performa --}}
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+    {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    {{-- OPTIONAL: kalau kamu pakai font --}}
-    {{-- <link rel="preconnect" href="https://fonts.googleapis.com"> --}}
+    {{-- Page-specific styles --}}
+    @stack('styles')
+
+    {{-- Page-specific head scripts --}}
+    @stack('head-scripts')
 </head>
 
 <body>
+    @include('components.batik')
 
     {{-- Navbar --}}
     @include('public.partials.navbar')
 
-    {{-- Main Content
-         NOTE: sengaja tidak dibungkus container di layout
-         biar hero/page-hero bisa full width
-    --}}
-    <main>
-        @yield('P')
+    {{-- Main Content --}}
+    <main id="main-content">
+        @yield('content')
     </main>
 
     {{-- Footer --}}
     @include('public.partials.footer')
 
+    {{-- Toast Notification Container --}}
+    @include('public.partials.toast')
+
     {{-- =========================
         JS
     ========================= --}}
-
-    {{-- Chart.js hanya kalau ada canvas financeChart (biar hemat load) --}}
-    <script>
-        window.__needsChart = !!document.getElementById('financeChart');
-    </script>
-    <script>
-        (function(){
-            if(!window.__needsChart) return;
-            var s=document.createElement('script');
-            s.src='https://cdn.jsdelivr.net/npm/chart.js';
-            s.defer=true;
-            document.head.appendChild(s);
-        })();
-    </script>
-
     <script src="{{ asset('js/app.js') }}"></script>
 
+    {{-- Page-specific scripts --}}
+    @stack('scripts')
 </body>
 </html>
+
